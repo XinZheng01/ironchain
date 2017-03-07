@@ -1,0 +1,55 @@
+package com.ironchain.admin.config;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.ironchain.common.base.BaseDaoImpl;
+
+@Configuration
+@EnableJpaRepositories(repositoryBaseClass = BaseDaoImpl.class, basePackages="com.ironchain.common.dao")
+@EntityScan({"com.ironchain.common.model"})
+public class DatabaseConfig {
+	
+	/**====== Druid Config Start =====*/
+    @Bean
+    public ServletRegistrationBean druidServlet() {
+        return new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
+    }
+ 
+    @Bean
+    public DataSource druidDataSource(@Value("${spring.datasource.driver-class-name}") String driverClassName,
+    		@Value("${spring.datasource.url}") String url,
+    		@Value("${spring.datasource.username}") String username,
+    		@Value("${spring.datasource.password}") String password) {
+        DruidDataSource druidDataSource = new DruidDataSource();
+        druidDataSource.setDriverClassName(driverClassName);
+        druidDataSource.setUrl(url);
+        druidDataSource.setUsername(username);
+        druidDataSource.setPassword(password);
+//        try {
+//            druidDataSource.setFilters("stat, wall");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+        return druidDataSource;
+    }
+ 
+//    @Bean
+//    public FilterRegistrationBean filterRegistrationBean() {
+//        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+//        filterRegistrationBean.setAsyncSupported(false);
+//        filterRegistrationBean.setFilter(new WebStatFilter());
+//        filterRegistrationBean.addUrlPatterns("/*");
+//        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+//        return filterRegistrationBean;
+//    }
+    /**====== Druid Config End =====*/
+}
