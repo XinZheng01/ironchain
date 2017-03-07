@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration shutdownHook="disable" status="WARN">
+ <Properties>
+ 	<Property name="PROJECT">test</Property>
+	<Property name="PID">????</Property>
+	<Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
+	<Property name="LOG_LEVEL_PATTERN">%5p</Property>
+	<Property name="FILE_LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN} ${sys:PID} - [%t] %-40.40c{1.} : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+	<Property name="CONSOLE_LOG_PATTERN">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{-}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+	<Property name="SOURCE_LOG_PATTERN">%d %p [%t] %logger{36}(%L) - %m%n</Property>
+ </Properties>
+ <Appenders>
+	 <Console name="STDOUT" target="SYSTEM_OUT" follow="true">
+	 <!-- <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/> -->
+	 	<PatternLayout pattern="${SOURCE_LOG_PATTERN}"/>
+	 </Console>
+	 <RollingRandomAccessFile name="PROJECT" fileName="${sys:catalina.home:-.}/logs/${PROJECT}/${PROJECT}.log" filePattern="${sys:catalina.home:-.}/logs/${PROJECT}/${PROJECT}-%d{yyyy-MM-dd}.log">
+		 <!-- <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/> -->
+		 <PatternLayout pattern="${SOURCE_LOG_PATTERN}"/>
+		 <Policies>
+		  	<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+		 </Policies>
+		 <DefaultRolloverStrategy max="30"/>
+	 </RollingRandomAccessFile>
+ </Appenders>
+ <Loggers>
+ 	<Logger name="org.apache.catalina.startup.DigesterFactory" level="error" />
+	<Logger name="org.apache.catalina.util.LifecycleBase" level="error" />
+	<Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
+	<logger name="org.apache.sshd.common.util.SecurityUtils" level="warn"/>
+	<Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
+	<Logger name="org.crsh.plugin" level="warn" />
+	<logger name="org.crsh.ssh" level="warn"/>
+	<Logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="error" />
+	<Logger name="org.hibernate.validator.internal.util.Version" level="warn" />
+	<logger name="org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration" level="warn"/>
+	<logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>
+	<logger name="org.thymeleaf" level="warn"/>
+ 
+	<Root level="info">
+		<AppenderRef ref="STDOUT"/>
+		<AppenderRef ref="PROJECT"/>
+	</Root>
+ </Loggers>
+</Configuration>

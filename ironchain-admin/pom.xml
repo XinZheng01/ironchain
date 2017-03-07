@@ -9,6 +9,12 @@
   <packaging>war</packaging>
   
   <dependencies>
+  		<dependency>
+  			<groupId>com.ironchain</groupId>
+  			<artifactId>ironchain-common</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		
   		<!-- spring boot WEB 模块 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -65,17 +71,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
+		<!-- security -->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 		<!-- email -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
-		
-		<!-- spring boot test -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 		
 		<!-- EXCEL -->
