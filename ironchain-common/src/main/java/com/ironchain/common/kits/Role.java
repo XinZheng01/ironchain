@@ -13,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
-import com.ironchain.common.model.SystemUser;
+import com.ironchain.common.domain.SystemUser;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

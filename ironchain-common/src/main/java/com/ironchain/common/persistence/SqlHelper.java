@@ -9,6 +9,8 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.ironchain.common.persistence.dialect.Dialect;
-import com.ironchain.common.persistence.dialect.MySQLDialect;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 @Component
@@ -39,15 +40,23 @@ public class SqlHelper{
 	private Class resultClass;
 	
 	/** 方言*/
-	private Dialect dialect = new MySQLDialect();
+	private Dialect dialect;
 	
-//	public SqlHelper(EntityManager em){
-//		this.em = em;
-//	}
+	public SqlHelper(){}
+	
+	public SqlHelper(EntityManager em){
+		this.em = em;
+	}
 	
 	@PersistenceContext
 	public void setEntityManager(EntityManager em){
 		this.em = em;
+	}
+	
+	@Autowired
+	@Qualifier("pageDialect")
+	public void setDialect(Dialect dialect) {
+		this.dialect = dialect;
 	}
 	
 	/**
@@ -183,4 +192,14 @@ public class SqlHelper{
 					: em.createNativeQuery(nativeSql, resultClass);
 	}
 	
+	/**
+	 * 清除数据
+	 */
+	public SqlHelper clear(){
+		this.sql.setLength(0);
+		this.paramsList.clear();
+		this.resultClass = null;
+		this.resultSetMapping = null;
+		return this;
+	}
 }

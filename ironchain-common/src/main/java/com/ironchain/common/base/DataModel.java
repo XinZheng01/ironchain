@@ -2,6 +2,7 @@ package com.ironchain.common.base;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -18,6 +19,7 @@ public class DataModel extends BaseModel {
 
     /** 创建时间 */
     @CreatedDate
+    @Column(name = "create_time")
     protected Date createTime;
     
     /** 创建者 */
@@ -25,6 +27,7 @@ public class DataModel extends BaseModel {
     
     /** 更新时间 */
     @LastModifiedDate
+    @Column(name = "update_time")
     protected Date updateTime;
     
     /** 更新者 */

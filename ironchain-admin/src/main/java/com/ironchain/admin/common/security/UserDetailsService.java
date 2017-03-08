@@ -1,4 +1,4 @@
-package com.ironchain.admin.security;
+package com.ironchain.admin.common.security;
 
 import java.util.Locale;
 
@@ -16,13 +16,13 @@ import com.ironchain.common.dao.SystemUserDao;
 /**
  * Authenticate a user from the database.
  */
-//@Component("userDetailsService")
+@Component("userDetailsService")
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(UserDetailsService.class);
 
-//    @Autowired
-//    private SystemUserDao systemUserDao;
+    @Autowired
+    private SystemUserDao systemUserDao;
 
     @Override
     @Transactional

@@ -1,4 +1,4 @@
-package com.ironchain.admin.config;
+package com.ironchain.admin.common.config;
 
 import javax.sql.DataSource;
 
@@ -7,15 +7,21 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.ironchain.common.base.BaseDaoImpl;
+import com.ironchain.common.kits.SpringKit;
+import com.ironchain.common.persistence.SqlHelper;
+import com.ironchain.common.persistence.dialect.Dialect;
+import com.ironchain.common.persistence.dialect.MySQLDialect;
 
 @Configuration
 @EnableJpaRepositories(repositoryBaseClass = BaseDaoImpl.class, basePackages="com.ironchain.common.dao")
-@EntityScan({"com.ironchain.common.model"})
+@EntityScan({"com.ironchain.common.domain"})
+@Import({SpringKit.class, SqlHelper.class})
 public class DatabaseConfig {
 	
 	/**====== Druid Config Start =====*/
@@ -52,4 +58,13 @@ public class DatabaseConfig {
 //        return filterRegistrationBean;
 //    }
     /**====== Druid Config End =====*/
+    
+    /**
+     * 分页方言
+     */
+    @Bean(name="pageDialect")
+    public Dialect pageDialect(){
+    	return new MySQLDialect();
+    }
+    
 }
