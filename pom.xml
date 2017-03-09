@@ -27,6 +27,8 @@
 		<UserAgentUtils.version>1.19</UserAgentUtils.version>
 		<joda-time.version>2.9.4</joda-time.version>
 		<jsoup.version>1.9.2</jsoup.version>
+		<springfox.version>2.6.1</springfox.version>
+		
 		<lombok.version>1.16.14</lombok.version>
 		<maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
 		

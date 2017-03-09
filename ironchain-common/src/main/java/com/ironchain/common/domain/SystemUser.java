@@ -12,7 +12,6 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
-import com.ironchain.common.kits.Role;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,8 +48,8 @@ public class SystemUser extends DataModel {
 	@Column(name="status")
 	private Integer status;
 	
-//	/** 用户角色*/
-//	@JsonIgnore
-//	@ManyToMany
-//	private Set<Role> roles = new HashSet<>(0);
+	/** 用户角色*/
+	@JsonIgnore
+	@ManyToMany
+	private Set<SystemRole> roles = new HashSet<>(0);
 }

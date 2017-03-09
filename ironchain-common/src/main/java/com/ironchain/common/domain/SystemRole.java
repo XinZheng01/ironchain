@@ -1,4 +1,4 @@
-package com.ironchain.common.kits;
+package com.ironchain.common.domain;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "system_role")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class Role extends DataModel {
+public class SystemRole extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -40,9 +40,9 @@ public class Role extends DataModel {
 	@Column(name="code")
 	private String code;
 	
-	/** 排序id*/
-	@Column(name="order_id")
-	private Integer orderId;
+//	/** 排序id*/
+//	@Column(name="order_id")
+//	private Integer orderId;
 	
 	/** 描述*/
 	@Column(name="description")
@@ -60,6 +60,6 @@ public class Role extends DataModel {
 	/** 权限列表*/
 	@JsonIgnore
 	@ManyToMany
-	private Set<Permission> permissions = new HashSet<>(0);
+	private Set<SystemPermission> permissions = new HashSet<>(0);
 
 }
