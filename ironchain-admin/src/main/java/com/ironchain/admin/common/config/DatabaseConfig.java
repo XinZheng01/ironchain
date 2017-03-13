@@ -8,11 +8,15 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
+import com.ironchain.admin.common.security.SecurityAuditorAware;
 import com.ironchain.common.base.BaseDaoImpl;
+import com.ironchain.common.domain.SystemUser;
 import com.ironchain.common.kits.SpringKit;
 import com.ironchain.common.persistence.SqlHelper;
 import com.ironchain.common.persistence.dialect.Dialect;
@@ -21,6 +25,7 @@ import com.ironchain.common.persistence.dialect.MySQLDialect;
 @Configuration
 @EnableJpaRepositories(repositoryBaseClass = BaseDaoImpl.class, basePackages="com.ironchain.common.dao")
 @EntityScan({"com.ironchain.common.domain"})
+@EnableJpaAuditing
 @Import({SpringKit.class, SqlHelper.class})
 public class DatabaseConfig {
 	
@@ -67,4 +72,8 @@ public class DatabaseConfig {
     	return new MySQLDialect();
     }
     
+    @Bean
+    public AuditorAware<SystemUser> auditorProvider() {
+      return new SecurityAuditorAware();
+    }
 }

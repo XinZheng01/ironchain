@@ -4,16 +4,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
-import com.ironchain.common.domain.SystemUser;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,7 +28,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(name = "system_role")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+//@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class SystemRole extends DataModel {
 
 	private static final long serialVersionUID = 1L;
@@ -54,12 +55,20 @@ public class SystemRole extends DataModel {
 	
 	/** 用户*/
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="sys_user_role_ref",
+		joinColumns={@JoinColumn(name="role_id")},
+		inverseJoinColumns={@JoinColumn(name="user_id")},
+		foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Set<SystemUser> users = new HashSet<>(0);
 	
 	/** 权限列表*/
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="sys_role_perm_ref",
+		joinColumns={@JoinColumn(name="role_id")},
+		inverseJoinColumns={@JoinColumn(name="permission_id")},
+		foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Set<SystemPermission> permissions = new HashSet<>(0);
 
 }

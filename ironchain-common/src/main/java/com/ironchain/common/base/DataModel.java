@@ -3,10 +3,16 @@ package com.ironchain.common.base;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import com.ironchain.common.domain.SystemUser;
 
 /**
  * 
@@ -23,7 +29,10 @@ public class DataModel extends BaseModel {
     protected Date createTime;
     
     /** 创建者 */
-//    protected User createBy;
+    @CreatedBy
+    @OneToOne
+    @JoinColumn(name = "create_by")
+    protected SystemUser createBy;
     
     /** 更新时间 */
     @LastModifiedDate
@@ -31,7 +40,10 @@ public class DataModel extends BaseModel {
     protected Date updateTime;
     
     /** 更新者 */
-//  protected User updateBy;
+    @LastModifiedBy
+    @OneToOne
+    @JoinColumn(name = "update_by")
+    protected SystemUser updateBy;
 
 	public Date getCreateTime() {
 		return createTime;
@@ -48,5 +60,20 @@ public class DataModel extends BaseModel {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-    
+
+	public SystemUser getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(SystemUser createBy) {
+		this.createBy = createBy;
+	}
+
+	public SystemUser getUpdateBy() {
+		return updateBy;
+	}
+
+	public void setUpdateBy(SystemUser updateBy) {
+		this.updateBy = updateBy;
+	}
 }
