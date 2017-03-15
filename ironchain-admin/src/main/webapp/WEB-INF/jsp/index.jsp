@@ -15,7 +15,7 @@
   <div class="layui-header header header-demo">
   <div class="layui-main">
     <a class="logo" href="/">
-      <img src="public/images/logo.png" alt="layui">
+      <img src="${staticUrl}/images/logo.png" alt="layui">
     </a>
     <ul class="layui-nav">
       <li class="layui-nav-item ">
@@ -139,15 +139,16 @@
  </div>
 </div>
 <!-- 内容 -->
-<div class="layui-body site-demo">
-	<iframe frameborder="0" src="http://www.baidu.com" id="rightIframe" name="rightIframe"></iframe>
+<div class="layui-body site-demo" style="bottom: 0px;">
+	<iframe frameborder="0" src="${ctx}/a" id="rightIframe" name="rightIframe"></iframe>
 </div>
-<!-- 底部 -->
+<!-- 底部
 <div class="layui-footer footer footer-demo">
   <div class="layui-main">
     <p>2016 &copy; <a href="javascript:;">zheng xin</a> MIT license</p>
   </div>
 </div>
+ -->
 <div class="site-tree-mobile layui-hide">
   <i class="layui-icon">&#xe602;</i>
 </div>

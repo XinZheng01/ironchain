@@ -60,6 +60,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/user/login/form?error=true")
                 .permitAll()
                 .and()
+            .headers()
+            	.frameOptions()
+            	.sameOrigin()
+            	.and()
             .logout()
                 .permitAll();
     }
