@@ -5,14 +5,10 @@
 <head>
 <meta charset="utf-8">
 <title>系统后台</title>
-<meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="format-detection" content="telephone=no">
-  <link rel="stylesheet" href="static/plugins/layui/css/layui.css"  media="all">
-  <link rel="stylesheet" href="static/plugins/layui/css/global.css" media="all">
+	<%@include file="/WEB-INF/include/meta.jsp" %>
+	<%@include file="/WEB-INF/include/taglib.jsp" %>
+  <link rel="stylesheet" href="${staticUrl}/plugins/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="${staticUrl}/plugins/layui/css/global.css" media="all">
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -156,10 +152,10 @@
   <i class="layui-icon">&#xe602;</i>
 </div>
 <div class="site-mobile-shade"></div>
-<script src="static/plugins/jquery-1.12.4.min.js" charset="utf-8"></script>
-<script src="static/plugins/layui/layui.js" charset="utf-8"></script>
+<script src="${staticUrl}/plugins/jquery-1.12.4.min.js" charset="utf-8"></script>
+<script src="${staticUrl}/plugins/layui/layui.js" charset="utf-8"></script>
 <script>
-layui.config({base: 'static/plugins/layui/lay/modules/'}).use('global');
+layui.config({base: '${staticUrl}/plugins/layui/lay/modules/'}).use('global');
 </script>
 </div>
 </body>

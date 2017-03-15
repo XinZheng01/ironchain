@@ -4,5 +4,5 @@
 String ctx = request.getContextPath();
 pageContext.setAttribute("ctx", ctx);
 pageContext.setAttribute("staticUrl", ctx + "/static");
-pageContext.setAttribute("uploadUrl", ctx + "/static");
+pageContext.setAttribute("uploadUrl", ctx + "/upload");
 %>

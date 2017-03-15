@@ -1,9 +1,11 @@
 package com.ironchain.admin.common.config;
 
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * WEB 安全配置
  * @author Administrator
- *
+ * @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) 启用方法权限注解@PreAuthorize和@Secured
  */
 @Configuration
 @EnableWebSecurity
@@ -29,6 +31,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 	
 	/**
+	 * 不需要安全认证的url
+	 */
+	@Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+            //.antMatchers(HttpMethod.OPTIONS, "/**")
+            .antMatchers("/app/**/*.{js,html}")
+            .antMatchers("/bower_components/**")
+            .antMatchers("/i18n/**")
+            .antMatchers("/static/**")
+            .antMatchers("/swagger-ui/index.html")
+            .antMatchers("/test/**")
+            .antMatchers("/h2-console/**");
+    }
+	
+	@Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()//定义那些url需要保护
+                //.antMatchers("/", "/home", "/system/**").permitAll()//指定/ 和 /home 不需要保护
+                .anyRequest().authenticated()//其他url全部需要保护
+                .and()
+            .formLogin()
+                .loginPage("/user/login/form")
+                .loginProcessingUrl("/user/login")
+                .defaultSuccessUrl("/")
+                .failureUrl("/user/login/form?error=true")
+                .permitAll()
+                .and()
+            .logout()
+                .permitAll();
+    }
+	
+	/**
 	 * 加密算法
 	 * @return
 	 */
@@ -37,51 +73,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         PasswordEncoder encoder = new BCryptPasswordEncoder(); //最安全， 耗时
 //        PasswordEncoder encoder = new StandardPasswordEncoder();//sha 256 salt
         return encoder;
-    }  
-	
-	/**
-	 * 不需要安全认证的url
-	 */
-	@Override
-    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring()
-//            .antMatchers(HttpMethod.OPTIONS, "/**")
-//            .antMatchers("/app/**/*.{js,html}")
-//            .antMatchers("/bower_components/**")
-//            .antMatchers("/i18n/**")
-//            .antMatchers("/content/**")
-//            .antMatchers("/swagger-ui/index.html")
-//            .antMatchers("/test/**")
-//            .antMatchers("/h2-console/**");
-    }
-	
-	@Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()//定义那些url需要保护
-                .antMatchers("/", "/home", "/system/**").permitAll()//指定/ 和 /home 不需要保护
-                .anyRequest().authenticated()//其他url全部需要保护
-                .and()
-            .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-            .logout()
-                .permitAll();
     }
 	
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		try {
-//            auth
-//                .userDetailsService(userDetailsService)
-//                    .passwordEncoder(passwordEncoder());
-//        } catch (Exception e) {
-//            throw new BeanInitializationException("Security configuration failed", e);
-//        }
-		 auth
-         .inMemoryAuthentication()
-             .withUser("user").password("password").roles("USER");
+		try {
+            auth
+                .userDetailsService(userDetailsService)
+                    .passwordEncoder(passwordEncoder());
+        } catch (Exception e) {
+            throw new BeanInitializationException("Security configuration failed", e);
+        }
     }
 	
 	/**

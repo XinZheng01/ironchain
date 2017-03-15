@@ -4,10 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -55,11 +53,7 @@ public class SystemRole extends DataModel {
 	
 	/** 用户*/
 	@JsonIgnore
-	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(name="sys_user_role_ref",
-		joinColumns={@JoinColumn(name="role_id")},
-		inverseJoinColumns={@JoinColumn(name="user_id")},
-		foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="roles")
 	private Set<SystemUser> users = new HashSet<>(0);
 	
 	/** 权限列表*/
@@ -67,8 +61,7 @@ public class SystemRole extends DataModel {
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="sys_role_perm_ref",
 		joinColumns={@JoinColumn(name="role_id")},
-		inverseJoinColumns={@JoinColumn(name="permission_id")},
-		foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
+		inverseJoinColumns={@JoinColumn(name="permission_id")})
 	private Set<SystemPermission> permissions = new HashSet<>(0);
 
 }

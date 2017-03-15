@@ -19,5 +19,4 @@ public class HomeController extends BaseController{
 		LOGGER.info("进来了");
 		return "index";
 	}
-	
 }

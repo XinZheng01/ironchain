@@ -22,6 +22,12 @@ import com.ironchain.common.persistence.SqlHelper;
 import com.ironchain.common.persistence.dialect.Dialect;
 import com.ironchain.common.persistence.dialect.MySQLDialect;
 
+/**
+ * 持久化配置
+ * @author Administrator
+ * @EnableJpaAuditing 支持domain通过@CreatedDate @CreatedBy 注入创建人、创建时间等信息
+ * @EntityScan 实体扫描，不在同一个工程中需要添加
+ */
 @Configuration
 @EnableJpaRepositories(repositoryBaseClass = BaseDaoImpl.class, basePackages="com.ironchain.common.dao")
 @EntityScan({"com.ironchain.common.domain"})

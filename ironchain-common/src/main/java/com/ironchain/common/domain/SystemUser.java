@@ -4,10 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -32,7 +30,11 @@ import lombok.EqualsAndHashCode;
 @Table(name="system_user")
 public class SystemUser extends DataModel {
 	private static final long serialVersionUID = 1L;
-
+	
+	public static final int STATUS_DELETE = 0;
+	public static final int STATUS_SUCCESS = 1;
+	public static final int STATUS_LOCK = 2;
+	
 	/** 登录名*/
 	@NotNull
 	@Size(min = 5, max = 30)
@@ -59,14 +61,13 @@ public class SystemUser extends DataModel {
 	
 	/** 状态 0：删除 1：正常 2：锁定*/
 	@Column(name="status", nullable=false)
-	private Integer status = Integer.valueOf(1);
+	private int status = STATUS_SUCCESS;
 	
 	/** 用户角色*/
 	@JsonIgnore
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="sys_user_role_ref",
 		joinColumns={@JoinColumn(name="user_id")},
-		inverseJoinColumns={@JoinColumn(name="role_id")},
-		foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
+		inverseJoinColumns={@JoinColumn(name="role_id")})
 	private Set<SystemRole> roles = new HashSet<>(0);
 }
