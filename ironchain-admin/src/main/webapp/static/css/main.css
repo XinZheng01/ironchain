@@ -1,0 +1,19 @@
+.page{
+	padding: 0px 15px 15px;
+}
+.search-form .form-group{
+	margin-bottom: 10px!important;
+	margin-right: 10px;
+}
+.panel-toolbar{
+	margin: 0 0 15px 15px;
+}
+.admin-breadcrumb{
+	background:#f3f3f4;
+}
+.table-pager{
+	margin: 0 15px 15px;
+}
+.table-pager .pager{
+	margin: 0px;
+}
