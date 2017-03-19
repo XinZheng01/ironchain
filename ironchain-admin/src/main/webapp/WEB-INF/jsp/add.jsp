@@ -8,8 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link href="${staticUrl}/css/main.css" rel="stylesheet">
-<link href="${staticUrl}/plugins/zui-1.5.0/css/zui.min.css" rel="stylesheet">
-<link href="${staticUrl}/plugins/zui-1.5.0/css/zui-theme.min.css" rel="stylesheet">
+<link href="${staticUrl}/plugins/zui-1.6.0/css/zui.min.css" rel="stylesheet">
+<link href="${staticUrl}/plugins/zui-1.6.0/css/zui-theme-green.min.css" rel="stylesheet">
 </head>
 <body>
 	<div>
@@ -70,7 +70,7 @@
 	</div>
 </body>
 <script src="${staticUrl}/plugins/jquery-1.12.4.min.js" charset="utf-8"></script>
-<script src="${staticUrl}/plugins/zui-1.5.0/js/zui.min.js"></script>
+<script src="${staticUrl}/plugins/zui-1.6.0/js/zui.min.js"></script>
 <script type="text/javascript">
 </script>
 </html>

@@ -1,0 +1,6 @@
+@color-primary: #009688;
+@color-secondary: #009688;
+@color-pale: #e8f5e9;
+@border-radius-base: 0;
+@border-radius-large: 0;
+@border-radius-small: 0;
