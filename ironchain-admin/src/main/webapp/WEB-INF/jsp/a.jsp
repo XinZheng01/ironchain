@@ -173,7 +173,13 @@
 <script src="${staticUrl}/plugins/datatables-1.10.13/media/js/dataTables.zui.js"></script>
 <script src="${staticUrl}/plugins/zui-1.6.0/lib/datetimepicker/datetimepicker.min.js"></script>
 <script type="text/javascript">
-var table = $('#example').DataTable();
+var table = $('#example').DataTable({
+	ajaxUrl: "",
+	ajaxParam: null,
+	ajaxCallback: function(){
+		
+	}
+});
 $(".form-datetime").datetimepicker(
 {
     weekStart: 1,

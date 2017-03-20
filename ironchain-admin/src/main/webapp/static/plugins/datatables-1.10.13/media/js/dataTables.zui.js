@@ -58,34 +58,32 @@ $.extend( true, DataTable.defaults, {
 	order: [],
 	serverSide: true,
 	ajax: function (data, callback, settings) {
-		console.log(DataTable.$("table"));
+		console.log(data);
         //封装请求参数
-        var param = {};
-        param.limit = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+        var param = settings.oInit.ajaxParam || {};
+        param.size = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
         param.start = data.start;//开始的记录序号
         param.page = (data.start / data.length)+1;//当前页码
         //ajax请求数据
         $.ajax({
-            type: "GET",
-            url: "/hello/list",
+            type: settings.oInit.ajaxType || "GET",
+            url: settings.oInit.ajaxUrl || "",
             cache: false,  //禁用缓存
             data: param,  //传入组装的参数
-            dataType: "json",
+            dataType: settings.oInit.ajaxDatatype || "json",
             success: function (result) {
-                //console.log(result);
-                //setTimeout仅为测试延迟效果
-                setTimeout(function () {
-                    //封装返回数据
-                    var returnData = {};
-                    returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
-                    returnData.recordsTotal = result.total;//返回数据全部记录
-                    returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
-                    returnData.data = result.data;//返回的数据列表
-                    //console.log(returnData);
-                    //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-                    //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-                    callback(returnData);
-                }, 200);
+                var returnData = {};
+                returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                returnData.recordsTotal = result.totalElements;//返回数据全部记录
+                returnData.recordsFiltered = result.totalElements;//后台不实现过滤功能，每次查询均视作全部结果
+                returnData.data = result.content;//返回的数据列表
+                if(settings.oInit.ajaxCallback != undefined)
+                	settings.oInit.ajaxCallback(result, returnData);
+                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                callback(returnData);
+            },
+            error: function(){
+            	alert("抱歉，请求出错，请重新刷新页面");
             }
         });
 	},
