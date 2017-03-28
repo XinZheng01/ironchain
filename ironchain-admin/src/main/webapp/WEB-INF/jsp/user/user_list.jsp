@@ -53,13 +53,13 @@
 						</tr>
 					</thead>
 	                <tbody>
-						<c:forEach begin="0" end="10" var="i">
+						<c:forEach items="${userPage.content}" var="user">
 							<tr>
-								<td class="dt-body-center"><input type="checkbox" value="${i}"></td>
-								<td>Sonya Frost</td>
-								<td>爱仕达</td>
-								<td>正常</td>
-								<td>2017-10-01</td>
+								<td class="dt-body-center"><input type="checkbox" value="${user.id}"></td>
+								<td>${user.loginName}</td>
+								<td>${user.name}</td>
+								<td>${user.status}</td>
+								<td>${user.createTime}</td>
 								<td>
 									<a href="###" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
 									<a href="###" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
@@ -68,6 +68,7 @@
 						</c:forEach>
 	                </tbody>
             	</table>
+            	<my:pagination page="${userPage}"/>
 			</div>
 		</div>
 	</div>

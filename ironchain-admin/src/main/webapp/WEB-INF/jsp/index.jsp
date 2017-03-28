@@ -140,7 +140,7 @@
 </div>
 <!-- 内容 -->
 <div class="layui-body site-demo" style="bottom: 0px;">
-	<iframe frameborder="0" src="${ctx}/a" id="rightIframe" name="rightIframe"></iframe>
+	<iframe frameborder="0" src="${ctx}/user/list" id="rightIframe" name="rightIframe"></iframe>
 </div>
 <!-- 底部
 <div class="layui-footer footer footer-demo">

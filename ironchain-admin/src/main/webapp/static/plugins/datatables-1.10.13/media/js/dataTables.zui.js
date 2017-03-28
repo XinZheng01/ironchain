@@ -52,7 +52,7 @@ $.extend( true, DataTable.defaults, {
 	renderer: 'bootstrap',
 	paging: false,
 	//pagingType:   "full_numbers",
-	stateSave: true,
+	//stateSave: true,
 	searching: false,
 	sort: false,
 	info: false,

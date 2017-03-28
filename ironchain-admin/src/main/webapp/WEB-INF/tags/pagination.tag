@@ -14,42 +14,41 @@
 	if (endPage > totalPages || (totalPages - currentPage) < 8)
 		endPage = totalPages;
 %>
-<div class="dataTables_info" id="example_info">
-	显示第 0至 0 项结果，共 <%=page.getTotalElements() %>项
-</div>
-<div class="dataTables_length" id="example_length">
-	<label>显示 <select name="example_length" id="example_length" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> 项结果</label>
-</div>
-<div class="dataTables_paginate" id="example_paginate">
-	<ul class="pager">
-		<%if (currentPage == 1){ %>
-		<li class="previous disabled"><a href="javascript:;">上一页</a></li>
-		<%}else {%>
-		<li class="previous disabled"><a href="javascript:;">上一页</a></li>
-		<%} %>
-		<%if (currentPage > 8){ %>
-		<li><a href="javascript:;">1</a></li>
-		<li><a href="javascript:;">2</a></li>
-		<li class="disabled"><a href="javascript:;">...</a></li>
-		<%} %>
-		<%for(int i = startPage; i <= endPage; i++) { %>
-			<%if (currentPage == totalPages){%>
-		<li class="active"><a href="javascript:;"><%=i %></a></li>
+<div class="dataTables_wrapper">
+	<div class="dataTables_length" id="page_length">
+		<label>显示 <select name="page_length" id="page_select" style="display: inline-block;width: auto;vertical-align: middle;" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> 项结果，共 <%=page.getTotalElements() %>项</label>
+	</div>
+	<div class="dataTables_paginate" id="page_paginate">
+		<ul class="pager" style="margin-top: 0.755em;">
+			<%if (currentPage == 1){ %>
+			<li class="previous disabled"><a href="javascript:;">上一页</a></li>
 			<%}else {%>
-		<li><a href="javascript:;"><%=i %></a></li>
+			<li class="previous disabled"><a href="javascript:;">上一页</a></li>
 			<%} %>
-		<%} %>
-		<%if ((totalPages - currentPage) >= 8) %>
-		<li><a href="javascript:;"><%=totalPages - 1%></a></li>
-		<li><a href="javascript:;"><%=totalPages%></a></li>
-		<%} %>
-		<%if (currentPage == totalPages){ %>
-		<li class="next disabled"><a href="javascript:;">下一页</a></li>
-		<%}else { %>
-		<li class="next"><a href="javascript:;">下一页</a></li>
-		<%} %>
-	</ul>
+			<%if (currentPage > 8){ %>
+			<li><a href="javascript:;">1</a></li>
+			<li><a href="javascript:;">2</a></li>
+			<li class="disabled"><a href="javascript:;">...</a></li>
+			<%} %>
+			<%for(int i = startPage; i <= endPage; i++) { %>
+				<%if (currentPage == totalPages){%>
+			<li class="active"><a href="javascript:;"><%=i %></a></li>
+				<%}else {%>
+			<li><a href="javascript:;"><%=i %></a></li>
+				<%} %>
+			<%} %>
+			<%if ((totalPages - currentPage) >= 8){ %>
+			<li><a href="javascript:;"><%=totalPages - 1%></a></li>
+			<li><a href="javascript:;"><%=totalPages%></a></li>
+			<%} %>
+			<%if (currentPage == totalPages){ %>
+			<li class="next disabled"><a href="javascript:;">下一页</a></li>
+			<%}else { %>
+			<li class="next"><a href="javascript:;">下一页</a></li>
+			<%} %>
+		</ul>
+	</div>
 </div>
 <script>
-$('#example_length option[value="<%=page.getSize()%>"]').prop('selected', true);
+document.querySelector('#page_select option[value="<%=page.getSize()%>"]').selected = true;
 </script>

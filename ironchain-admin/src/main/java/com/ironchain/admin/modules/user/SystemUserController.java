@@ -1,15 +1,21 @@
 package com.ironchain.admin.modules.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ironchain.common.base.BaseController;
+import com.ironchain.common.dao.SystemUserDao;
 
 @Controller
 @RequestMapping("/user")
 public class SystemUserController extends BaseController {
+	
+	@Autowired
+	private SystemUserDao systemUserDao;
 	
 	/**
 	 * 登录界面
@@ -43,8 +49,9 @@ public class SystemUserController extends BaseController {
 	 * @return
 	 */
 	@GetMapping("/list")
-	public String list(){
-		return null;
+	public String list(Model model){
+		model.addAttribute("userPage", systemUserDao.findAll(getPageable(1, 10, null)));
+		return "user/user_list";
 	}
 	
 	/**

@@ -185,13 +185,13 @@ public abstract class BaseController {
 	/**
 	 * 获取Pageable对象
 	 * @param page 页码
-	 * @param rows 行数
+	 * @param size 行数
 	 * @param sort 排序（可为空）
 	 * @return Pageable
 	 */
-	public Pageable getPageable(int page, int rows, Sort sort){
-		if(page - 1 < 0 || rows <= 0)
+	public Pageable getPageable(int page, int size, Sort sort){
+		if(page - 1 < 0 || size <= 0)
 			throw new IllegalArgumentException("非法分页参数");
-		return new PageRequest(page - 1, rows, sort);
+		return new PageRequest(page - 1, size, sort);
 	}
 }
