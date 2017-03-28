@@ -50,20 +50,25 @@ $.extend( true, DataTable.defaults, {
 		//"<'row'<'col-sm-5'i><'col-sm-7'p>>"+
 		"rt<'bottom'iflp<'clear'>>",
 	renderer: 'bootstrap',
-	pagingType:   "full_numbers",
-	sLoadingRecords: "正在加载数据...",
-	sZeroRecords: "暂无数据",
+	paging: false,
+	//pagingType:   "full_numbers",
 	stateSave: true,
 	searching: false,
+	sort: false,
+	info: false,
 	order: [],
-	serverSide: true,
+	//serverSide: true,
+	/*
 	ajax: function (data, callback, settings) {
-		console.log(data);
         //封装请求参数
         var param = settings.oInit.ajaxParam || {};
         param.size = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
         param.start = data.start;//开始的记录序号
         param.page = (data.start / data.length)+1;//当前页码
+        console.log(settings);
+        if(data.order.length > 0){
+        	param.sort = settings.aoColumns[data.order[0].column].sortName + ',' + data.order[0].dir;
+        }
         //ajax请求数据
         $.ajax({
             type: settings.oInit.ajaxType || "GET",
@@ -86,11 +91,13 @@ $.extend( true, DataTable.defaults, {
             	alert("抱歉，请求出错，请重新刷新页面");
             }
         });
-	},
+	},*/
 	language: {
         "processing": "正在加载数据...",
+        "loadingRecords": "正在加载数据...",
 		"lengthMenu": "显示 _MENU_ 项结果",
 		"zeroRecords": "暂无数据",
+		"emptyTable": "暂无数据",
 		"info": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
 		"infoEmpty": "显示第 0 至 0 项结果，共 0 项",
 		"infoFiltered": "(由 _MAX_ 项结果过滤)",

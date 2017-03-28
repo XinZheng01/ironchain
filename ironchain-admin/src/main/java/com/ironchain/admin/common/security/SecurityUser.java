@@ -2,6 +2,8 @@ package com.ironchain.admin.common.security;
 
 import java.util.ArrayList;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import com.ironchain.common.domain.SystemUser;
 
 public class SecurityUser extends org.springframework.security.core.userdetails.User {
@@ -11,7 +13,7 @@ public class SecurityUser extends org.springframework.security.core.userdetails.
 	private Long id;
 
 	public SecurityUser(SystemUser systemUser){
-		super(systemUser.getName(), systemUser.getPassword(), new ArrayList<>());
+		super(systemUser.getName(), systemUser.getPassword(), new ArrayList<GrantedAuthority>());
 		this.id = systemUser.getId();
 	}
 

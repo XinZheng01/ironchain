@@ -3,15 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@include file="/WEB-INF/include/meta.jsp" %>
 <%@include file="/WEB-INF/include/taglib.jsp" %>
+<%@include file="/WEB-INF/include/meta.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<link href="${staticUrl}/css/main.css" rel="stylesheet">
-<link href="${staticUrl}/plugins/zui-1.6.0/css/zui.min.css" rel="stylesheet">
-<link href="${staticUrl}/plugins/zui-1.6.0/css/zui-theme-green.min.css" rel="stylesheet">
-<link href="${staticUrl}/plugins/datatables-1.10.13/media/css/dataTables.zui.css" rel="stylesheet">
-<link href="${staticUrl}/plugins/zui-1.6.0/lib/datetimepicker/datetimepicker.css" rel="stylesheet">
+<%@include file="/WEB-INF/include/base-style.jsp" %>
 </head>
 <body>
 	<div>
@@ -58,6 +54,7 @@
 				<table id="example" class="hover row-border" cellspacing="0" width="100%">
                 <thead>
 					<tr>
+						<th style="text-align: center;"><input type="checkbox"></th>
 						<th>#</th>
 						<th>时间</th>
 						<th>房间</th>
@@ -69,6 +66,7 @@
 				</thead>
                 <tbody>
 					<tr>
+						<td style="text-align: center;"><input type="checkbox"></td>
 						<td>1</td>
 						<td>Tiger Nixon</td>
 						<td>System Architect</td>
@@ -78,6 +76,7 @@
 						<td>$320,800</td>
 					</tr>
 					<tr>
+						<td><input type="checkbox"></td>
 						<td>1</td>
 						<td>Garrett Winters</td>
 						<td>Accountant</td>
@@ -87,6 +86,7 @@
 						<td>$170,750</td>
 					</tr>
 					<tr>
+						<td><input type="checkbox"></td>
 						<td>1</td>
 						<td>Ashton Cox</td>
 						<td>Junior Technical Author</td>
@@ -96,6 +96,7 @@
 						<td>$86,000</td>
 					</tr>
 					<tr>
+						<td><input type="checkbox"></td>
 						<td>1</td>
 						<td>Cedric Kelly</td>
 						<td>Senior Javascript Developer</td>
@@ -105,6 +106,7 @@
 						<td>$433,060</td>
 					</tr>
 					<tr>
+						<td><input type="checkbox"></td>
 						<td>1</td>
 						<td>Airi Satou</td>
 						<td>Accountant</td>
@@ -114,6 +116,7 @@
 						<td>$162,700</td>
 					</tr>
 					<tr>
+						<td><input type="checkbox"></td>
 						<td>1</td>
 						<td>Brielle Williamson</td>
 						<td>Integration Specialist</td>
@@ -123,6 +126,7 @@
 						<td>$372,000</td>
 					</tr>
 					<tr>
+						<td><input type="checkbox"></td>
 						<td>1</td>
 						<td>Herrod Chandler</td>
 						<td>Sales Assistant</td>
@@ -132,6 +136,7 @@
 						<td>$137,500</td>
 					</tr>
 					<tr>
+						<td><input type="checkbox"></td>
 						<td>1</td>
 						<td>Rhona Davidson</td>
 						<td>Integration Specialist</td>
@@ -141,7 +146,8 @@
 						<td>$327,900</td>
 					</tr>
 					<tr>
-					<td>1</td>
+						<td><input type="checkbox"></td>
+						<td>1</td>
 						<td>Colleen Hurst</td>
 						<td>Javascript Developer</td>
 						<td>San Francisco</td>
@@ -150,7 +156,8 @@
 						<td>$205,500</td>
 					</tr>
 					<tr>
-					<td>1</td>
+						<td><input type="checkbox"></td>
+						<td>1</td>
 						<td>Sonya Frost</td>
 						<td>Software Engineer</td>
 						<td>Edinburgh</td>
@@ -164,22 +171,9 @@
 		</div>
 	</div>
 </body>
-<!-- 
-<script src="${staticUrl}/plugins/zui-1.6.0/lib/jquery/jquery.js" charset="utf-8"></script>
- -->
-<script src="${staticUrl}/plugins/jquery-1.12.4.min.js" charset="utf-8"></script>
-<script src="${staticUrl}/plugins/zui-1.6.0/js/zui.min.js"></script>
-<script src="${staticUrl}/plugins/datatables-1.10.13/media/js/jquery.dataTables.js"></script>
-<script src="${staticUrl}/plugins/datatables-1.10.13/media/js/dataTables.zui.js"></script>
-<script src="${staticUrl}/plugins/zui-1.6.0/lib/datetimepicker/datetimepicker.min.js"></script>
+<%@include file="/WEB-INF/include/base-script.jsp" %>
 <script type="text/javascript">
-var table = $('#example').DataTable({
-	ajaxUrl: "",
-	ajaxParam: null,
-	ajaxCallback: function(){
-		
-	}
-});
+var table = $('#example').DataTable();
 $(".form-datetime").datetimepicker(
 {
     weekStart: 1,
