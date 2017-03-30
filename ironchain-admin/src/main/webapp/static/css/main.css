@@ -43,3 +43,12 @@ table.dataTable.no-footer {
 table.dataTable thead th, table.dataTable thead td{
 	padding: 10px!important;
 }
+table.dataTable tbody tr:last-child td{
+	border-bottom: 1px solid #ddd;
+}
+table.dataTable tr.active:hover>td{
+	background-color: #ffdea2;
+}
+table.dataTable tr.active>td{
+	background-color: #ffe7bc;
+}

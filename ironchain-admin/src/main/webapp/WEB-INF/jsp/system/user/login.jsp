@@ -44,7 +44,7 @@
         	铁链后台管理系统
         </p>
 
-        <form id="login_form"  action="${ctx}/user/login" method="post">
+        <form id="login_form"  action="${ctx}/system/user/login" method="post">
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <ol class="login-form">
                 <li class="animate1 bounceIn">

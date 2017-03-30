@@ -1,10 +1,10 @@
 package com.ironchain.admin.common.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.FormatterRegistry;
-import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.data.web.config.SpringDataWebConfiguration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  * Mvc 配置
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  *
  */
 @Configuration
-public class MvcConfig extends WebMvcConfigurerAdapter{
+public class MvcConfig extends SpringDataWebConfiguration {
 	
 	/**
 	 * 添加不经过controller的view
@@ -21,6 +21,17 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/a").setViewName("a");
 		registry.addViewController("/add").setViewName("add");
+	}
+	
+	/**
+	 * 设置默认分页参数
+	 */
+	@Override
+	public PageableHandlerMethodArgumentResolver pageableResolver() {
+		PageableHandlerMethodArgumentResolver pageHandler = new PageableHandlerMethodArgumentResolver(sortResolver());
+		pageHandler.setFallbackPageable(new PageRequest(0, 10));
+		pageHandler.setOneIndexedParameters(true);
+		return pageHandler;
 	}
 	
 //	@Override

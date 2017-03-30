@@ -1,4 +1,4 @@
-package com.ironchain.admin.modules.user;
+package com.ironchain.admin.modules.system.user;
 
 import org.springframework.stereotype.Service;
 

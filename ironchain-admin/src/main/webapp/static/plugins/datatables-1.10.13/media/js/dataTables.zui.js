@@ -54,7 +54,7 @@ $.extend( true, DataTable.defaults, {
 	//pagingType:   "full_numbers",
 	//stateSave: true,
 	searching: false,
-	sort: false,
+	sort: true,
 	info: false,
 	order: [],
 	//serverSide: true,

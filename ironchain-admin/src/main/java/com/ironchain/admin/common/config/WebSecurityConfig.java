@@ -54,10 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()//其他url全部需要保护
                 .and()
             .formLogin()
-                .loginPage("/user/login/form")
-                .loginProcessingUrl("/user/login")
+                .loginPage("/system/user/login/form")
+                .loginProcessingUrl("/system/user/login")
                 .defaultSuccessUrl("/")
-                .failureUrl("/user/login/form?error=true")
+                .failureUrl("/system/user/login/form?error=true")
                 .permitAll()
                 .and()
             .headers()

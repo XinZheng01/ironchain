@@ -1,6 +1,7 @@
-package com.ironchain.admin.modules.user;
+package com.ironchain.admin.modules.system.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import com.ironchain.common.base.BaseController;
 import com.ironchain.common.dao.SystemUserDao;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/system/user")
 public class SystemUserController extends BaseController {
 	
 	@Autowired
@@ -23,7 +24,7 @@ public class SystemUserController extends BaseController {
 	 */
 	@GetMapping("/login/form")
 	public String loginForm(){
-		return "user/login";
+		return "system/user/login";
 	}
 	
 	/**
@@ -49,9 +50,9 @@ public class SystemUserController extends BaseController {
 	 * @return
 	 */
 	@GetMapping("/list")
-	public String list(Model model){
-		model.addAttribute("userPage", systemUserDao.findAll(getPageable(1, 10, null)));
-		return "user/user_list";
+	public String list(Pageable pageable, Model model){
+		model.addAttribute("userPage", systemUserDao.findAll(pageable));
+		return "system/user/user_list";
 	}
 	
 	/**
