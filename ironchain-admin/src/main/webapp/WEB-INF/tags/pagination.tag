@@ -6,7 +6,19 @@
 	int totalPages = page.getTotalPages();//总页数
 	int currentPage = page.getNumber() + 1;//当前页码
 	int size = page.getSize();
-	
+%>
+<input name="page" type="hidden" id="paramPage" value="<%=currentPage%>">
+<input name="size" type="hidden" id="paramSize" value="<%=size%>">
+<%
+Sort sort = page.getSort();
+String sortStr = "";
+if(sort != null){
+	Order order = sort.iterator().next();
+	sortStr = order.getProperty() + "," + order.getDirection().name().toLowerCase();
+}
+%>
+<input name="sort" type="hidden" id="paramSort" value="<%=sortStr%>">
+<%
 	if(totalPages <= 0 || currentPage > totalPages)
 		return;
 	
@@ -52,17 +64,6 @@
 		</ul>
 	</div>
 </div>
-<input name="page" type="hidden" id="paramPage" value="<%=currentPage%>">
-<input name="size" type="hidden" id="paramSize" value="<%=size%>">
-<%
-Sort sort = page.getSort();
-String sortStr = "";
-if(sort != null){
-	Order order = sort.iterator().next();
-	sortStr = order.getProperty() + "," + order.getDirection().name().toLowerCase();
-}
-%>
-<input name="sort" type="hidden" id="paramSort" value="<%=sortStr%>">
 <script>
 $(function(){
 	$('#page_select option[value="<%=size%>"]').prop('selected', true);

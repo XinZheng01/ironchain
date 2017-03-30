@@ -27,27 +27,51 @@ public class SearchFilter {
 	 */
 	public static Map<String, SearchFilter> parse(Map<String, Object> searchParams) {
 		Map<String, SearchFilter> filters = new HashMap<>();
-
+		String key = null;
+		Object value = null;
+		String[] names = null;
 		for (Entry<String, Object> entry : searchParams.entrySet()) {
 			// 过滤掉空值
-			String key = entry.getKey();
-			Object value = entry.getValue();
+			key = entry.getKey();
+			value = entry.getValue();
 			if (StringUtils.isBlank((String) value)) {
 				continue;
 			}
 
 			// 拆分operator与filedAttribute
-			String[] names = StringUtils.split(key, "_");
-			if (names.length != 2) {
-				throw new IllegalArgumentException(key + " is not a valid search filter name");
+			names = StringUtils.split(key, "_");
+			switch (names.length) {
+			case 3://带类型
+				filters.put(key, new SearchFilter(names[1],
+						Operator.valueOf(names[0].toUpperCase()), convert(names[2], (String) value)));
+				break;
+			case 2:
+				filters.put(key, new SearchFilter(names[1],
+						Operator.valueOf(names[0].toUpperCase()), value));
+				break;
+			default:
+//				throw new IllegalArgumentException(key + " is not a valid search filter name");
+				continue;
 			}
-			String filedName = names[1];
-			Operator operator = Operator.valueOf(names[0]);
-			// 创建searchFilter
-			SearchFilter filter = new SearchFilter(filedName, operator, value);
-			filters.put(key, filter);
 		}
 
 		return filters;
 	}
+	
+	private static Object convert(String type, String value){
+		type = type.toUpperCase();
+		switch (type) {
+		case "I":
+			return Integer.parseInt(value, 10);
+		case "L":
+			return Long.parseLong(value, 10);
+		case "D":
+			return DateKit.parseDate(value);
+		case "B":
+			return Boolean.parseBoolean(value);
+		default:
+			return value;
+		}
+	}
+	
 }

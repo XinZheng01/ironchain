@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +17,10 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
+
+import com.ironchain.common.kits.SpecificationKit;
 
 public abstract class BaseController {
 
@@ -45,7 +47,7 @@ public abstract class BaseController {
 	// -- 常用数值定义 --//
 	public static final long ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 
-	public static final String DEFAULT_PREFIX = "search_";
+	public static final String DEFAULT_PREFIX = "srch_";
 
 	/**
 	 * 设置客户端缓存过期时间 的Header.
@@ -96,21 +98,25 @@ public abstract class BaseController {
 
 	}
 
+	public static <T> Specification<T> bySearchFilter(HttpServletRequest request){
+		return SpecificationKit.bySearchFilter(getParamsStartWith(request, DEFAULT_PREFIX));
+	}
+	
 	/**
 	 * 取得带相同前缀的Request Parameters, copy from spring WebUtils.
 	 * 
 	 * 返回的结果的Parameter名已去除前缀.
 	 */
-	public static Map<String, Object> getParamsStartWith(ServletRequest request) {
+	public static Map<String, Object> getParamsStartWith(HttpServletRequest request) {
 		return getParamsStartWith(request, DEFAULT_PREFIX);
 	}
 
 	/**
-	 * 取得带相同前缀的Request Parameters, copy from spring WebUtils.
+	 * 取得带相同前缀的Request Parameters,数据存入request copy from spring WebUtils.
 	 * 
 	 * 返回的结果的Parameter名已去除前缀.
 	 */
-	public static Map<String, Object> getParamsStartWith(ServletRequest request, String prefix) {
+	public static Map<String, Object> getParamsStartWith(HttpServletRequest request, String prefix) {
 		Validate.notNull(request, "Request must not be null");
 		Enumeration<String> paramNames = request.getParameterNames();
 		Map<String, Object> params = new TreeMap<String, Object>();
@@ -126,8 +132,10 @@ public abstract class BaseController {
 					// Do nothing, no values found at all.
 				} else if (values.length > 1) {
 					params.put(unprefixed, values);
+					request.setAttribute(paramName, values);
 				} else {
 					params.put(unprefixed, values[0]);
+					request.setAttribute(paramName, values[0]);
 				}
 			}
 		}

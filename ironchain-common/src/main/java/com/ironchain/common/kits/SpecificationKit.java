@@ -42,12 +42,6 @@ public class SpecificationKit {
 						for (int i = 1; i < names.length; i++) {
 							expression = expression.get(names[i]);
 						}
-//						if (filter.value == null){
-//						} else if(Date.class == expression.getJavaType() && filter.value != null && !(filter.value instanceof Date)){
-//							filter.value = DateKit.parseDate(filter.value);
-//						} else if((Boolean.class == expression.getJavaType() || boolean.class == expression.getJavaType()) && !(filter.value instanceof Boolean)){
-//							filter.value = Boolean.valueOf(filter.value.toString());
-//						}
 						// logic operator
 						switch (filter.operator) {
 						case EQ:

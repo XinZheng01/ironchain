@@ -23,16 +23,16 @@
 				<div class="panel-body">
 					  <div class="form-group">
 					  	<span>登录名：</span>
-					    <input type="text" class="form-control" id="exampleInputEmail3">
+					    <input type="text" class="form-control" name="srch_LIKE_loginName_S" value="${srch_LIKE_loginName_S}">
 					  </div>
 					  <div class="form-group">
 					  	<span>用户名：</span>
-					    <input type="text" class="form-control" id="exampleInputInviteCode3">
+					    <input type="text" class="form-control" name="srch_LIKE_name" value="${srch_LIKE_name}">
 					  </div>
 					  <div class="form-group">
 					  	<span>创建时间：</span>
-					    <input type="text" class="form-control form-datetime" id="startTime" readonly>-
-					    <input type="text" class="form-control form-datetime" id="endTime" readonly>
+					    <input type="text" class="form-control form-datetime" id="startTime" name="srch_GTE_createTime_D" value="${srch_GTE_createTime_D}" readonly>-
+					    <input type="text" class="form-control form-datetime" id="endTime" name="srch_LTE_createTime_D" value="${srch_LTE_createTime_D}" readonly>
 					  </div>
 					  <div class="form-group">
 					  	<button type="submit" class="btn btn-primary" onclick="">查询</button>

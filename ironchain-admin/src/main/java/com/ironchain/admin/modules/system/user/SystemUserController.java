@@ -1,7 +1,10 @@
 package com.ironchain.admin.modules.system.user;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ironchain.common.base.BaseController;
 import com.ironchain.common.dao.SystemUserDao;
+import com.ironchain.common.domain.SystemUser;
 
 @Controller
 @RequestMapping("/system/user")
@@ -50,8 +54,9 @@ public class SystemUserController extends BaseController {
 	 * @return
 	 */
 	@GetMapping("/list")
-	public String list(Pageable pageable, Model model){
-		model.addAttribute("userPage", systemUserDao.findAll(pageable));
+	public String list(Pageable pageable, HttpServletRequest request, Model model){
+		Specification<SystemUser> spec = bySearchFilter(request);
+		model.addAttribute("userPage", systemUserDao.findAll(spec, pageable));
 		return "system/user/user_list";
 	}
 	
