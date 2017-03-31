@@ -23,7 +23,7 @@
 				<div class="panel-body">
 					  <div class="form-group">
 					  	<span>登录名：</span>
-					    <input type="text" class="form-control" name="srch_LIKE_loginName_S" value="${srch_LIKE_loginName_S}">
+					    <input type="text" class="form-control" name="srch_LIKE_loginName" value="${srch_LIKE_loginName}">
 					  </div>
 					  <div class="form-group">
 					  	<span>用户名：</span>
@@ -40,7 +40,7 @@
 					  </div>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='add';">新增</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='create';">新增</button>
 			 		<button class="btn deleteBtn" type="button">删除</button>
 			 		<button class="btn" type="button">导出</button>
 			 	</div>
@@ -64,8 +64,8 @@
 								<td>${user.status}</td>
 								<td>${user.createTime}</td>
 								<td>
-									<a href="###" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
-									<a href="###" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
+									<a href="update/${user.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
+									<a href="delete/${user.id}" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
 								</td>
 							</tr>
 						</c:forEach>
