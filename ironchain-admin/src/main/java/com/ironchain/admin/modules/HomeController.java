@@ -16,7 +16,6 @@ public class HomeController extends BaseController{
 	
 	@GetMapping
 	public String index(){
-		LOGGER.info("进来了");
 		return "index";
 	}
 }

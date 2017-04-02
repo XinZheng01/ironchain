@@ -40,7 +40,7 @@
 					  </div>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='create';">新增</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/user/create';">新增</button>
 			 		<button class="btn deleteBtn" type="button">删除</button>
 			 		<button class="btn" type="button">导出</button>
 			 	</div>
@@ -64,8 +64,8 @@
 								<td>${user.status}</td>
 								<td>${user.createTime}</td>
 								<td>
-									<a href="update/${user.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
-									<a href="delete/${user.id}" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
+									<a href="${ctx}/system/user/update/${user.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
+									<a href="${ctx}/system/user/delete/${user.id}" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
 								</td>
 							</tr>
 						</c:forEach>
