@@ -1,4 +1,4 @@
-package com.ironchain.admin.modules.system.user;
+package com.ironchain.admin.modules.system.role;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -17,76 +17,61 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.BaseController;
 import com.ironchain.common.dao.SystemRoleDao;
-import com.ironchain.common.dao.SystemUserDao;
-import com.ironchain.common.domain.SystemUser;
+import com.ironchain.common.domain.SystemRole;
 
 @Controller
-@RequestMapping("/system/user")
-public class SystemUserController extends BaseController {
+@RequestMapping("/system/role")
+public class SystemRoleController extends BaseController {
 	
-	@Autowired
-	private SystemUserDao systemUserDao;
-	@Autowired
-	private SystemUserService systemUserService;
 	@Autowired
 	private SystemRoleDao systemRoleDao;
-	/**
-	 * 登录界面
-	 * @return
-	 */
-	@GetMapping("/login/form")
-	public String loginForm(){
-		return "system/user/login";
-	}
 	
 	/**
-	 * 用户列表
+	 * 角色列表
 	 * @return
 	 */
 	@GetMapping("/list")
 	public String list(Pageable pageable, HttpServletRequest request, Model model){
-		Specification<SystemUser> spec = bySearchFilter(request);
-		model.addAttribute("userPage", systemUserDao.findAll(spec, pageable));
-		return "system/user/user_list";
+		Specification<SystemRole> spec = bySearchFilter(request);
+		model.addAttribute("rolePage", systemRoleDao.findAll(spec, pageable));
+		return "system/role/role_list";
 	}
 	
 	/**
-	 * 用户编辑页面
+	 * 角色编辑页面
 	 * @return
 	 */
 	@GetMapping("/form")
 	public String form(@RequestParam(required=false) Long id, Model model){
 		if(id == null)
-			model.addAttribute("systemUser", new SystemUser());
+			model.addAttribute("systemRole", new SystemRole());
 		else
-			model.addAttribute("systemUser", systemUserDao.findOne(id));
+			model.addAttribute("systemRole", systemRoleDao.findOne(id));
 		//准备角色数据
 		model.addAttribute("roleList", systemRoleDao.findAll());
-		return "system/user/user_form";
+		return "system/role/role_form";
 	}
 	
 	/**
-	 * 保存用户
+	 * 保存角色
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid SystemUser systemUser, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid SystemRole systemRole, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
-			return "system/user/user_form";
+			return "system/role/role_form";
 		}
-		systemUserService.saveOrUpdate(systemUser);
 		redirectAttributes.addFlashAttribute("message", "操作成功");
 		return "redirect:list";
 	}
 	
 	/**
-	 * 删除用户
+	 * 删除角色
 	 * @return
 	 */
 	@PostMapping("/delete")
 	public void delete(@RequestParam Long id){
-		systemUserDao.delete(id);
+		systemRoleDao.delete(id);
 	}
-	
 }

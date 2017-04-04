@@ -31,6 +31,9 @@ public class SystemRole extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 	
+	public static final int STATUS_ENABLE = 1;
+	public static final int STATUS_DISABLE = 0;
+	
 	/** 名称*/
 	@Column(name="name")
 	private String name;
@@ -47,9 +50,9 @@ public class SystemRole extends DataModel {
 	@Column(name="description")
 	private String description;
 	
-	/** 状态*/
+	/** 状态 1启用 0停用*/
 	@Column(name="status")
-	private Integer status;
+	private int status = STATUS_ENABLE;
 	
 	/** 用户*/
 	@JsonIgnore

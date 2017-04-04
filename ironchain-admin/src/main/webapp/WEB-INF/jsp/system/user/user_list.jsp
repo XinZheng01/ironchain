@@ -40,9 +40,8 @@
 					  </div>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/user/create';">新增</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/user/form';">新增</button>
 			 		<button class="btn deleteBtn" type="button">删除</button>
-			 		<button class="btn" type="button">导出</button>
 			 	</div>
 				<table id="example" class="hover row-border table-hover dataTable" cellspacing="0" width="100%">
 	                <thead>
@@ -50,6 +49,8 @@
 							<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
 							<th class="sort-column loginName">登录名</th>
 							<th class="sort-column name">用户名</th>
+							<th class="sort-column email">邮箱</th>
+							<th class="sort-column mobilephone">手机号码</th>
 							<th class="sort-column status">状态</th>
 							<th class="sort-column createTime">创建时间</th>
 							<th>操作</th>
@@ -61,11 +62,13 @@
 								<td class="dt-body-center"><input type="checkbox" value="${user.id}"></td>
 								<td>${user.loginName}</td>
 								<td>${user.name}</td>
-								<td>${user.status}</td>
-								<td>${user.createTime}</td>
+								<td>${user.email}</td>
+								<td>${user.mobilephone}</td>
+								<td>${user.statusStr}</td>
+								<td><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd"/></td>
 								<td>
-									<a href="${ctx}/system/user/update/${user.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
-									<a href="${ctx}/system/user/delete/${user.id}" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
+									<a href="${ctx}/system/user/form?id=${user.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
+									<a href="${ctx}/system/user/delete?id=${user.id}" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
 								</td>
 							</tr>
 						</c:forEach>

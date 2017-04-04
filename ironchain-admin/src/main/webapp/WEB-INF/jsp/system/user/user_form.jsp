@@ -1,3 +1,4 @@
+<%@page import="java.util.Enumeration"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/include/taglib.jsp" %>
@@ -19,58 +20,60 @@
 			<li class="active">编辑</li>
 		</ol>
 		<div class="page">
-			<form action="${ctx}/system/user/save" method="post" class="form-horizontal">
-				<sec:csrfInput />
-				<input name="id" type="hidden" value="${systemUser.id}">
+			<form:form id="saveForm" modelAttribute="systemUser" action="save" cssClass="form-horizontal">
+			  <form:hidden path="id"/>
 			  <div class="form-group">
-			    <label for="loginName" class="col-sm-1">登录名</label>
+			    <label for="loginName" class="col-sm-1 required">登录名</label>
 			    <div class="col-md-4 col-sm-6">
-			      <input name="loginName" type="text" class="form-control" id="loginName" value="${systemUser.loginName}" placeholder="登录名">
+				  <form:input path="loginName" cssClass="form-control" id="loginName" placeholder="请输入登录名"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="name" class="col-sm-1">用户名</label>
+			    <label for="name" class="col-sm-1 required">用户名</label>
 			    <div class="col-md-4 col-sm-6">
-			      <input name="name" type="text" class="form-control" id="name" value="${systemUser.name}" placeholder="用户名">
+			      <form:input path="name" cssClass="form-control" id="name" placeholder="请输入用户名"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="password" class="col-sm-1">登录密码</label>
 			    <div class="col-md-4 col-sm-6">
-			      <input name="password" type="password" class="form-control" id="password" placeholder="登录密码">
+			      <form:password path="password" cssClass="form-control" id="password" placeholder="请输入登录密码"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="email" class="col-sm-1">邮箱</label>
 			    <div class="col-md-4 col-sm-6">
-			      <input name="email" type="text" class="form-control" id="email" value="${systemUser.email}" placeholder="邮箱">
+			      <form:input path="email" cssClass="form-control" id="email" placeholder="请输入邮箱"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="mobilephone" class="col-sm-1">手机号码</label>
 			    <div class="col-md-4 col-sm-6">
-			      <input name="mobilephone" type="text" class="form-control" id="mobilephone" value="${systemUser.mobilephone}" placeholder="手机号码">
+			      <form:input path="mobilephone" cssClass="form-control" id="mobilephone" placeholder="请输入手机号码"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="status" class="col-sm-1">状态</label>
-			    <div class="col-sm-3">
-			      <select name="status" class="form-control" id="status">
-			        <option value="1" ${systemUser.status == 1?"selected":""}>正常</option>
-			        <option value="2" ${systemUser.status == 2?"selected":""}>锁定</option>
-			        <option value="0" ${systemUser.status == 0?"selected":""}>删除</option>
-			      </select>
+			    <div class="col-md-4 col-sm-6">
+			      <form:select path="status" cssClass="form-control" id="status">
+			      	<form:option value="1">正常</form:option>
+			      	<form:option value="2">锁定</form:option>
+			      	<form:option value="0">删除</form:option>
+			      </form:select>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="roleIds" class="col-sm-1">角色</label>
-			    <div class="col-sm-3">
-			      <select name="roleIds" class="form-control" id="roleIds" multiple="multiple">
-			        <option value="1" >管理员</option>
-			        <option value="2" >运营</option>
-			        <option value="3" >研发</option>
-			      </select>
+			    <label for="roles" class="col-sm-1 required">角色</label>
+			    <div class="col-md-4 col-sm-6">
+			      <form:select path="roles" cssClass="form-control" id="roles" multiple="multiple">
+			      	<form:options items="${roleList}" 
+			      		itemLabel="name" itemValue="id"/>
+			      </form:select>
+			      <div class="help-block">按住Ctrl可以多选或取消选择</div>
 			    </div>
+			    <%--
+			    <form:errors path="roles" cssClass="errorMessage" element="div"/>
+			     --%>
 			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-1 col-sm-1">
@@ -80,13 +83,31 @@
 			      <button type="submit" class="btn btn-primary">保存</button>
 			    </div>
 			  </div>
-			</form>
+			</form:form>
 		</div>
 	</div>
 </body>
 <script type="text/javascript">
-$('.back').on('click', function(){
-	location.href = "${ctx}/system/user/list";
-});
+$(function(){
+	$('.back').on('click', function(){
+		location.href = "${ctx}/system/user/list";
+	});
+	$('#saveForm').validate({
+	    rules: {
+	    	loginName: {
+	    		required: true
+	    	},
+	    	name: {
+	    		required: true
+	    	},
+	    	email: "email",
+	    	mobilephone: "mobilephone",
+	    	roles: "required"
+	    },
+	    message: {
+	    	
+	    }
+	});
+})
 </script>
 </html>

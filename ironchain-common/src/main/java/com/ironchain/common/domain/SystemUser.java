@@ -11,7 +11,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
@@ -37,26 +39,30 @@ public class SystemUser extends DataModel {
 	
 	/** 登录名*/
 	@NotNull
-	@Size(min = 5, max = 30)
+	@Length(min = 5, max = 30)
 	@Column(name="login_name", unique = true, nullable=false, length=30)
 	private String loginName;
 
 	/** 密码*/
 	@JsonIgnore
-	@NotNull
+	@Length(min = 6, max = 20)
 	@Column(name="password", length=60, nullable=false)
 	private String password;
 	
 	/** 用户名*/
+	@Length(min = 2, max = 10)
 	@Column(name="name", length=20)
 	private String name;
 	
 	/** 邮箱*/
 	@Column(name="email", length=50)
+	@Pattern(regexp=RegeConstants.EMAIL_REGEX)
 	private String email;
 	
 	/** 手机号码*/
+	
 	@Column(name="mobilephone", length=20)
+	@Pattern(regexp=RegeConstants.MOBILE_REGEX)
 	private String mobilephone;
 	
 	/** 状态 0：删除 1：正常 2：锁定*/
@@ -70,4 +76,16 @@ public class SystemUser extends DataModel {
 		joinColumns={@JoinColumn(name="user_id")},
 		inverseJoinColumns={@JoinColumn(name="role_id")})
 	private Set<SystemRole> roles = new HashSet<>(0);
+	
+	public String getStatusStr(){
+		switch (this.status) {
+		case 0:
+			return "删除";
+		case 1:
+			return "正常";
+		case 2:
+			return "锁定";
+		}
+		return null;
+	}
 }

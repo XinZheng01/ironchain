@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/include/taglib.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>系统后台</title>
-	<%@include file="/WEB-INF/include/meta.jsp" %>
-	<%@include file="/WEB-INF/include/taglib.jsp" %>
+  <%@include file="/WEB-INF/include/meta.jsp" %>
   <link rel="stylesheet" href="${staticUrl}/plugins/layui/css/layui.css"  media="all">
   <link rel="stylesheet" href="${staticUrl}/plugins/layui/css/global.css" media="all">
 </head>
@@ -44,25 +44,13 @@
 	    </dl>
 	  </li>
 	  <li class="layui-nav-item layui-nav-itemed">
-	    <a href="javascript:;">基本元素</a>
+	    <a href="javascript:;">系统管理</a>
 	    <dl class="layui-nav-child">
 	      <dd>
-	        <a href="/demo/button.html">按钮</a>
+	        <a href="/system/user/list" target="rightIframe">用户管理</a>
 	      </dd>
 	      <dd>
-	        <a href="/demo/form.html">表单</a>
-	      </dd>
-	      <dd>
-	        <a href="/demo/nav.html">导航</a>
-	      </dd>
-	      <dd>
-	        <a href="/demo/table.html">表格</a>
-	      </dd>
-	      <dd>
-	        <a href="/demo/tab.html">选项卡</a>
-	      </dd>
-	      <dd>
-	        <a href="/demo/auxiliar.html">辅助元素</a>
+	        <a href="/system/role/list" target="rightIframe">角色管理</a>
 	      </dd>
 	    </dl>
 	  </li>

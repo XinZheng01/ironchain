@@ -1,8 +1,10 @@
 package com.ironchain.common.base;
 
+import java.beans.PropertyEditorSupport;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,35 +16,41 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
+import com.ironchain.common.kits.DateKit;
 import com.ironchain.common.kits.SpecificationKit;
 
 public abstract class BaseController {
 
-//	@InitBinder
-//	public void initBinder(WebDataBinder binder) {
-//
-//		// String类型转换，将所有传递进来的String进行HTML编码，防止XSS攻击
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+
+		// String类型转换，将所有传递进来的String进行HTML编码，防止XSS攻击
 //		binder.registerCustomEditor(String.class, new PropertyEditorSupport() {
 //			@Override
 //			public void setAsText(String text) {
 //				setValue(text == null ? null : StringEscapeUtils.escapeHtml4(text.trim()));
 //			}
 //		});
-//
-//		// Date 类型转换
-//		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
-//			@Override
-//			public void setAsText(String text) {
-//				setValue(DateKit.parseDate(text));
-//			}
-//		});
-//	}
+		// String 类型转换 空串转为null
+		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+
+		// Date 类型转换
+		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+			@Override
+			public void setAsText(String text) {
+				setValue(DateKit.parseDate(text));
+			}
+		});
+	}
 
 	// -- 常用数值定义 --//
 	public static final long ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
@@ -197,9 +205,10 @@ public abstract class BaseController {
 	 * @param sort 排序（可为空）
 	 * @return Pageable
 	 */
-	public Pageable getPageable(int page, int size, Sort sort){
+	protected Pageable getPageable(int page, int size, Sort sort){
 		if(page - 1 < 0 || size <= 0)
 			throw new IllegalArgumentException("非法分页参数");
 		return new PageRequest(page - 1, size, sort);
 	}
+	
 }

@@ -6,3 +6,5 @@
  -->
 <script src="${staticUrl}/js/main.js"></script>
 <script src="${staticUrl}/plugins/zui-1.6.0/lib/datetimepicker/datetimepicker.min.js"></script>
+<script src="${staticUrl}/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="${staticUrl}/plugins/jquery-validation/dist/jquery.validate.extend.js"></script>

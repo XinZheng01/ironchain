@@ -7,8 +7,5 @@ package com.ironchain.admin.common.config;
  */
 public final class Constants {
 	
-	/** 用户登录名正则*/
-	public static final String LOGIN_REGEX = "^[_A-Za-z0-9]*$";
-	
 	private Constants(){}
 }
