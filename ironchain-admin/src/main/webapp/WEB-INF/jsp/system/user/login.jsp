@@ -7,10 +7,10 @@
 	<%@ include file="/WEB-INF/include/meta.jsp" %>
     <title>铁链后台管理系统</title>
     <link href="${staticUrl}/css/login.css" rel="stylesheet" type="text/css"/>
-    <link href="${staticUrl}/plugins/layui/css/modules/layer/default/layer.css" rel="stylesheet" type="text/css"/>
+    <link href="${staticUrl}/plugins/layui/css/layui.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="${staticUrl}/plugins/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="${staticUrl}/plugins/jquery-validation/dist/jquery.validate.min.js" ></script>
-    <script type="text/javascript" src="${staticUrl}/plugins/layui/lay/modules/layer.js"></script>
+    <script type="text/javascript" src="${staticUrl}/plugins/layui/layui.js"></script>
     <script type="text/javascript" src="${staticUrl}/plugins/jquery.cookie/jquery.cookie.js" ></script>
 <style>
 .login-form .button {
@@ -45,7 +45,10 @@
         </p>
 
         <form id="login_form"  action="${ctx}/system/user/login" method="post">
+        	<%--
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        	 --%>
+        	<sec:csrfInput/>
             <ol class="login-form">
                 <li class="animate1 bounceIn">
                     <input class="acc" type="text" name="username" id="username" placeholder="用户名" autocomplete="off"/>
@@ -70,11 +73,6 @@
         </form>
     </div>
 </div>
-<!-- 
-<div class="footer-fixed">
-    <div class="footer">&copy;<t id="year">2017</t>ironchain Inc.</div>
-</div>
- -->
 <script type="text/javascript">
     var imgArr=['bg1.jpg','bg3.jpg','bg4.jpg'];
     function switchBg(){
@@ -139,7 +137,10 @@
 	        $("#username").val(username_cookie);
 		}
 		<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
-		layer.msg("${SPRING_SECURITY_LAST_EXCEPTION.message}",{icon: 2,time:3000});
+		layui.use('layer', function(){
+			var layer = layui.layer;
+			layer.msg("${SPRING_SECURITY_LAST_EXCEPTION.message}",{icon: 2,time:3000});
+		});
     	</c:if>
     });
 	

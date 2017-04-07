@@ -1,11 +1,9 @@
-package com.ironchain.admin.modules.system.role;
+package com.ironchain.admin.modules.system.permission;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,64 +15,61 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.BaseController;
 import com.ironchain.common.dao.SystemPermissionDao;
-import com.ironchain.common.dao.SystemRoleDao;
-import com.ironchain.common.domain.SystemRole;
+import com.ironchain.common.domain.SystemPermission;
 
 @Controller
-@RequestMapping("/system/role")
-public class SystemRoleController extends BaseController {
+@RequestMapping("/system/permission")
+public class SystemPermissionController extends BaseController{
 	
-	@Autowired
-	private SystemRoleDao systemRoleDao;
 	@Autowired
 	private SystemPermissionDao systemPermissionDao;
+	@Autowired
+	private SystemPermissionService systemPermissionService;
 	
 	/**
-	 * 角色列表
+	 * 权限列表
 	 * @return
 	 */
 	@GetMapping("/list")
-	public String list(Pageable pageable, HttpServletRequest request, Model model){
-		Specification<SystemRole> spec = bySearchFilter(request);
-		model.addAttribute("rolePage", systemRoleDao.findAll(spec, pageable));
-		return "system/role/role_list";
+	public String list(HttpServletRequest request, Model model){
+		model.addAttribute("permissionList", systemPermissionService.findTreeSortList(null));
+		return "system/permission/permission_list";
 	}
 	
 	/**
-	 * 角色编辑页面
+	 * 权限编辑页面
 	 * @return
 	 */
 	@GetMapping("/form")
 	public String form(@RequestParam(required=false) Long id, Model model){
 		if(id == null)
-			model.addAttribute("systemRole", new SystemRole());
+			model.addAttribute("systemPermission", new SystemPermission());
 		else
-			model.addAttribute("systemRole", systemRoleDao.findOne(id));
-		//准备角色数据
-		model.addAttribute("permissionList", systemPermissionDao.findAll());
-		return "system/role/role_form";
+			model.addAttribute("systemPermission", systemPermissionDao.findOne(id));
+		return "system/permission/permission_form";
 	}
 	
 	/**
-	 * 保存角色
+	 * 保存权限
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid SystemRole systemRole, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid SystemPermission systemPermission, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
-			return "system/role/role_form";
+			return "system/permission/permission_form";
 		}
+		systemPermissionDao.save(systemPermission);
 		redirectAttributes.addFlashAttribute("message", "操作成功");
 		return "redirect:list";
 	}
 	
 	/**
-	 * 删除角色
+	 * 删除权限
 	 * @return
 	 */
 	@PostMapping("/delete")
 	public void delete(@RequestParam Long id){
-		systemRoleDao.delete(id);
+		systemPermissionDao.delete(id);
 	}
 }

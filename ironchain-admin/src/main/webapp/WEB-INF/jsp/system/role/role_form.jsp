@@ -29,9 +29,9 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="code" class="col-sm-1 required">英文名称</label>
+			    <label for="code" class="col-sm-1 required">英文编码</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="code" cssClass="form-control" id="code" placeholder="请输入英文名称"/>
+				  <form:input path="code" cssClass="form-control" id="code" placeholder="请输入英文编码"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -46,7 +46,7 @@
 			  <div class="form-group">
 			    <label for="description" class="col-sm-1">描述</label>
 			    <div class="col-md-4 col-sm-6">
-			      <form:textarea path="description" cssClass="form-control" id="description" placeholder="请输入描述"/>
+			      <form:textarea path="description" cssClass="form-control" id="description" placeholder="请输入描述" rows="5"/>
 			    </div>
 			  </div>
 			  <div class="form-group">

@@ -46,11 +46,14 @@
 	  <li class="layui-nav-item layui-nav-itemed">
 	    <a href="javascript:;">系统管理</a>
 	    <dl class="layui-nav-child">
-	      <dd>
+	      <dd style="left: 20px;">
 	        <a href="/system/user/list" target="rightIframe">用户管理</a>
 	      </dd>
-	      <dd>
+	      <dd style="left: 20px;">
 	        <a href="/system/role/list" target="rightIframe">角色管理</a>
+	      </dd>
+	      <dd style="left: 20px;">
+	        <a href="/system/permission/list" target="rightIframe">权限管理</a>
 	      </dd>
 	    </dl>
 	  </li>
@@ -145,6 +148,10 @@
 <script src="${staticUrl}/plugins/layui/layui.js" charset="utf-8"></script>
 <script>
 layui.config({base: '${staticUrl}/plugins/layui/lay/modules/'}).use('global');
+var layer;
+layui.use(['layer'], function(){
+	layer = layui.layer;
+});
 </script>
 </div>
 </body>

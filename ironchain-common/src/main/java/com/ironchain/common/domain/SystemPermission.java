@@ -44,6 +44,10 @@ public class SystemPermission extends DataModel {
 	@Column(name="name", nullable=false, length=30)
 	private String name;
 	
+	/** 编码*/
+	@Column(name="code", length=50)
+	private String code;
+	
 	/** 类型 1:目录,2:菜单,3:按钮*/
 	@Column(name="type")
 	private int type = TYPE_CATALOG;
@@ -56,15 +60,15 @@ public class SystemPermission extends DataModel {
 	@Column(name="icon")
 	private String icon;
 	
-	/** 编码*/
-	@Column(name="code", nullable=false, length=50)
-	private String code;
+	/** 排序值*/
+	@Column(name="order_num")
+	private int orderNum = 0;
 	
 	/** 描述*/
 	@Column(name="description")
 	private String description;
 	
-	/** 状态*/
+	/** 状态 1 启用 0 停用*/
 	@Column(name="status")
 	private int status = STATUS_SHOW;
 	
@@ -86,4 +90,26 @@ public class SystemPermission extends DataModel {
 		joinColumns={@JoinColumn(name="permission_id")},
 		inverseJoinColumns={@JoinColumn(name="role_id")})
 	private Set<SystemRole> roles = new HashSet<>(0);
+
+	public String getTypeStr(){
+		switch (type) {
+		case 1:
+			return "目录";
+		case 2:
+			return "菜单";
+		case 3:
+			return "权限";
+		}
+		return null;
+	}
+	
+	public String getStatusStr(){
+		switch (status) {
+		case 1:
+			return "启用";
+		case 0:
+			return "停用";
+		}
+		return null;
+	}
 }

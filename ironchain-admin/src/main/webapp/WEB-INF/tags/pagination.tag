@@ -3,6 +3,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ attribute name="page" type="org.springframework.data.domain.Page" required="true" description="Spring Data Jpa分页对象"%>
 <%
+	if(page == null) return;
 	int totalPages = page.getTotalPages();//总页数
 	int currentPage = page.getNumber() + 1;//当前页码
 	int size = page.getSize();
