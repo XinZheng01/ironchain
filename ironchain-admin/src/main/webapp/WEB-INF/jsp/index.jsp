@@ -9,6 +9,11 @@
   <%@include file="/WEB-INF/include/meta.jsp" %>
   <link rel="stylesheet" href="${staticUrl}/plugins/layui/css/layui.css"  media="all">
   <link rel="stylesheet" href="${staticUrl}/plugins/layui/css/global.css" media="all">
+  <style type="text/css">
+  .layui-nav-child a{
+  	padding: 0 20px 0 40px!important;
+  }
+  </style>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -46,15 +51,13 @@
 	  <li class="layui-nav-item layui-nav-itemed">
 	    <a href="javascript:;">系统管理</a>
 	    <dl class="layui-nav-child">
-	      <dd style="left: 20px;">
+	      <dd>
 	        <a href="/system/user/list" target="rightIframe">用户管理</a>
 	      </dd>
-	      <dd style="left: 20px;">
+	      <dd>
 	        <a href="/system/role/list" target="rightIframe">角色管理</a>
 	      </dd>
-	      <dd style="left: 20px;">
-	        <a href="/system/permission/list" target="rightIframe">权限管理</a>
-	      </dd>
+	      <dd><a href="/system/permission/list" target="rightIframe">权限管理</a></dd>
 	    </dl>
 	  </li>
 	  
@@ -152,6 +155,7 @@ var layer;
 layui.use(['layer'], function(){
 	layer = layui.layer;
 });
+var rightContent = window.frames['rightIframe'];
 </script>
 </div>
 </body>

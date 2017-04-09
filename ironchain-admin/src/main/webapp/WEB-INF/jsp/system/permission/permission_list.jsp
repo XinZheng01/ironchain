@@ -21,6 +21,7 @@
 		<div class="page">
 			<div class="panel">
 				<div class="panel-body">
+			 	</div>
 			 	<div class="panel-toolbar">
 			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/permission/form';">新增</button>
 			 		<button class="btn deleteBtn" type="button">删除</button>
@@ -43,7 +44,9 @@
 						<c:forEach items="${permissionList}" var="permission">
 							<tr data-tt-id="${permission.id}" data-tt-parent-id="${permission.parent.id}">
 								<td class="dt-body-center"><input type="checkbox" value="${permission.id}"></td>
-								<td>${permission.name}</td>
+								<td><c:if test="${not empty permission.icon}">
+						    		<i class="icon ${permission.icon}"></i>
+						    	</c:if>${permission.name}</td>
 								<td>${permission.code}</td>
 								<td>${permission.typeStr}</td>
 								<td>${permission.url}</td>

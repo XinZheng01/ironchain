@@ -29,6 +29,14 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
+			    <label for="parent" class="col-sm-1">上级菜单</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:select path="parent.id" cssClass="form-control" id="parent">
+				  	<form:options items="${permissionList}" itemLabel="name" itemValue="id"/>
+				  </form:select>
+			    </div>
+			  </div>
+			  <div class="form-group">
 			    <label for="code" class="col-sm-1">英文编码</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="code" cssClass="form-control" id="code" placeholder="请输入英文编码"/>
@@ -54,9 +62,15 @@
 			  </div>
 			  <div class="form-group">
 			    <label for="icon" class="col-sm-1">图标</label>
-			    <div class="col-md-4 col-sm-6">
-				  <form:input path="icon" cssClass="form-control" id="icon" placeholder="请输入图标"/>
+			    <div class="col-md-3 col-sm-5">
+			    <form:hidden path="icon" id="icon"/>
+			    <button id="iconSpan" type="button" class="form-control btn btn-default" data-icon="icon">
+		    	<c:if test="${not empty systemPermission.icon}">
+		    		<i class="icon ${systemPermission.icon}">   ${systemPermission.icon}</i>
+		    	</c:if>
+			    </button>
 			    </div>
+			    <button type="button" class="btn btn-danger deleteIcon">X</button>
 			  </div>
 			  <div class="form-group">
 			    <label for="orderNum" class="col-sm-1">排序值</label>
@@ -107,6 +121,14 @@ $(function(){
 	    	
 	    }
 	});
+	$('#icon').on('change', function(){
+		$('#iconSpan').html('<i class="icon ' + $(this).val() + '">   '+$(this).val()+'</i>');
+	});
+	$('.deleteIcon').on('click', function(){
+		$('#iconSpan').html('');
+		$('#icon').val('');
+	});
 })
+
 </script>
 </html>

@@ -37,6 +37,18 @@ $(function(){
 	});
 	//提示信息
 	$('[data-toggle="tooltip"]').tooltip();
+	this.$body = $('body');
+	/*! 注册 data-icon 事件行为 */
+    this.$body.on('click', '[data-icon]', function () {
+        var field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
+        var url = '/icon?field=' + field;
+        $.site.iframe(url, '选择图标');
+    });
+    /*! 注册 data-open 事件行为 */
+    this.$body.on('click', '[data-open]', function () {
+        var url = $(this).attr('data-open');
+        $.site.open(url);
+    });
 	
 });
 /** 获取表格选中的行*/

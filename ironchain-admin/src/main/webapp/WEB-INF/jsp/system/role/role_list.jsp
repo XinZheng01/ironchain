@@ -22,8 +22,8 @@
 				<form id="searchForm" action="${ctx}/system/role/list" method="get" class="search-form form-inline">
 				<div class="panel-body">
 					  <div class="form-group">
-					  	<span>名称：</span>
-					    <input type="text" name="srch_LIKE_name" class="form-control" value="${srch_LIKE_name}">
+					  	<!-- <span>名称：</span> -->
+					    <input type="text" name="srch_LIKE_name" class="form-control" value="${srch_LIKE_name}" placeholder="名称">
 					  </div>
 					  <div class="form-group">
 					  	<span>状态：</span>

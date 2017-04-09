@@ -19,8 +19,7 @@ public class MvcConfig extends SpringDataWebConfiguration {
 	 */
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/a").setViewName("a");
-		registry.addViewController("/add").setViewName("add");
+		registry.addViewController("/icon").setViewName("icon");
 	}
 	
 	/**
