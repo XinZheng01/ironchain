@@ -14,16 +14,16 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 系统角色
  * @author Administrator
  *
  */
-@Data
-@EqualsAndHashCode(callSuper=false)
+@Getter
+@Setter
 @Entity
 @Table(name = "system_role")
 //@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
@@ -67,4 +67,13 @@ public class SystemRole extends DataModel {
 		inverseJoinColumns={@JoinColumn(name="permission_id")})
 	private Set<SystemPermission> permissions = new HashSet<>(0);
 
+	public String getStatusStr(){
+		switch (status) {
+		case 1:
+			return "启用";
+		case 0:
+			return "停用";
+		}
+		return null;
+	}
 }

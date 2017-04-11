@@ -40,7 +40,7 @@
 					  </div>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/user/form';">新增</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/user/add';">新增</button>
 			 		<button class="btn deleteBtn" type="button">删除</button>
 			 	</div>
 				<table id="example" class="hover row-border table-hover dataTable" cellspacing="0" width="100%">
@@ -67,7 +67,7 @@
 								<td>${user.statusStr}</td>
 								<td><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd"/></td>
 								<td>
-									<a href="${ctx}/system/user/form?id=${user.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
+									<a href="${ctx}/system/user/edit?id=${user.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
 									<a href="${ctx}/system/user/delete?id=${user.id}" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
 								</td>
 							</tr>

@@ -14,16 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ironchain.common.base.BaseController;
+import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.SystemPermissionDao;
 import com.ironchain.common.domain.SystemPermission;
 
 @Controller
 @RequestMapping("/system/permission")
-public class SystemPermissionController extends BaseController{
+public class SystemPermissionController extends ModelController<SystemPermissionDao, SystemPermission>{
 	
-	@Autowired
-	private SystemPermissionDao systemPermissionDao;
 	@Autowired
 	private SystemPermissionService systemPermissionService;
 	
@@ -41,12 +39,19 @@ public class SystemPermissionController extends BaseController{
 	 * 权限编辑页面
 	 * @return
 	 */
-	@GetMapping("/form")
-	public String form(@RequestParam(required=false) Long id, Model model){
-		if(id == null)
-			model.addAttribute("systemPermission", new SystemPermission());
-		else
-			model.addAttribute("systemPermission", systemPermissionDao.findOne(id));
+	@GetMapping("/add")
+	public String add(@ModelAttribute SystemPermission systemPermission, Model model){
+		//权限列表
+		model.addAttribute("permissionList", systemPermissionService.findTreeSelectList(null));
+		return "system/permission/permission_form";
+	}
+	
+	/**
+	 * 权限编辑页面
+	 * @return
+	 */
+	@GetMapping("/edit")
+	public String edit(@ModelAttribute SystemPermission systemPermission, Model model){
 		//权限列表
 		model.addAttribute("permissionList", systemPermissionService.findTreeSelectList(null));
 		return "system/permission/permission_form";
@@ -62,20 +67,9 @@ public class SystemPermissionController extends BaseController{
 		if(bindingResult.hasErrors()){
 			return "system/permission/permission_form";
 		}
-		if(systemPermission.getParent() != null && systemPermission.getParent().getId() == null){
-			systemPermission.setParent(null);
-		}
-		systemPermissionDao.save(systemPermission);
+		modelDao.save(systemPermission);
 		redirectAttributes.addFlashAttribute("message", "操作成功");
 		return "redirect:list";
-	}
-	
-	@ModelAttribute
-	public SystemPermission get(@RequestParam(required=false) Long id){
-		if(id != null)
-			return systemPermissionDao.findOne(id);
-		else
-			return new SystemPermission();
 	}
 	
 	/**
@@ -84,6 +78,6 @@ public class SystemPermissionController extends BaseController{
 	 */
 	@PostMapping("/delete")
 	public void delete(@RequestParam Long id){
-		systemPermissionDao.delete(id);
+		modelDao.delete(id);
 	}
 }

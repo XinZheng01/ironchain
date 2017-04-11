@@ -20,6 +20,10 @@
 			<li class="active">编辑</li>
 		</ol>
 		<div class="page">
+			<div class="alert alert-warning alert-dismissable">
+			  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			  <p>您可以点击右上角的 <i class="icon-remove"></i> 来关闭这条消息。</p>
+			</div>
 			<form:form id="saveForm" modelAttribute="systemPermission" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
 			  <div class="form-group">
@@ -31,7 +35,7 @@
 			  <div class="form-group">
 			    <label for="parent" class="col-sm-1">上级菜单</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:select path="parent.id" cssClass="form-control" id="parent">
+				  <form:select path="parent" cssClass="form-control" id="parent">
 				  	<form:options items="${permissionList}" itemLabel="name" itemValue="id"/>
 				  </form:select>
 			    </div>
@@ -70,7 +74,7 @@
 		    	</c:if>
 			    </button>
 			    </div>
-			    <button type="button" class="btn btn-danger deleteIcon">X</button>
+			    <button type="button" class="btn btn-danger deleteIcon">清除</button>
 			  </div>
 			  <div class="form-group">
 			    <label for="orderNum" class="col-sm-1">排序值</label>

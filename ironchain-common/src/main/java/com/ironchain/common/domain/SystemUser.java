@@ -18,16 +18,16 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 系统用户
  * @author Administrator
  *
  */
-@Data
-@EqualsAndHashCode(callSuper=false)
+@Getter
+@Setter
 @Entity
 @Table(name="system_user")
 public class SystemUser extends DataModel {
@@ -45,7 +45,6 @@ public class SystemUser extends DataModel {
 
 	/** 密码*/
 	@JsonIgnore
-	@Length(min = 6, max = 20)
 	@Column(name="password", length=60, nullable=false)
 	private String password;
 	

@@ -23,7 +23,7 @@
 				<div class="panel-body">
 			 	</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/permission/form';">新增</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/permission/add';">新增</button>
 			 		<button class="btn deleteBtn" type="button">删除</button>
 			 	</div>
 				<table class="hover row-border table-hover dataTable treetable" cellspacing="0" width="100%">
@@ -37,7 +37,7 @@
 							<th>排序值</th>
 							<th>状态</th>
 							<th>描述</th>
-							<th>操作</th>
+							<th width="200">操作</th>
 						</tr>
 					</thead>
 	                <tbody>
@@ -51,11 +51,22 @@
 								<td>${permission.typeStr}</td>
 								<td>${permission.url}</td>
 								<td>${permission.orderNum}</td>
-								<td>${permission.statusStr}</td>
+								<td>
+								<c:if test="${permission.status == 1}">
+								<span class="label label-sm label-success">${permission.statusStr}</span>
+								</c:if>
+								<c:if test="${permission.status == 0}">
+								<span class="label label-sm label-danger">${permission.statusStr}</span>
+								</c:if>
+								</td>
 								<td>${permission.description}</td>
 								<td>
-									<a href="${ctx}/system/permission/form?id=${permission.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
-									<a href="javascript:;" onclick="del(${permission.id})" data-toggle="tooltip" title="删除" class="text-danger deleteThis"><i class="icon-trash"></i></a>
+									<a href="${ctx}/system/permission/edit?id=${permission.id}">编辑</a> | 
+									<a href="${ctx}/system/permission/add?parentId=${permission.id}">新增子级</a> | 
+									<c:if test="${permission.type == 2}">
+									<a href="${ctx}/system/permission/edit?id=${permission.id}">初始化</a> | 
+									</c:if>
+									<a href="javascript:;" onclick="del(${permission.id})"class="text-danger deleteThis">删除</a>  
 								</td>
 							</tr>
 						</c:forEach>

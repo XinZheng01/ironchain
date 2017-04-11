@@ -65,9 +65,8 @@
 			  <div class="form-group">
 			    <label for="roles" class="col-sm-1 required">角色</label>
 			    <div class="col-md-4 col-sm-6">
-			      <form:select path="roles" cssClass="form-control" id="roles" multiple="multiple">
-			      	<form:options items="${roleList}" 
-			      		itemLabel="name" itemValue="id"/>
+			      <form:select path="roles" cssClass="form-control" id="roles" multiple="multiple"
+			      	items="${roleList}" itemLabel="name" itemValue="id">
 			      </form:select>
 			    </div>
 			    <div class="help-block">按住Ctrl可以多选或取消选择</div>

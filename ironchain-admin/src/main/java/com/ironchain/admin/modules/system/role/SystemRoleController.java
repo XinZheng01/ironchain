@@ -10,22 +10,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ironchain.common.base.BaseController;
+import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.SystemPermissionDao;
 import com.ironchain.common.dao.SystemRoleDao;
 import com.ironchain.common.domain.SystemRole;
 
 @Controller
 @RequestMapping("/system/role")
-public class SystemRoleController extends BaseController {
+public class SystemRoleController extends ModelController<SystemRoleDao, SystemRole> {
 	
-	@Autowired
-	private SystemRoleDao systemRoleDao;
 	@Autowired
 	private SystemPermissionDao systemPermissionDao;
 	
@@ -36,20 +35,27 @@ public class SystemRoleController extends BaseController {
 	@GetMapping("/list")
 	public String list(Pageable pageable, HttpServletRequest request, Model model){
 		Specification<SystemRole> spec = bySearchFilter(request);
-		model.addAttribute("rolePage", systemRoleDao.findAll(spec, pageable));
+		model.addAttribute("rolePage", modelDao.findAll(spec, pageable));
 		return "system/role/role_list";
+	}
+	
+	/**
+	 * 角色新增页面
+	 * @return
+	 */
+	@GetMapping("/add")
+	public String add(@ModelAttribute SystemRole systemRole, Model model){
+		//准备角色数据
+		model.addAttribute("permissionList", systemPermissionDao.findAll());
+		return "system/role/role_form";
 	}
 	
 	/**
 	 * 角色编辑页面
 	 * @return
 	 */
-	@GetMapping("/form")
-	public String form(@RequestParam(required=false) Long id, Model model){
-		if(id == null)
-			model.addAttribute("systemRole", new SystemRole());
-		else
-			model.addAttribute("systemRole", systemRoleDao.findOne(id));
+	@GetMapping("/edit")
+	public String edit(@ModelAttribute SystemRole systemRole, Model model){
 		//准备角色数据
 		model.addAttribute("permissionList", systemPermissionDao.findAll());
 		return "system/role/role_form";
@@ -60,11 +66,12 @@ public class SystemRoleController extends BaseController {
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid SystemRole systemRole, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid @ModelAttribute SystemRole systemRole, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
 			return "system/role/role_form";
 		}
+		modelDao.save(systemRole);
 		redirectAttributes.addFlashAttribute("message", "操作成功");
 		return "redirect:list";
 	}
@@ -75,6 +82,6 @@ public class SystemRoleController extends BaseController {
 	 */
 	@PostMapping("/delete")
 	public void delete(@RequestParam Long id){
-		systemRoleDao.delete(id);
+		modelDao.delete(id);
 	}
 }

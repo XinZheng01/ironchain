@@ -39,7 +39,7 @@
 					  </div>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/role/form';">新增</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/role/add';">新增</button>
 			 		<button class="btn deleteBtn" type="button">删除</button>
 			 	</div>
 				<table class="hover row-border table-hover dataTable" cellspacing="0" width="100%">
@@ -64,7 +64,7 @@
 								<td>${role.statusStr}</td>
 								<td><fmt:formatDate value="${role.createTime}" pattern="yyyy-MM-dd"/></td>
 								<td>
-									<a href="${ctx}/system/role/form?id=${role.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
+									<a href="${ctx}/system/role/edit?id=${role.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
 									<a href="${ctx}/system/role/delete?id=${role.id}" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
 								</td>
 							</tr>
