@@ -2,8 +2,12 @@ package com.ironchain.admin.modules.system.permission;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.ironchain.common.base.BaseService;
@@ -68,6 +72,18 @@ public class SystemPermissionService extends BaseService {
 		result.add(p);
 		treeSort(source, result, parentId, "├");
 		return result;
+	}
+	
+	@Autowired
+	private CacheManager cacheManager;
+	
+	@Cacheable(value = "usercache")
+	public List<Map<String, Object>> findTreeChild(int type) {
+		System.out.println(cacheManager);
+		return systemPermissionDao.createSqlHelper()
+				.appendSql("select id, name, icon, url, type, status, parent_id as parentId")
+				.appendSql(" from system_permission where status = ?", SystemPermission.STATUS_SHOW)
+				.appendSql(type > 0, " and type = ?", type).query2Map();
 	}
 	
 }

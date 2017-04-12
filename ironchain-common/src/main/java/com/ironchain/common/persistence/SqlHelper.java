@@ -3,12 +3,15 @@ package com.ironchain.common.persistence;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.SQLQuery;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -124,6 +127,22 @@ public class SqlHelper{
 	}
 	
 	/**
+	 * 查询单个对象
+	 * @return
+	 */
+	public <M>List<M> query2List(){
+		return queryListBySql(this.sql.toString(), this.resultSetMapping, this.resultClass, this.paramsList.toArray());
+	}
+	
+	/**
+	 * 查询map
+	 * @return
+	 */
+	public List<Map<String,Object>> query2Map(){
+		return queryMapBySql(this.sql.toString(), this.paramsList.toArray());
+	}
+	
+	/**
 	 * 使用SQL查询分页泛型对象
 	 * @param nativeSql
 	 * @param pageable
@@ -160,6 +179,39 @@ public class SqlHelper{
 		if (results.isEmpty()) return null;
         else if (results.size() == 1) return results.get(0);
         throw new NonUniqueResultException("result returns more than one elements");
+	}
+	
+	/**
+	 * 使用SQL查询泛型列表
+	 * @param nativeSql
+	 * @param resultSetMapping
+	 * @param resultClass
+	 * @param params
+	 * @return
+	 */
+	private <M>List queryListBySql(String nativeSql, String resultSetMapping, Class resultClass, Object... params) {
+		Query query = createQuery(nativeSql, resultSetMapping, resultClass);
+		for (int i = 1, len = params.length; i <= len; i++) {
+			query.setParameter(i, params[i - 1]);
+		}
+		return query.getResultList();
+	}
+	
+	/**
+	 * 使用SQL查询map列表
+	 * @param nativeSql
+	 * @param resultSetMapping
+	 * @param resultClass
+	 * @param params
+	 * @return
+	 */
+	private List<Map<String, Object>> queryMapBySql(String nativeSql, Object... params) {
+		Query query = createQuery(nativeSql, null, null);
+		query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		for (int i = 1, len = params.length; i <= len; i++) {
+			query.setParameter(i, params[i - 1]);
+		}
+		return query.getResultList();
 	}
 	
 	/**

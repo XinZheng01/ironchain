@@ -8,6 +8,11 @@
 	    this.errMsg = '{status}服务器繁忙，请稍候再试！';
 	    this.shade = [0.02, '#000'];
 	    this.closeIndexs = {};
+	    this._treeSetting = {
+    		key: 'id',
+    		parentKey: 'parentId',
+    		childKey: 'children'
+    	};
 	}
 	/**
      * 弹出警告消息框
@@ -236,6 +241,38 @@
         //}
         top.rightContent.location.href = url;
     };
+    
+    _site.prototype.transformToTreeFormat = function (sNodes, setting) {
+		setting = $.extend(this._treeSetting, setting || {});
+	    var i, l,
+	        key = setting.key,
+	        parentKey = setting.parentKey,
+	        childKey = setting.childKey;
+	    if (!key || key == "" || !sNodes) return [];
+
+	        var r = [];
+	        var tmpMap = {};
+	        for (i = 0, l = sNodes.length; i < l; i++) {
+	            tmpMap[sNodes[i][key]] = sNodes[i];
+	        }
+	        //key为id 值为节点的map
+	        //迭代list
+	        for (i = 0, l = sNodes.length; i < l; i++) {
+	        	//item的父id存在在map中 与 item的id不等于item的父id
+	            if (tmpMap[sNodes[i][parentKey]] && sNodes[i][key] != sNodes[i][parentKey]) {
+	            	//初始化子节点列表
+	                if (!tmpMap[sNodes[i][parentKey]][childKey])
+	                    tmpMap[sNodes[i][parentKey]][childKey] = [];
+	            	//map中取item父id的node添加子节点
+	                tmpMap[sNodes[i][parentKey]][childKey].push(sNodes[i]);
+	            } else {
+	            	//不存在 直接添加节点
+	                r.push(sNodes[i]);
+	            }
+	        }
+	        return r;
+	};
+    
 	/*!表单实例挂载*/
 	$.site = new _site();
 })(jQuery);

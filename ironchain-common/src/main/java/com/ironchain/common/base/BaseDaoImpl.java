@@ -28,6 +28,6 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
 	
 	@Override
 	public SqlHelper createSqlHelper(){
-		return SpringKit.getBean("sqlHelper", SqlHelper.class);
+		return SpringKit.getBean(SqlHelper.class);
 	}
 }

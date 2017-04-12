@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.ModelController;
@@ -79,5 +80,16 @@ public class SystemPermissionController extends ModelController<SystemPermission
 	@PostMapping("/delete")
 	public void delete(@RequestParam Long id){
 		modelDao.delete(id);
+	}
+	
+	/**
+	 * 权限json数据
+	 * @param type 类型
+	 * @return
+	 */
+	@GetMapping("/treechild")
+	@ResponseBody
+	public Object treeChild(@RequestParam(required=false, defaultValue="0") int type){
+		return systemPermissionService.findTreeChild(type);
 	}
 }
