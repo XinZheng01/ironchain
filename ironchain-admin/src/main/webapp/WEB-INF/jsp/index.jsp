@@ -20,6 +20,8 @@
   <div class="layui-header header header-demo">
   <div class="layui-main">
     <a class="logo" href="/">
+    <!-- 
+     -->
       <img src="${staticUrl}/images/logo.png" alt="layui">
     </a>
     <ul class="layui-nav">

@@ -53,7 +53,7 @@
 							<th class="sort-column mobilephone">手机号码</th>
 							<th class="sort-column status">状态</th>
 							<th class="sort-column createTime">创建时间</th>
-							<th>操作</th>
+							<th width="120">操作</th>
 						</tr>
 					</thead>
 	                <tbody>
@@ -64,11 +64,16 @@
 								<td>${user.name}</td>
 								<td>${user.email}</td>
 								<td>${user.mobilephone}</td>
-								<td>${user.statusStr}</td>
+								<td>
+								<c:if test="${user.status == 0}"><span class="label label-sm label-danger">${user.statusStr}</span></c:if>
+								<c:if test="${user.status == 1}"><span class="label label-sm label-success">${user.statusStr}</span></c:if>
+								<c:if test="${user.status == 2}"><span class="label label-sm label-warning">${user.statusStr}</span></c:if>
+								</td>
 								<td><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd"/></td>
 								<td>
-									<a href="${ctx}/system/user/edit?id=${user.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
-									<a href="${ctx}/system/user/delete?id=${user.id}" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
+									<a href="${ctx}/system/user/edit?id=${user.id}">编辑</a> | 
+									<a href="${ctx}/system/user/edit?id=${user.id}">锁定</a> | 
+									<a href="${ctx}/system/user/delete?id=${user.id}" class="text-danger">删除</a>
 								</td>
 							</tr>
 						</c:forEach>

@@ -68,7 +68,9 @@ if(sort != null){
 <script>
 $(function(){
 	$('#page_select option[value="<%=size%>"]').prop('selected', true);
-	$('#page_select').on('change', function(){});
+	$('#page_select').on('change', function(){
+		goPage(1, $(this).val());
+	});
 });
 function goPage(page, size){
 	var _page = $('#paramPage');

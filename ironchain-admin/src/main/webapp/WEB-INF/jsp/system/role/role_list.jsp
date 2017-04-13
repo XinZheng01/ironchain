@@ -28,9 +28,9 @@
 					  <div class="form-group">
 					  	<span>状态：</span>
 					    <select name="srch_EQ_status_I" class="form-control">
-					    	<option>全部</option>
-					    	<option value="1" ${srch_EQ_status_I == 1?"selected":""}>启用</option>
-					    	<option value="0" ${srch_EQ_status_I == 0?"selected":""}>停用</option>
+					    	<option value="" ${srch_EQ_status_I eq ""?"selected":""}>全部</option>
+					    	<option value="1" ${srch_EQ_status_I eq "1"?"selected":""}>启用</option>
+					    	<option value="0" ${srch_EQ_status_I eq "0"?"selected":""}>停用</option>
 					    </select>
 					  </div>
 					  <div class="form-group">
@@ -51,7 +51,7 @@
 							<th>描述</th>
 							<th class="sort-column status">状态</th>
 							<th class="sort-column createTime">创建时间</th>
-							<th>操作</th>
+							<th width="120">操作</th>
 						</tr>
 					</thead>
 	                <tbody>
@@ -61,11 +61,14 @@
 								<td>${role.name}</td>
 								<td>${role.code}</td>
 								<td>${role.description}</td>
-								<td>${role.statusStr}</td>
+								<td>
+								<c:if test="${role.status == 1}"><span class="label label-sm label-success">${role.statusStr}</span></c:if>
+								<c:if test="${role.status == 0}"><span class="label label-sm label-danger">${role.statusStr}</span></c:if>
+								</td>
 								<td><fmt:formatDate value="${role.createTime}" pattern="yyyy-MM-dd"/></td>
 								<td>
-									<a href="${ctx}/system/role/edit?id=${role.id}" data-toggle="tooltip" title="编辑"><i class="icon-edit"></i></a>
-									<a href="${ctx}/system/role/delete?id=${role.id}" data-toggle="tooltip" title="删除" class="text-danger"><i class="icon-trash"></i></a>
+									<a href="${ctx}/system/role/edit?id=${role.id}">编辑</a> | 
+									<a href="${ctx}/system/role/delete?id=${role.id}" class="text-danger">删除</a>
 								</td>
 							</tr>
 						</c:forEach>

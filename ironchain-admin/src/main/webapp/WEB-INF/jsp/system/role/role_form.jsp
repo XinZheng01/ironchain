@@ -69,24 +69,9 @@
 			    <div class="col-md-4 col-sm-6">
 			    	<div class="tree-toolbar">
 				    	<input type="checkbox" id="tree-checkall"><label for="tree-checkall">全选</label>
-				    	<input type="checkbox" id="tree-checkreverse"><label for="tree-checkreverse">全反选</label>
 			    	</div>
 				    <div class="tree-box">
-						<ul class="tree tree-lines" data-ride="tree" data-initial-state="expand">
-							<li>
-								<input type="checkbox" name="" value="">系统管理
-								<ul>
-								<li>
-								<input type="checkbox">权限管理
-								</li>
-								<li>
-								<input type="checkbox">角色管理
-								</li>
-								<li>
-								<input type="checkbox">用户管理
-								</li>
-								</ul>
-							</li>
+						<ul class="tree tree-lines" data-initial-state="expand">
 						</ul>
 				    </div>
 			    </div>
@@ -118,17 +103,40 @@ $(function(){
 	    	
 	    }
 	});
+	$.ajax({
+		url : "${ctx}/system/permission/treechild",
+		type : 'GET',
+		success : function(data) {
+			if(data){
+				console.log(data);
+				data = $.site.transformToTreeFormat(data);
+				$('.tree').html(initTree(data, false));
+				$('.tree').tree();
+			}
+		}
+	});
+	
 	$('#tree-checkall').on('click', function(){
-		
+		$('.tree-box .tree input[type="checkbox"]').prop('checked', this.checked);
 	});
 })
-var nodes = [
-	{id: 1, parentId: 0, name: '系统管理'},
-	{id: 2, parentId: 1, name: '权限管理'},
-	{id: 3, parentId: 1, name: '角色管理'},
-	{id: 4, parentId: 1, name: '用户管理'},
-	{id: 5, parentId: 3, name: '用户管理'}
-];
-console.log($.site.transformToTreeFormat(nodes));
+function initTree(node, addUl){
+	if(!node) return '';
+	console.log(node);
+	var html = addUl?'<ul>':'';
+    for(var i=0, len=node.length; i < len; i++){
+    	html += '<li>';
+    	html += ('<input type="checkbox" name="permissions" value="' + node[i].id + '">');
+    	if(node[i].icon)
+	    	html += ('<i class="icon ' + node[i].icon + '"></i>  ');
+    	html += node[i].name;
+    	if(node[i].children)
+    		html += initTree(node[i].children, true);
+    	html += '</li>';
+    }
+    html += (addUl?'</ul>':'');  
+    return html;
+}
+//console.log($.site.transformToTreeFormat(nodes));
 </script>
 </html>

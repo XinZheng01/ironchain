@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.ironchain.common.base.BaseService;
@@ -21,7 +18,7 @@ public class SystemPermissionService extends BaseService {
 	private SystemPermissionDao systemPermissionDao;
 	
 	/**
-	 * 
+	 * 查询权限树列表
 	 * @param parentId
 	 * @return
 	 */
@@ -59,7 +56,7 @@ public class SystemPermissionService extends BaseService {
     }
 
     /**
-     * 
+     * 查询权限树select列表
      * @param parentId
      * @return
      */
@@ -74,12 +71,12 @@ public class SystemPermissionService extends BaseService {
 		return result;
 	}
 	
-	@Autowired
-	private CacheManager cacheManager;
-	
-	@Cacheable(value = "usercache")
+	/**
+	 * 查询所有权限树节点
+	 * @param type
+	 * @return
+	 */
 	public List<Map<String, Object>> findTreeChild(int type) {
-		System.out.println(cacheManager);
 		return systemPermissionDao.createSqlHelper()
 				.appendSql("select id, name, icon, url, type, status, parent_id as parentId")
 				.appendSql(" from system_permission where status = ?", SystemPermission.STATUS_SHOW)
