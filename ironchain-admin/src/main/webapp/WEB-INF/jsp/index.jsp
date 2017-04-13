@@ -10,8 +10,14 @@
   <link rel="stylesheet" href="${staticUrl}/plugins/layui/css/layui.css"  media="all">
   <link rel="stylesheet" href="${staticUrl}/plugins/layui/css/global.css" media="all">
   <style type="text/css">
-  .layui-nav-child a{
+  .layui-nav-tree .layui-nav-child a{
   	padding: 0 20px 0 40px!important;
+  }
+  .header-demo .site-system a{
+  	color: #333!important;
+  }
+  .header-demo .site-system .layui-this a{
+  	padding: 0 20px;
   }
   </style>
 </head>
@@ -20,20 +26,26 @@
   <div class="layui-header header header-demo">
   <div class="layui-main">
     <a class="logo" href="/">
-    <!-- 
-     -->
       <img src="${staticUrl}/images/logo.png" alt="layui">
     </a>
+    <!--
+     
+     -->
+    <ul class="layui-nav site-system" style="left: 185px;">
+      <li class="layui-nav-item layui-this" style="margin: 0;">
+        <a href="/doc/">OA系统</a>
+      </li>
+      <li class="layui-nav-item" style="margin: 0;">
+        <a href="/demo/">CMS系统</a>
+      </li>
+    </ul>
     <ul class="layui-nav">
-      <li class="layui-nav-item ">
-        <a href="/doc/">文档</a>
-      </li>
-      <li class="layui-nav-item layui-this">
-        <a href="/demo/">演示</a>
-      </li>
-      
       <li class="layui-nav-item">
-        <a>退出</a>
+        <a><i class="layui-icon" style="font-size: 14px;">&#xe612;</i> <sec:authentication property="name"/></a>
+        <dl class="layui-nav-child layui-anim layui-anim-upbit">
+          <dd><a href="http://layim.layui.com/" target="_blank"><i class="glyphicon glyphicon-lock"></i>修改密码</a></dd>
+          <dd><a href="http://fly.layui.com/jie/8157.html" target="_blank"><i class="glyphicon glyphicon-off"></i>退出</a></dd>
+        </dl>
       </li>
     </ul>
   </div>
