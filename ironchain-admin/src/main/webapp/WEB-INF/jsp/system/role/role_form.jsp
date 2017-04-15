@@ -108,7 +108,6 @@ $(function(){
 		type : 'GET',
 		success : function(data) {
 			if(data){
-				console.log(data);
 				data = $.site.transformToTreeFormat(data);
 				$('.tree').html(initTree(data, false));
 				$('.tree').tree();
@@ -122,7 +121,6 @@ $(function(){
 })
 function initTree(node, addUl){
 	if(!node) return '';
-	console.log(node);
 	var html = addUl?'<ul>':'';
     for(var i=0, len=node.length; i < len; i++){
     	html += '<li>';

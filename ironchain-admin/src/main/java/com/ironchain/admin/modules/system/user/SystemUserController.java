@@ -14,12 +14,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ironchain.admin.common.security.SecurityUtils;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.SystemRoleDao;
 import com.ironchain.common.dao.SystemUserDao;
+import com.ironchain.common.domain.ResponseResult;
 import com.ironchain.common.domain.SystemUser;
+import com.ironchain.common.exception.ServiceException;
 
 @Controller
 @RequestMapping("/system/user")
@@ -96,4 +100,30 @@ public class SystemUserController extends ModelController<SystemUserDao, SystemU
 		modelDao.delete(id);
 	}
 	
+	/**
+	 * 修改密码表单
+	 * @return
+	 */
+	@GetMapping("/change_pwd")
+	public String changePwdForm(){
+		return "system/user/change_pwd";
+	}
+	
+	/**
+	 * 修改密码
+	 * @return
+	 */
+	@PostMapping("/change_pwd")
+	@ResponseBody
+	public ResponseResult changePwd(String oldPassword, String newPassword){
+		try {
+			Long id = SecurityUtils.getCurrentUser().getId();
+			systemUserService.changePwd(id, oldPassword, newPassword);
+		} catch (ServiceException e) {
+			return new ResponseResult(e.getSc(), e.getMessage(), null);
+		} catch (Exception e) {
+			return new ResponseResult(ResponseResult.SC_ERROR, e.getMessage(), null);
+		}
+		return new ResponseResult(ResponseResult.SC_SUCCESS, "修改成功", null);
+	}
 }

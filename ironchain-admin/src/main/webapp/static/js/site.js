@@ -116,7 +116,7 @@
 	 * @param area 窗口大小
 	 */
 	_site.prototype.iframe = function (url, title, area) {
-	    return top.layer.open({
+	    return this.index = top.layer.open({
 	        title: title || '窗口',
 	        type: 2,
 	        area: area || ['800px', '530px'],
@@ -133,6 +133,13 @@
             this.closeIndexs['_' + this.index] = true;
             return top.layer.close(this.index);
         }
+    };
+    
+    /**
+     * 关闭所有消息框
+     */
+	_site.prototype.closeAll = function () {
+    	return top.layer.closeAll();
     };
     
     /**

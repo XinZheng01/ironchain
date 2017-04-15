@@ -43,8 +43,8 @@
       <li class="layui-nav-item">
         <a><i class="layui-icon" style="font-size: 14px;">&#xe612;</i> <sec:authentication property="name"/></a>
         <dl class="layui-nav-child layui-anim layui-anim-upbit">
-          <dd><a href="http://layim.layui.com/" target="_blank"><i class="glyphicon glyphicon-lock"></i>修改密码</a></dd>
-          <dd><a href="http://fly.layui.com/jie/8157.html" target="_blank"><i class="glyphicon glyphicon-off"></i>退出</a></dd>
+          <dd><a href="javascript:;" onclick="changePassword()"><i class="glyphicon glyphicon-lock"></i>修改密码</a></dd>
+          <dd><a href="javascript:;" onclick="logout()"><i class="glyphicon glyphicon-off"></i>退出</a></dd>
         </dl>
       </li>
     </ul>
@@ -65,9 +65,11 @@
 	  <li class="layui-nav-item layui-nav-itemed">
 	    <a href="javascript:;">系统管理</a>
 	    <dl class="layui-nav-child">
+	    <sec:authorize url="/system/user/list">  
 	      <dd>
 	        <a href="/system/user/list" target="rightIframe">用户管理</a>
 	      </dd>
+		</sec:authorize>
 	      <dd>
 	        <a href="/system/role/list" target="rightIframe">角色管理</a>
 	      </dd>
@@ -163,13 +165,29 @@
 <div class="site-mobile-shade"></div>
 <script src="${staticUrl}/plugins/jquery-1.12.4.min.js" charset="utf-8"></script>
 <script src="${staticUrl}/plugins/layui/layui.js" charset="utf-8"></script>
+<script src="${staticUrl}/js/site.js" charset="utf-8"></script>
 <script>
 layui.config({base: '${staticUrl}/plugins/layui/lay/modules/'}).use('global');
 var layer;
 layui.use(['layer'], function(){
 	layer = layui.layer;
 });
+//iframe
 var rightContent = window.frames['rightIframe'];
+
+function changePassword(){
+	$.site.iframe('${ctx}/system/user/change_pwd', '修改密码', ['800px', '390px']);
+}
+//退出登录
+function logout(){
+	$.ajax({
+		url : "${ctx}/system/user/logout?${_csrf.parameterName}=${_csrf.token}",
+		type : 'POST',
+		success : function() {
+			location.reload();
+		}
+	});
+}
 </script>
 </div>
 </body>

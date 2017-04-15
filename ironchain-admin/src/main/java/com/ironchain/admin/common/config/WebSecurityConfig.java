@@ -1,7 +1,11 @@
 package com.ironchain.admin.common.config;
 
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -17,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.ironchain.common.dao.SystemPermissionDao;
+import com.ironchain.common.domain.SystemPermission;
 
 /**
  * WEB 安全配置
@@ -34,6 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private SystemPermissionDao systemPermissionDao;
+	
+	@Value("site.security.noauthor")
+	private String noauthor;
 	/**
 	 * 不需要安全认证的url
 	 */
@@ -65,16 +73,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.sameOrigin()
             	.and()
             .logout()
+            	.logoutUrl("/system/user/logout")
                 .permitAll()
                 .and()
             .authorizeRequests();//定义那些url需要保护
-		
-//		List<SystemPermission> permissions = systemPermissionDao.findAll();
-		//.antMatchers("/", "/home", "/system/**").permitAll()//指定/ 和 /home 不需要保护
-//		for (SystemPermission systemPermission : permissions) {
-//			if(StringUtils.isNotBlank(systemPermission.getUrl()))
-//			urlRegistry.antMatchers(systemPermission.getUrl().trim()).hasAuthority(systemPermission.getCode());
-//		}
+		if("true".equals(noauthor)){
+			List<SystemPermission> permissions = systemPermissionDao.findAll();
+			//.antMatchers("/", "/home", "/system/**").permitAll()//指定/ 和 /home 不需要保护
+			for (SystemPermission systemPermission : permissions) {
+				if(StringUtils.isNotBlank(systemPermission.getUrl()))
+					urlRegistry.antMatchers(systemPermission.getUrl().trim()).hasAuthority(systemPermission.getCode());
+			}
+		}
 		urlRegistry.anyRequest().authenticated();//其他url全部需要保护
     }
 	

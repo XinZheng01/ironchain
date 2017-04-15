@@ -28,7 +28,7 @@ $.validator.addMethod( "method", function(value, element) {
 	return eval($(element).attr('validate'));
 }, "校验不通过" );
 
-$.validator.addMethod( "password", function(value, element) {
+$.validator.addMethod( "pwd", function(value, element) {
 	return this.optional(element) || /^[\dA-Za-z(!@#$%&)]{6,20}$/.test(value);
 }, "请输入有效的密码" );
 

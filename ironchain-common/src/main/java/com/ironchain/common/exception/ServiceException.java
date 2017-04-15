@@ -1,9 +1,13 @@
 package com.ironchain.common.exception;
 
+import com.ironchain.common.domain.ResponseResult;
+
 public class ServiceException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
-
+	
+	private short sc = ResponseResult.SC_ERROR;
+	
 	public ServiceException(Exception e) {
 		super(e);
 	}
@@ -11,5 +15,17 @@ public class ServiceException extends RuntimeException{
 	public ServiceException(String message){
 		super(message);
 	}
+	public ServiceException(short sc, Exception e) {
+		super(e);
+		this.sc = sc;
+	}
 	
+	public ServiceException(short sc, String message){
+		super(message);
+		this.sc = sc;
+	}
+	
+	public short getSc() {
+		return sc;
+	}
 }
