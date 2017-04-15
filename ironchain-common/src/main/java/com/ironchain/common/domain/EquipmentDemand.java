@@ -22,4 +22,8 @@ public class EquipmentDemand extends DataModel {
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
+	
+	private String number;
+	
+	private String brand;
 }
