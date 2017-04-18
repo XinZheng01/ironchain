@@ -19,6 +19,8 @@ public class ResponseResult implements Serializable{
 	public final static short SC_UNAUTHORIZED = 4012;
 	/** 未找到资源*/
 	public final static short SC_NOFOUND = 404;
+	/** 数据库锁*/
+	public final static short SC_CONCURENCY = 409;
 	/** 服务器异常*/
 	public final static short SC_ERROR = 500;
 	/** 非法请求*/

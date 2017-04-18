@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration shutdownHook="disable" status="WARN">
  <Properties>
- 	<Property name="PROJECT">test</Property>
+ 	<Property name="PROJECT">ironchain-interface</Property>
 	<Property name="PID">????</Property>
 	<Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
 	<Property name="LOG_LEVEL_PATTERN">%5p</Property>
