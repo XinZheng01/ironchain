@@ -32,9 +32,9 @@ public class Banner extends DataModel {
 	@Column(name="url")
 	private String url;
 	
-	/** 图片编码*/
-	@Column(name="picture_code")
-	private String pictureCode;
+	/** 图片路径*/
+	@Column(name="picture_path")
+	private String picturePath;
 	
 	/** 上架时间*/
 	@Column(name="show_time")
