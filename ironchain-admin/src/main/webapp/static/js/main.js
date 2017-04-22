@@ -4,7 +4,7 @@ $(function(){
 		$(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', this.checked)
 			.parents('tr').toggleClass('active', this.checked);
 	});
-	$('.dataTable tbody').on('change', 'input[type="checkbox"]', function(){
+	$('table tbody').on('change', 'input[type="checkbox"]', function(){
 		if(!this.checked){ 
 			var el = $(this).parents('table').find('.check-all').get(0);
 			if(el && el.checked && ('indeterminate' in el))

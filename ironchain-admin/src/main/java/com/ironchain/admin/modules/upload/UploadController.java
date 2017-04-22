@@ -1,5 +1,6 @@
 package com.ironchain.admin.modules.upload;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +11,9 @@ import com.ironchain.common.base.BaseController;
 
 @Controller
 public class UploadController extends BaseController {
+	
+	@Autowired
+	private UploadService uploadService;
 	
 	@PostMapping("/upload")
 	@ResponseBody

@@ -126,4 +126,5 @@ public class SystemUserController extends ModelController<SystemUserDao, SystemU
 		}
 		return new ResponseResult(ResponseResult.SC_SUCCESS, "修改成功", null);
 	}
+	
 }

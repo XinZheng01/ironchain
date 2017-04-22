@@ -52,3 +52,32 @@ table.dataTable tr.active:hover>td{
 table.dataTable tr.active>td{
 	background-color: #ffe7bc;
 }
+table thead .sorting,
+table thead .sorting_asc,
+table thead .sorting_desc {
+  cursor: pointer;
+  *cursor: hand;
+}
+table thead .sorting,
+table thead .sorting_asc,
+table thead .sorting_desc,
+table thead .sorting_asc_disabled,
+table thead .sorting_desc_disabled {
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+table thead .sorting {
+  background-image: url("../images/sort_both.png");
+}
+table thead .sorting_asc {
+  background-image: url("../images/sort_asc.png");
+}
+table thead .sorting_desc {
+  background-image: url("../images/sort_desc.png");
+}
+table thead .sorting_asc_disabled {
+  background-image: url("../images/sort_asc_disabled.png");
+}
+table thead .sorting_desc_disabled {
+  background-image: url("../images/sort_desc_disabled.png");
+}

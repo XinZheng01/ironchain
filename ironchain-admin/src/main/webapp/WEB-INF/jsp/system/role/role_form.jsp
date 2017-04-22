@@ -89,6 +89,7 @@
 	</div>
 </body>
 <script type="text/javascript">
+var permissionIds = JSON.parse('${permissionIds}' || '[]');
 $(function(){
 	$('.back').on('click', function(){
 		location.href = "${ctx}/system/role/list";
@@ -103,6 +104,7 @@ $(function(){
 	    	
 	    }
 	});
+	//加载权限树
 	$.ajax({
 		url : "${ctx}/system/permission/treechild",
 		type : 'GET',
@@ -114,7 +116,7 @@ $(function(){
 			}
 		}
 	});
-	
+	//全选 反选
 	$('#tree-checkall').on('click', function(){
 		$('.tree-box .tree input[type="checkbox"]').prop('checked', this.checked);
 	});
@@ -124,7 +126,10 @@ function initTree(node, addUl){
 	var html = addUl?'<ul>':'';
     for(var i=0, len=node.length; i < len; i++){
     	html += '<li>';
-    	html += ('<input type="checkbox" name="permissions" value="' + node[i].id + '">');
+    	html += ('<input type="checkbox" name="permissions" value="' + node[i].id + '"');
+    	if($.inArray(node[i].id, permissionIds) > -1)
+    		html += ' checked';
+    	html += '>';
     	if(node[i].icon)
 	    	html += ('<i class="icon ' + node[i].icon + '"></i>  ');
     	html += node[i].name;

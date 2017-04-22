@@ -26,7 +26,7 @@
 			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/permission/add';">新增</button>
 			 		<button class="btn deleteBtn" type="button">删除</button>
 			 	</div>
-				<table class="hover row-border table-hover dataTable treetable" cellspacing="0" width="100%">
+				<table class="row-border table-hover dataTable treetable">
 	                <thead>
 						<tr>
 							<th class="dt-head-center" style="width: 20px;"></th>
@@ -62,9 +62,8 @@
 								<td>${permission.description}</td>
 								<td>
 									<a href="${ctx}/system/permission/edit?id=${permission.id}">编辑</a> | 
+									<c:if test="${permission.type != 3}">
 									<a href="${ctx}/system/permission/add?parentId=${permission.id}">新增子级</a> | 
-									<c:if test="${permission.type == 2}">
-									<a href="${ctx}/system/permission/edit?id=${permission.id}">初始化</a> | 
 									</c:if>
 									<a href="javascript:;" onclick="del(${permission.id})"class="text-danger deleteThis">删除</a>  
 								</td>
@@ -84,7 +83,7 @@ $(function(){
 		console.log(getCheckedVal('.dataTable'));
 	});
 	
-	$('.treetable').treetable({expandable: true,column:1});
+	$('.treetable').treetable({expandable:true, column:1});
 });
 function del(id){
 	top.layer.msg(id);

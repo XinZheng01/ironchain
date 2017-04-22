@@ -87,4 +87,15 @@ public class Member extends DataModel{
 	@Column(name="last_login_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastLoginTime;
+	
+	public String getTypeStr(){
+		switch (this.type) {
+		case 1:
+			return "个人";
+		case 2:
+			return "企业";
+		default:
+			return null;
+		}
+	}
 }

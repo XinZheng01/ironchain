@@ -1,6 +1,8 @@
 package com.ironchain.common.domain;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -75,5 +77,13 @@ public class SystemRole extends DataModel {
 			return "停用";
 		}
 		return null;
+	}
+	
+	public List<Long> getPermissionIds(){
+		List<Long> ids = new ArrayList<>();
+		for(SystemPermission permission : this.permissions){
+			ids.add(permission.getId());
+		}
+		return ids;
 	}
 }

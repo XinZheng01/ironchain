@@ -82,5 +82,5 @@ public class SystemPermissionService extends BaseService {
 				.appendSql(" from system_permission where status = ?", SystemPermission.STATUS_SHOW)
 				.appendSql(type > 0, " and type = ?", type).query2Map();
 	}
-
+	
 }

@@ -3,6 +3,7 @@ package com.ironchain.admin.modules.member;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,7 +32,8 @@ public class MemberController extends ModelController<MemberDao, Member>{
 	 * @return
 	 */
 	@GetMapping("/list")
-	public String list(HttpServletRequest request, Model model){
+	public String list(Pageable pageable, HttpServletRequest request, Model model){
+		model.addAttribute("memberPage", modelDao.findAll(bySearchFilter(request), pageable));
 		return "member/member_list";
 	}
 	

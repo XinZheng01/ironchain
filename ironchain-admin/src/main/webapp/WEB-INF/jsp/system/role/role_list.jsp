@@ -42,7 +42,7 @@
 			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/role/add';">新增</button>
 			 		<button class="btn deleteBtn" type="button">删除</button>
 			 	</div>
-				<table class="hover row-border table-hover dataTable" cellspacing="0" width="100%">
+				<table class="row-border table-hover dataTable">
 	                <thead>
 						<tr>
 							<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>

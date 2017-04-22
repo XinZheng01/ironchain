@@ -41,7 +41,12 @@ public class SystemPermissionController extends ModelController<SystemPermission
 	 * @return
 	 */
 	@GetMapping("/add")
-	public String add(@ModelAttribute SystemPermission systemPermission, Model model){
+	public String add(@ModelAttribute SystemPermission systemPermission,
+			@RequestParam(required=false) Long parentId, Model model){
+		if(parentId != null){
+			SystemPermission parent = modelDao.findOne(parentId);
+			systemPermission.setParent(parent);
+		}
 		//权限列表
 		model.addAttribute("permissionList", systemPermissionService.findTreeSelectList(null));
 		return "system/permission/permission_form";
@@ -92,4 +97,5 @@ public class SystemPermissionController extends ModelController<SystemPermission
 	public Object treeChild(@RequestParam(required=false, defaultValue="0") int type){
 		return systemPermissionService.findTreeChild(type);
 	}
+	
 }

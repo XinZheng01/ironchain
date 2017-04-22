@@ -1,21 +1,25 @@
 package com.ironchain.admin.modules;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ironchain.admin.common.security.SecurityUtils;
 import com.ironchain.common.base.BaseController;
+import com.ironchain.common.dao.SystemPermissionDao;
 
 @Controller
-@RequestMapping("/")
 public class HomeController extends BaseController{
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+	@Autowired
+	private SystemPermissionDao systemPermissionDao;
 	
-	@GetMapping
-	public String index(){
+	@GetMapping({"/", "/index"})
+	public String index(HttpSession session){
+		if(session.getAttribute("userMenu") == null)
+			session.setAttribute("userMenu", systemPermissionDao.findMenuByUserId(SecurityUtils.getCurrentUser().getId()));
 		return "index";
 	}
 }
