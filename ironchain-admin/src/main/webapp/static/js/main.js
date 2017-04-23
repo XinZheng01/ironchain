@@ -49,6 +49,27 @@ $(function(){
         var url = $(this).attr('data-open');
         $.site.open(url);
     });
+    
+    if($('.admin-breadcrumb').length > 0){
+    	var _crumb_li = '<li><a href="javascript:;"><i class="icon icon-home"></i> 首页</a></li>';
+    	var _pathname = location.pathname;
+    	var _group = _pathname.match(/(.+)(\/add|\/edit)$/);
+    	if(_group != null)
+    		_pathname = _group[1];
+    	
+    	top.$('.site-demo-nav dl a').each(function(){
+    		if($(this).attr('href').indexOf(_pathname) > -1){
+    			_crumb_li += '<li><a href="javascript:;">'
+    				+ $(this).closest('dl.layui-nav-child').siblings('a').text()+'</a></li>';
+    			_crumb_li += '<li'+(_group == null?' class="active">':'><a href="'+$(this).attr('href')+'">')
+    				+$(this).children('cite').text()+(_group == null?'':'</a>')+'</li>';
+    			if(_group != null)
+    				_crumb_li += '<li class="active">'+(_group[2] == '/add'?'新增':'编辑')+'</li>';
+    			return;
+    		}
+    	});
+    	$('.admin-breadcrumb').html(_crumb_li);
+    }
 	
 });
 /** 获取表格选中的行*/

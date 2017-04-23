@@ -21,32 +21,6 @@ public class SystemUserService extends BaseService {
 	private PasswordEncoder passwordEncoder;
 	
 	/**
-	 * 保存或更新用户
-	 * @param systemUser
-	 */
-	@Transactional
-	public void saveOrUpdate(SystemUser systemUser) {
-		Long id = systemUser.getId();
-		if(id == null){
-			if(systemUser.getPassword() == null)
-				throw new ServiceException(ResponseResult.SC_PARAMERROR, "密码不能为空");
-			//密码加密
-			systemUser.setPassword(passwordEncoder.encode(systemUser.getPassword()));
-			systemUserDao.save(systemUser);
-			return;
-		}
-		SystemUser systemUserPO = systemUserDao.findOne(id);
-		systemUserPO.setLoginName(systemUser.getLoginName());
-		systemUserPO.setName(systemUser.getName());
-		systemUserPO.setEmail(systemUser.getEmail());
-		systemUserPO.setMobilephone(systemUser.getMobilephone());
-		systemUserPO.setStatus(systemUser.getStatus());
-		systemUserPO.setRoles(systemUser.getRoles());
-		
-		systemUserDao.save(systemUserPO);
-	}
-
-	/**
 	 * 修改密码
 	 * @param id
 	 * @param oldPassword

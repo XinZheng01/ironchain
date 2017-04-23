@@ -13,12 +13,7 @@
 </head>
 <body>
 	<div>
-		<ol class="breadcrumb admin-breadcrumb">
-			<li><a href="#"><i class="icon icon-home"></i> 首页</a></li>
-			<li><a href="#">目录</a></li>
-			<li><a href="#">系统管理</a></li>
-			<li class="active">编辑</li>
-		</ol>
+		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
 			<form:form id="saveForm" modelAttribute="systemUser" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
@@ -35,9 +30,9 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="password" class="col-sm-1">登录密码</label>
+			    <label for="newPassword" class="col-sm-1">登录密码</label>
 			    <div class="col-md-4 col-sm-6">
-			      <form:password path="password" cssClass="form-control" id="password" placeholder="请输入登录密码"/>
+			      <input type="password" name="newPassword" class="form-control" id="newPassword" placeholder="请输入登录密码">
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -99,6 +94,7 @@ $(function(){
 	    	name: {
 	    		required: true
 	    	},
+	    	newPassword: "pwd",
 	    	email: "email",
 	    	mobilephone: "mobilephone",
 	    	roles: "required"

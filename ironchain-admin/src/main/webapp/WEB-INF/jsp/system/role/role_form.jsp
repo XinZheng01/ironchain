@@ -28,12 +28,7 @@
 </head>
 <body>
 	<div>
-		<ol class="breadcrumb admin-breadcrumb">
-			<li><a href="#"><i class="icon icon-home"></i> 首页</a></li>
-			<li><a href="#">目录</a></li>
-			<li><a href="#">系统管理</a></li>
-			<li class="active">编辑</li>
-		</ol>
+		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
 			<form:form id="saveForm" modelAttribute="systemRole" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>

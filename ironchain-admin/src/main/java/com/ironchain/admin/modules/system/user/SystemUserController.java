@@ -3,9 +3,11 @@ package com.ironchain.admin.modules.system.user;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +35,8 @@ public class SystemUserController extends ModelController<SystemUserDao, SystemU
 	private SystemUserService systemUserService;
 	@Autowired
 	private SystemRoleDao systemRoleDao;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	/**
 	 * 登录界面
@@ -81,12 +85,20 @@ public class SystemUserController extends ModelController<SystemUserDao, SystemU
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid SystemUser systemUser, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid @ModelAttribute SystemUser systemUser, @RequestParam(required=false) String newPassword, 
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
 			return "system/user/user_form";
 		}
-//		systemUserService.saveOrUpdate(systemUser);
+		if(systemUser.getId() == null && StringUtils.isBlank(newPassword)){
+			redirectAttributes.addFlashAttribute("message", "密码不能为空");
+			return "system/user/user_form";
+		}
+		if(StringUtils.isNoneBlank(newPassword))
+			systemUser.setPassword(passwordEncoder.encode(newPassword));
+		
+		modelDao.save(systemUser);
 		redirectAttributes.addFlashAttribute("message", "操作成功");
 		return "redirect:list";
 	}

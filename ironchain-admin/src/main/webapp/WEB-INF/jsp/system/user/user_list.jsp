@@ -12,11 +12,7 @@
 </head>
 <body>
 	<div>
-		<ol class="breadcrumb admin-breadcrumb">
-			<li><a href="#"><i class="icon icon-home"></i> 首页</a></li>
-			<li><a href="#">目录</a></li>
-			<li class="active">系统管理</li>
-		</ol>
+		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
 			<div class="panel">
 				<form id="searchForm" action="${ctx}/system/user/list" method="get" class="search-form form-inline">
