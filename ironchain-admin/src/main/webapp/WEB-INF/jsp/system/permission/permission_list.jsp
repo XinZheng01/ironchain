@@ -19,8 +19,8 @@
 				<div class="panel-body">
 			 	</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/permission/add';">新增</button>
-			 		<button class="btn deleteBtn" type="button">删除</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/permission/add';"><i class="icon icon-plus"></i>新增</button>
+			 		<button class="btn btn-danger deleteBtn" type="button"><i class="icon icon-times"></i>删除</button>
 			 	</div>
 				<table class="row-border table-hover dataTable treetable">
 	                <thead>
@@ -48,12 +48,10 @@
 								<td>${permission.url}</td>
 								<td>${permission.orderNum}</td>
 								<td>
-								<c:if test="${permission.status == 1}">
-								<span class="label label-sm label-success">${permission.statusStr}</span>
-								</c:if>
-								<c:if test="${permission.status == 0}">
-								<span class="label label-sm label-danger">${permission.statusStr}</span>
-								</c:if>
+								<c:choose>
+								<c:when test="${permission.status == 1}"><span class="text-success">${permission.statusStr}</span></c:when>
+								<c:when test="${permission.status == 0}"><span class="text-danger">${permission.statusStr}</span></c:when>
+								</c:choose>
 								</td>
 								<td>${permission.description}</td>
 								<td>

@@ -27,17 +27,18 @@
 					  </div>
 					  <div class="form-group">
 					  	<!-- <span>创建时间：</span> -->
-					    <input type="text" class="form-control form-datetime" id="startTime" name="srch_GTE_createTime_D" value="${srch_GTE_createTime_D}" readonly placeholder="创建开始时间">-
-					    <input type="text" class="form-control form-datetime" id="endTime" name="srch_LTE_createTime_D" value="${srch_LTE_createTime_D}" readonly placeholder="创建结束时间">
+					    <input type="text" class="form-control form-datetime" id="startTime" name="srch_GTE_createTime_D" value="${srch_GTE_createTime_D}" readonly placeholder="创建开始时间" data-end-time="endTime">
+					    -
+					    <input type="text" class="form-control form-datetime" id="endTime" name="srch_LTE_createTime_D" value="${srch_LTE_createTime_D}" readonly placeholder="创建结束时间" data-start-time="startTime">
 					  </div>
 					  <div class="form-group">
-					  	<button type="submit" class="btn btn-primary" onclick="">查询</button>
-					  	<button type="reset" class="btn" >重置</button>
+					  	<button type="submit" class="btn" onclick=""><i class="icon icon-search"></i>查询</button>
+					  	<button type="reset" class="btn" ><i class="icon icon-history"></i>重置</button>
 					  </div>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/user/add';">新增</button>
-			 		<button class="btn deleteBtn" type="button">删除</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/user/add';"><i class="icon icon-plus"></i>新增</button>
+			 		<button class="btn btn-danger deleteBtn" type="button"><i class="icon icon-times"></i>删除</button>
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
@@ -58,12 +59,24 @@
 								<td class="dt-body-center"><input type="checkbox" value="${user.id}"></td>
 								<td>${user.loginName}</td>
 								<td>${user.name}</td>
-								<td>${user.email}</td>
-								<td>${user.mobilephone}</td>
 								<td>
-								<c:if test="${user.status == 0}"><span class="label label-sm label-danger">${user.statusStr}</span></c:if>
-								<c:if test="${user.status == 1}"><span class="label label-sm label-success">${user.statusStr}</span></c:if>
-								<c:if test="${user.status == 2}"><span class="label label-sm label-warning">${user.statusStr}</span></c:if>
+								<c:choose>
+								<c:when test="${empty user.email}"><span style="color:#ccc">还没有设置邮箱</span></c:when>
+								<c:otherwise>${user.email}</c:otherwise>
+								</c:choose>
+								</td>
+								<td>
+								<c:choose>
+								<c:when test="${empty user.mobilephone}"><span style="color:#ccc">还没有设置手机</span></c:when>
+								<c:otherwise>${user.mobilephone}</c:otherwise>
+								</c:choose>
+								</td>
+								<td>
+								<c:choose>
+								<c:when test="${user.status == 0}"><span class="text-danger">${user.statusStr}</span></c:when>
+								<c:when test="${user.status == 1}"><span class="text-success">${user.statusStr}</span></c:when>
+								<c:when test="${user.status == 2}"><span class="text-warning">${user.statusStr}</span></c:when>
+								</c:choose>
 								</td>
 								<td><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd"/></td>
 								<td>
@@ -87,19 +100,6 @@ $(function(){
 	//删除
 	$('.deleteBtn').on('click', function(){
 		//console.log(getCheckedVal('.dataTable'));
-		$.msg.iframe('/icon?field=icon');
-	});
-	//日期插件
-	$(".form-datetime").datetimepicker(
-	{
-	    weekStart: 1,
-	    todayBtn:  1,
-	    autoclose: 1,
-	    todayHighlight: 1,
-	    startView: 2,
-	    forceParse: 0,
-	    showMeridian: 1,
-	    format: "yyyy-mm-dd hh:ii"
 	});
 });
 </script>

@@ -30,13 +30,13 @@
 					    </select>
 					  </div>
 					  <div class="form-group">
-					  	<button type="submit" class="btn btn-primary">查询</button>
-					  	<button type="reset" class="btn" >重置</button>
+					  	<button type="submit" class="btn" onclick=""><i class="icon icon-search"></i>查询</button>
+					  	<button type="reset" class="btn" ><i class="icon icon-history"></i>重置</button>
 					  </div>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/role/add';">新增</button>
-			 		<button class="btn deleteBtn" type="button">删除</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/role/add';"><i class="icon icon-plus"></i>新增</button>
+			 		<button class="btn btn-danger deleteBtn" type="button"><i class="icon icon-times"></i>删除</button>
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
@@ -58,8 +58,10 @@
 								<td>${role.code}</td>
 								<td>${role.description}</td>
 								<td>
-								<c:if test="${role.status == 1}"><span class="label label-sm label-success">${role.statusStr}</span></c:if>
-								<c:if test="${role.status == 0}"><span class="label label-sm label-danger">${role.statusStr}</span></c:if>
+								<c:choose>
+								<c:when test="${role.status == 1}"><span class="text-success">${role.statusStr}</span></c:when>
+								<c:when test="${role.status == 0}"><span class="text-danger">${role.statusStr}</span></c:when>
+								</c:choose>
 								</td>
 								<td><fmt:formatDate value="${role.createTime}" pattern="yyyy-MM-dd"/></td>
 								<td>

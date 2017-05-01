@@ -49,7 +49,7 @@ $(function(){
         var url = $(this).attr('data-open');
         $.site.open(url);
     });
-    
+    //面包屑导航
     if($('.admin-breadcrumb').length > 0){
     	var _crumb_li = '<li><a href="javascript:;"><i class="icon icon-home"></i> 首页</a></li>';
     	var _pathname = location.pathname;
@@ -70,7 +70,46 @@ $(function(){
     	});
     	$('.admin-breadcrumb').html(_crumb_li);
     }
-	
+    //日期插件
+	$('.form-datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('.form-date').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+        format: 'yyyy-mm-dd'
+    });
+    $('.form-time').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 1,
+        forceParse: 0,
+        format: 'hh:ii'
+    });
+    /*! 注册 data-start-time 事件行为 */
+    this.$body.on('change', '[data-start-time]', function () {
+    	$('#'+$(this).data('start-time')).data('datetimepicker').setEndDate($(this).val());
+    });
+    /*! 注册 data-end-time 事件行为 */
+    this.$body.on('change', '[data-end-time]', function () {
+    	$('#'+$(this).data('end-time')).data('datetimepicker').setStartDate($(this).val());
+    });
 });
 /** 获取表格选中的行*/
 var getCheckedVal = function(selector){

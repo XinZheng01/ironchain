@@ -41,7 +41,7 @@
      -->
     <ul class="layui-nav">
       <li class="layui-nav-item">
-        <a><i class="layui-icon" style="font-size: 14px;">&#xe612;</i> <sec:authentication property="name"/></a>
+        <a><i class="icon icon-user"></i>  <sec:authentication property="name"/></a>
         <dl class="layui-nav-child layui-anim layui-anim-upbit">
           <dd><a href="javascript:;" onclick="changePassword()"><i class="glyphicon glyphicon-lock"></i>修改密码</a></dd>
           <dd><a href="javascript:;" onclick="logout()"><i class="glyphicon glyphicon-off"></i>退出</a></dd>
