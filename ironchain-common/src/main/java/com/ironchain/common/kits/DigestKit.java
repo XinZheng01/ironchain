@@ -230,11 +230,10 @@ public class DigestKit {
 	 * @param key
 	 *            符合AES要求的密钥
 	 */
-	public static String aesDecrypt(byte[] input, byte[] key) {
-		byte[] decryptResult = cryptos(input, key, null, Cipher.DECRYPT_MODE, AES, AES);
-		return new String(decryptResult, Charset.forName("UTF-8"));
+	public static byte[] aesDecrypt(byte[] input, byte[] key) {
+		return cryptos(input, key, null, Cipher.DECRYPT_MODE, AES, AES);
 	}
-
+	
 	/**
 	 * 使用AES解密字符串, 返回原始字符串.
 	 * 
@@ -244,7 +243,8 @@ public class DigestKit {
 	 *            符合AES要求的密钥
 	 */
 	public static String aesDecrypt(String input, String key) {
-		return aesDecrypt(Base64.getDecoder().decode(input), key.getBytes(Charset.forName("UTF-8")));
+		byte[] decryptResult = aesDecrypt(Base64.getDecoder().decode(input), key.getBytes(Charset.forName("UTF-8")));
+		return new String(decryptResult, Charset.forName("UTF-8"));
 	}
 
 	/**
@@ -257,9 +257,8 @@ public class DigestKit {
 	 * @param iv
 	 *            初始向量
 	 */
-	public static String aesDecrypt(byte[] input, byte[] key, byte[] iv) {
-		byte[] decryptResult = cryptos(input, key, iv, Cipher.DECRYPT_MODE, AES, AES_CBC);
-		return new String(decryptResult, Charset.forName("UTF-8"));
+	public static byte[] aesDecrypt(byte[] input, byte[] key, byte[] iv) {
+		return cryptos(input, key, iv, Cipher.DECRYPT_MODE, AES, AES_CBC);
 	}
 
 	/**
@@ -404,5 +403,5 @@ public class DigestKit {
 	public static String desDecrypt(String input, String key) {
 		return desDecrypt(Base64.getDecoder().decode(input), key.getBytes(Charset.forName("UTF-8")));
 	}
-
+	
 }

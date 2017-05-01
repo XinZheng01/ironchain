@@ -17,6 +17,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
+import com.ironchain.common.domain.Constants.RegexConstants;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -55,13 +56,13 @@ public class SystemUser extends DataModel {
 	
 	/** 邮箱*/
 	@Column(name="email", length=50)
-	@Pattern(regexp=RegeConstants.EMAIL_REGEX)
+	@Pattern(regexp=RegexConstants.EMAIL_REGEX)
 	private String email;
 	
 	/** 手机号码*/
 	
 	@Column(name="mobilephone", length=20)
-	@Pattern(regexp=RegeConstants.MOBILE_REGEX)
+	@Pattern(regexp=RegexConstants.MOBILE_REGEX)
 	private String mobilephone;
 	
 	/** 状态 0：删除 1：正常 2：锁定*/
