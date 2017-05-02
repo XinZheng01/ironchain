@@ -5,8 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 
-@SpringBootApplication(scanBasePackages = { "com.ironchain.intfc.common.config", 
-		"com.ironchain.intfc.modules"})
+@SpringBootApplication(scanBasePackages = { "com.ironchain.intfc"})
 @EnableCaching
 public class Application extends SpringBootServletInitializer {
 

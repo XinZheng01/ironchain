@@ -13,6 +13,19 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface IgnoreSecurity {
-
+public @interface IgnoreApiSecurity {
+	
+	/**
+	 * 忽略 RequestBody 加密
+	 * @see @RequestBody
+	 * @return
+	 */
+	boolean ignoreRequest() default true;
+	
+	/**
+	 * 忽略 ResponseBody 加密
+	 * @see @ResponseBody
+	 * @return
+	 */
+	boolean ignoreResponse() default true; 
 }

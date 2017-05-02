@@ -1,10 +1,14 @@
 package com.ironchain.intfc.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.SpringDataWebConfiguration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+
+import com.ironchain.intfc.web.interceptor.AuthorizationInterceptor;
 
 /**
  * Mvc 配置
@@ -14,6 +18,8 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 @Configuration
 public class MvcConfig extends SpringDataWebConfiguration {
 	
+	@Autowired
+    private AuthorizationInterceptor authorizationInterceptor;
 	/**
 	 * 添加不经过controller的view
 	 */
@@ -39,4 +45,9 @@ public class MvcConfig extends SpringDataWebConfiguration {
 //        registrar.setUseIsoFormat(true);
 //        registrar.registerFormatters(registry);
 //    }
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(authorizationInterceptor).addPathPatterns("/api/**");
+	}
 }
