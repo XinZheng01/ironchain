@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.ironchain.admin.common.security.SecurityUtils;
+import com.ironchain.admin.common.security.SecurityKit;
 import com.ironchain.common.base.BaseController;
 import com.ironchain.common.dao.SystemPermissionDao;
 
@@ -19,7 +19,7 @@ public class HomeController extends BaseController{
 	@GetMapping({"/", "/index"})
 	public String index(HttpSession session){
 		if(session.getAttribute("userMenu") == null)
-			session.setAttribute("userMenu", systemPermissionDao.findMenuByUserId(SecurityUtils.getCurrentUser().getId()));
+			session.setAttribute("userMenu", systemPermissionDao.findMenuByUserId(SecurityKit.getCurrentUser().getId()));
 		return "index";
 	}
 }

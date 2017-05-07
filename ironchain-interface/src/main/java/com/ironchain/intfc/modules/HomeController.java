@@ -1,5 +1,6 @@
 package com.ironchain.intfc.modules;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ironchain.common.cache.CacheService;
 import com.ironchain.common.dao.BannerDao;
 import com.ironchain.common.domain.Banner;
 import com.ironchain.common.domain.R;
+import com.ironchain.common.domain.SystemUser;
 import com.ironchain.intfc.annotation.IgnoreApiSecurity;
 import com.ironchain.intfc.annotation.IgnoreAuth;
 import com.ironchain.intfc.web.ApiBaseController;
@@ -24,6 +27,8 @@ public class HomeController extends ApiBaseController{
 	@Autowired
 	private BannerDao bannerDao;
 	
+	@Autowired
+	private CacheService cacheService;
 	/**
 	 * banner 列表
 	 */
@@ -45,5 +50,25 @@ public class HomeController extends ApiBaseController{
 	@GetMapping("/demand")
 	public R demand(){
 		return R.ok();
+	}
+	
+	@IgnoreApiSecurity
+	@IgnoreAuth
+	@GetMapping("/test")
+	public R test(){
+		Banner b = new Banner();
+		b.setId(2l);
+		b.setPicturePath("/ajasds");
+		b.setShowTime(new Date());
+		b.setUpdateBy(new SystemUser());
+		cacheService.set("test_banner_1", b, 5);
+		return R.ok();
+	}
+	
+	@IgnoreApiSecurity
+	@IgnoreAuth
+	@GetMapping("/test2")
+	public R testget(){
+		return R.ok(cacheService.get("test_banner_1"));
 	}
 }

@@ -10,10 +10,15 @@ import javax.persistence.TemporalType;
 
 import com.ironchain.common.base.DataModel;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 轮播图
  * @author zheng xin
  */
+@Setter
+@Getter
 @Entity
 @Table(name="banner")
 public class Banner extends DataModel {

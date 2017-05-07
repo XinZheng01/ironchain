@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ironchain.admin.common.security.SecurityUtils;
+import com.ironchain.admin.common.security.SecurityKit;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.SystemRoleDao;
 import com.ironchain.common.dao.SystemUserDao;
@@ -129,7 +129,7 @@ public class SystemUserController extends ModelController<SystemUserDao, SystemU
 	@ResponseBody
 	public R changePwd(String oldPassword, String newPassword){
 		try {
-			Long id = SecurityUtils.getCurrentUser().getId();
+			Long id = SecurityKit.getCurrentUser().getId();
 			systemUserService.changePwd(id, oldPassword, newPassword);
 		} catch (ServiceException e) {
 			return R.error(e.getSc(), e.getMessage());

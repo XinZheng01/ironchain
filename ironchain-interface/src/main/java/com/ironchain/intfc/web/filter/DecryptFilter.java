@@ -37,8 +37,8 @@ public class DecryptFilter implements Filter {
 	
 	private boolean apiDigest;
 	
-	public DecryptFilter(@Value("${site.security.aes-key}") String aesKey,
-			@Value("${site.security.api-digest}") String apiDigest){
+	public DecryptFilter(@Value("${site.aes-key}") String aesKey,
+			@Value("${site.api-digest}") String apiDigest){
 		this.aesKey = aesKey;
 		this.apiDigest = Boolean.valueOf(apiDigest);
 	}

@@ -7,9 +7,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 /**
  * Utility class for Spring Security.
  */
-public final class SecurityUtils {
+public final class SecurityKit {
 
-    private SecurityUtils() {
+    private SecurityKit() {
     }
 
     /**

@@ -20,6 +20,7 @@ import com.ironchain.common.kits.Base64;
 import com.ironchain.common.kits.DigestKit;
 import com.ironchain.common.kits.JsonKit;
 import com.ironchain.intfc.annotation.IgnoreApiSecurity;
+import com.ironchain.intfc.config.ApiProperties;
 
 /**
  * APP接口响应加密
@@ -36,10 +37,17 @@ public class ResponseEncryptAdvice implements ResponseBodyAdvice<Object>{
 	
 	private boolean apiDigest;
 	
-	public ResponseEncryptAdvice(@Value("${site.security.aes-key}") String aesKey,
-			@Value("${site.security.api-digest}") String apiDigest){
-		this.aesKey = aesKey.getBytes(Charset.forName("UTF-8"));
-		this.apiDigest = Boolean.valueOf(apiDigest);
+	@Autowired
+	private ApiProperties apiProperties;
+	
+	public ResponseEncryptAdvice(@Value("${site.aes-key}")String aesKey){
+		System.out.println(aesKey);
+		System.out.println(apiProperties.getAesKey());
+		System.out.println(apiProperties.isApiDigest());
+//		this.aesKey = aesKey.getBytes(Charset.forName("UTF-8"));
+//		this.apiDigest = Boolean.valueOf(apiDigest);
+		this.aesKey = apiProperties.getAesKey().getBytes(Charset.forName("UTF-8"));
+		this.apiDigest = apiProperties.isApiDigest();
 	}
 	
 	@Autowired
