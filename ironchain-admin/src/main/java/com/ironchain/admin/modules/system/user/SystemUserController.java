@@ -23,7 +23,7 @@ import com.ironchain.admin.common.security.SecurityUtils;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.SystemRoleDao;
 import com.ironchain.common.dao.SystemUserDao;
-import com.ironchain.common.domain.ResponseResult;
+import com.ironchain.common.domain.R;
 import com.ironchain.common.domain.SystemUser;
 import com.ironchain.common.exception.ServiceException;
 
@@ -127,16 +127,16 @@ public class SystemUserController extends ModelController<SystemUserDao, SystemU
 	 */
 	@PostMapping("/change_pwd")
 	@ResponseBody
-	public ResponseResult changePwd(String oldPassword, String newPassword){
+	public R changePwd(String oldPassword, String newPassword){
 		try {
 			Long id = SecurityUtils.getCurrentUser().getId();
 			systemUserService.changePwd(id, oldPassword, newPassword);
 		} catch (ServiceException e) {
-			return new ResponseResult(e.getSc(), e.getMessage(), null);
+			return R.error(e.getSc(), e.getMessage());
 		} catch (Exception e) {
-			return new ResponseResult(ResponseResult.SC_ERROR, e.getMessage(), null);
+			return R.error().setMsg(e.getMessage());
 		}
-		return new ResponseResult(ResponseResult.SC_SUCCESS, "修改成功", null);
+		return R.ok().setMsg("修改成功");
 	}
 	
 }

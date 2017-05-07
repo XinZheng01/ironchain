@@ -49,5 +49,10 @@ public final class Constants {
 		public int getExpiredTime() {
 			return expiredTime;
 		}
+		
+		public String getKey(String key){
+			return this.prefix + key;
+		}
+		
 	}
 }

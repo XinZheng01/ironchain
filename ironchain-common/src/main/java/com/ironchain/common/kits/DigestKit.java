@@ -32,6 +32,7 @@ import org.apache.commons.lang3.Validate;
 public class DigestKit {
 
 	private static final String SHA1 = "SHA-1";
+	private static final String SHA256 = "SHA-256";
 	private static final String MD5 = "MD5";
 
 	private static final String AES = "AES";
@@ -60,6 +61,21 @@ public class DigestKit {
 
 	public static byte[] sha1(byte[] input, byte[] salt, int iterations) {
 		return digest(input, SHA1, salt, iterations);
+	}
+	
+	/**
+	 * 对输入字符串进行sha256散列.
+	 */
+	public static byte[] sha256(byte[] input) {
+		return digest(input, SHA256, null, 1);
+	}
+	
+	public static byte[] sha256(byte[] input, byte[] salt) {
+		return digest(input, SHA256, salt, 1);
+	}
+	
+	public static byte[] sha256(byte[] input, byte[] salt, int iterations) {
+		return digest(input, SHA256, salt, iterations);
 	}
 
 	/**

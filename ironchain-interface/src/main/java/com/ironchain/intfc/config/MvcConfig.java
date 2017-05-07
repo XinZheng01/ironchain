@@ -1,6 +1,8 @@
 package com.ironchain.intfc.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -8,6 +10,7 @@ import org.springframework.data.web.config.SpringDataWebConfiguration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
+import com.ironchain.intfc.web.filter.DecryptFilter;
 import com.ironchain.intfc.web.interceptor.AuthorizationInterceptor;
 
 /**
@@ -20,6 +23,9 @@ public class MvcConfig extends SpringDataWebConfiguration {
 	
 	@Autowired
     private AuthorizationInterceptor authorizationInterceptor;
+	
+	@Autowired
+	private DecryptFilter decryptFilter;
 	/**
 	 * 添加不经过controller的view
 	 */
@@ -39,15 +45,19 @@ public class MvcConfig extends SpringDataWebConfiguration {
 		return pageHandler;
 	}
 	
-//	@Override
-//    public void addFormatters(FormatterRegistry registry) {
-//        DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
-//        registrar.setUseIsoFormat(true);
-//        registrar.registerFormatters(registry);
-//    }
-	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(authorizationInterceptor).addPathPatterns("/api/**");
 	}
+	
+	@Bean
+	public FilterRegistrationBean filterRegistration() {
+	    FilterRegistrationBean registration = new FilterRegistrationBean();
+	    registration.setFilter(decryptFilter);
+	    registration.addUrlPatterns("/api/*");//TODO 如果有jsp页面需要添加过滤
+	    registration.setName("decryptFilter");
+	    registration.setOrder(1);
+	    return registration;
+	} 
+
 }

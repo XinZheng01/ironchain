@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ironchain.common.base.BaseService;
 import com.ironchain.common.dao.SystemUserDao;
-import com.ironchain.common.domain.ResponseResult;
+import com.ironchain.common.domain.R;
 import com.ironchain.common.domain.SystemUser;
 import com.ironchain.common.exception.ServiceException;
 
@@ -30,7 +30,7 @@ public class SystemUserService extends BaseService {
 	public void changePwd(Long id, String oldPassword, String newPassword) {
 		SystemUser systemUser = systemUserDao.findOne(id);
 		if(!passwordEncoder.matches(oldPassword, systemUser.getPassword()))
-			throw new ServiceException(ResponseResult.SC_PARAMERROR, "旧密码不正确");
+			throw new ServiceException(R.SC_PARAMERROR, "旧密码不正确");
 		
 		systemUser.setPassword(passwordEncoder.encode(newPassword));
 		systemUserDao.save(systemUser);

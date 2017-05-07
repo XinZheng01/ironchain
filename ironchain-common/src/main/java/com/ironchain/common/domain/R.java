@@ -4,10 +4,18 @@ import java.io.Serializable;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
+/**
+ * 响应结果集
+ * Response Result
+ * @author Administrator
+ *
+ */
 @Getter
 @Setter
-public class ResponseResult implements Serializable{
+@Accessors(chain=true)
+public class R implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -35,15 +43,49 @@ public class ResponseResult implements Serializable{
 	/** 数据*/
 	private Object data = "";
 	
-	public ResponseResult(){
+	public R(){
 	}
 	
-	public ResponseResult(short sc, String msg, Object data){
-		this.sc = sc;
-		if(msg != null)
-			this.msg = msg;
-		if(data != null)
-			this.data = data;
+	/**
+	 * 成功
+	 * @return
+	 */
+	public static R ok(){
+		R r = new R();
+		return r;
 	}
 	
+	/**
+	 * 成功
+	 * @param data
+	 * @return
+	 */
+	public static R ok(Object data){
+		R r = new R();
+		r.data = data;
+		return r;
+	}
+	
+	/**
+	 * 异常
+	 * @return
+	 */
+	public static R error(){
+		R r = new R();
+		r.sc = SC_ERROR;
+		return r;
+	}
+	
+	/**
+	 * 异常
+	 * @param sc
+	 * @param msg
+	 * @return
+	 */
+	public static R error(short sc, String msg){
+		R r = new R();
+		r.sc = sc;
+		r.msg = msg;
+		return r;
+	}
 }

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import com.ironchain.common.base.DataModel;
 
@@ -40,6 +41,7 @@ public class Member extends DataModel{
 	private String head;
 	
 	/** 类型*/
+	@NotNull(message="类型不能为空")
 	@Column(name="type")
 	private int type;
 	
@@ -48,10 +50,12 @@ public class Member extends DataModel{
 	private String email;
 	
 	/** 手机*/
+	@NotNull(message="手机号码不能为空")
 	@Column(name="mobilephone")
 	private String mobilephone;
 	
 	/** 密码*/
+	@NotNull(message="密码不能为空")
 	@Column(name="password")
 	private String password;
 	

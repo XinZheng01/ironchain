@@ -1,12 +1,12 @@
 package com.ironchain.common.exception;
 
-import com.ironchain.common.domain.ResponseResult;
+import com.ironchain.common.domain.R;
 
 public class ServiceException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 	
-	private short sc = ResponseResult.SC_ERROR;
+	private short sc = R.SC_ERROR;
 	
 	public ServiceException(Exception e) {
 		super(e);
