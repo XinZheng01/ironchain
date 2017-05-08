@@ -16,7 +16,7 @@ import com.ironchain.common.domain.Constants.CacheConstants;
  *
  */
 @Service
-public class CacheServiceImpl implements CacheService {
+public class RedisCacheServiceImpl implements CacheService {
 	
 	@Autowired
 	private RedisTemplate<String, Serializable> redisTemplate;

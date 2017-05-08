@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ironchain.common.base.BaseController;
+import com.ironchain.common.domain.R;
 
 @Controller
 public class UploadController extends BaseController {
@@ -17,11 +18,11 @@ public class UploadController extends BaseController {
 	
 	@PostMapping("/upload")
 	@ResponseBody
-	public String upload(@RequestParam(value="file", required=false) MultipartFile[] files){
+	public R upload(@RequestParam(value="file", required=false) MultipartFile[] files){
 		if(files == null || files.length == 0){
-			return "{\"error\":1, \"message\":\"没有要上传的文件\"}";
+			return R.error().setMsg("没有要上传的文件");
 		}
-		
-		return null;
+		String[] names = uploadService.store(files);
+		return R.ok(names);
 	}
 }

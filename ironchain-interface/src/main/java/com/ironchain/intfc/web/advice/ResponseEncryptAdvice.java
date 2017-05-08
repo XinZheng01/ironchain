@@ -6,7 +6,6 @@ import java.nio.charset.Charset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -37,15 +36,7 @@ public class ResponseEncryptAdvice implements ResponseBodyAdvice<Object>{
 	
 	private boolean apiDigest;
 	
-	@Autowired
-	private ApiProperties apiProperties;
-	
-	public ResponseEncryptAdvice(@Value("${site.aes-key}")String aesKey){
-		System.out.println(aesKey);
-		System.out.println(apiProperties.getAesKey());
-		System.out.println(apiProperties.isApiDigest());
-//		this.aesKey = aesKey.getBytes(Charset.forName("UTF-8"));
-//		this.apiDigest = Boolean.valueOf(apiDigest);
+	public ResponseEncryptAdvice(ApiProperties apiProperties){
 		this.aesKey = apiProperties.getAesKey().getBytes(Charset.forName("UTF-8"));
 		this.apiDigest = apiProperties.isApiDigest();
 	}
@@ -87,7 +78,7 @@ public class ResponseEncryptAdvice implements ResponseBodyAdvice<Object>{
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(DigestKit.aesEncrypt("{\"oldPassword\":\"123\",\"newPassword\":\"123\"}", "3AF6F179FC423C8B"));
+		System.out.println(DigestKit.aesEncrypt("{\"oldPassword\":\"<script></script>\",\"newPassword\":\"123\"}", "3AF6F179FC423C8B"));
 		System.out.println(DigestKit.aesDecrypt("RDrTS4ptQgye7JZXaV/Xu2rMgtN0hhxDvglcLUiLLDY=", "3AF6F179FC423C8B"));
 	}
 }

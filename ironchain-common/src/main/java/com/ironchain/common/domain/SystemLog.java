@@ -38,9 +38,13 @@ public class SystemLog extends BaseModel{
 	@Column(name="method")
 	private String method;
 	
-	//请求参数
-	@Column(name="params")
-	private String params;
+	//请求uri
+	@Column(name="uri")
+	private String uri;
+	
+	//所属子系统
+	@Column(name="system")
+	private String system;
 	
 	//IP地址
 	@Column(name="ip")

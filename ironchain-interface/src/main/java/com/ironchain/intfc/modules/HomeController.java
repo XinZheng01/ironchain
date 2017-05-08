@@ -54,15 +54,9 @@ public class HomeController extends ApiBaseController{
 	
 	@IgnoreApiSecurity
 	@IgnoreAuth
-	@GetMapping("/test")
-	public R test(){
-		Banner b = new Banner();
-		b.setId(2l);
-		b.setPicturePath("/ajasds");
-		b.setShowTime(new Date());
-		b.setUpdateBy(new SystemUser());
-		cacheService.set("test_banner_1", b, 5);
-		return R.ok();
+	@RequestMapping("/test")
+	public R test(String aaa){
+		return R.ok(aaa);
 	}
 	
 	@IgnoreApiSecurity

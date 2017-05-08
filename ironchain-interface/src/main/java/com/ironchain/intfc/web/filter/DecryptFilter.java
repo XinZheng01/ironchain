@@ -14,12 +14,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ironchain.common.kits.DigestKit;
 import com.ironchain.common.kits.JsonKit;
 import com.ironchain.intfc.annotation.IgnoreApiSecurity;
+import com.ironchain.intfc.config.ApiProperties;
 import com.ironchain.intfc.web.advice.ApiAnnotationHandler;
 
 /**
@@ -37,10 +37,9 @@ public class DecryptFilter implements Filter {
 	
 	private boolean apiDigest;
 	
-	public DecryptFilter(@Value("${site.aes-key}") String aesKey,
-			@Value("${site.api-digest}") String apiDigest){
-		this.aesKey = aesKey;
-		this.apiDigest = Boolean.valueOf(apiDigest);
+	public DecryptFilter(ApiProperties apiProperties){
+		this.aesKey = apiProperties.getAesKey();
+		this.apiDigest = apiProperties.isApiDigest();
 	}
 	
 	@SuppressWarnings("unchecked")

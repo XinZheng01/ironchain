@@ -1,3 +1,4 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
 <script src="${staticUrl}/plugins/jquery-1.12.4.min.js" charset="utf-8"></script>
 <script src="${staticUrl}/plugins/zui-1.6.0/js/zui.min.js"></script>
 <!-- 
@@ -14,5 +15,5 @@ $.ajaxSetup({
     beforeSend: function (xhr) {
 		xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
     }
-);
+});
 </script>

@@ -21,7 +21,8 @@ public final class SecurityKit {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         if (authentication != null) {
-        	return (SecurityUser)authentication.getPrincipal();
+        	if(authentication.getPrincipal() instanceof SecurityUser)
+        		return (SecurityUser) authentication.getPrincipal();
         }
         return null;
     }

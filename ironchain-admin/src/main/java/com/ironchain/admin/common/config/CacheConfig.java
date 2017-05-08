@@ -3,6 +3,7 @@ package com.ironchain.admin.common.config;
 import java.io.Serializable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -10,14 +11,15 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import com.ironchain.common.cache.CacheService;
-import com.ironchain.common.cache.CacheServiceImpl;
+import com.ironchain.common.cache.RedisCacheServiceImpl;
 
 @Configuration
+@EnableCaching
 public class CacheConfig {
 	
 	@Bean
 	public CacheService getCacheService(){
-		return new CacheServiceImpl();
+		return new RedisCacheServiceImpl();
 	}
 	
 	@Autowired

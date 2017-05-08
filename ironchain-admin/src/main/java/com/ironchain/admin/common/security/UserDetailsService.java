@@ -68,7 +68,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     		if(StringUtils.isNotBlank(permission.getCode()))
 				auths.add(new SimpleGrantedAuthority(permission.getCode()));
     	}
-    	return new SecurityUser(Long.valueOf(0l), "superadmin", "$2a$10$ZYXP85rYC.cXHT/Uv5koOuoaqLM1VvkTdxl5Iy3glm52vqeearyNu", auths);
+    	return new SecurityUser(Long.valueOf(0l), "superadmin", "$2a$10$ZYXP85rYC.cXHT/Uv5koOuoaqLM1VvkTdxl5Iy3glm52vqeearyNu", auths, "superadmin");
     }
     
     public static void main(String[] args) {

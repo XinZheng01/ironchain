@@ -1,21 +1,22 @@
 package com.ironchain.intfc.modules.member;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ironchain.common.cache.CacheService;
 import com.ironchain.common.dao.MemberDao;
 import com.ironchain.common.domain.Constants.CacheConstants;
 import com.ironchain.common.domain.Member;
 import com.ironchain.common.domain.R;
-import com.ironchain.common.exception.ServiceException;
 import com.ironchain.intfc.annotation.IgnoreAuth;
 import com.ironchain.intfc.web.ApiBaseController;
 
@@ -30,7 +31,7 @@ public class MemberController extends ApiBaseController {
 	private MemberService memberService;
 	
 	@Autowired
-	private StringRedisTemplate redisTemplate;
+	private CacheService cacheService;
 	
 	/**
 	 * 会员注册
@@ -56,9 +57,19 @@ public class MemberController extends ApiBaseController {
 		Validate.notBlank(password, "密码不能为空");
 		
 		Member member = memberService.findByMobilephoneAndPassword(mobilephone, password);
-//		redisTemplate.opsForValue().set(, value);
+		Long uid = member.getId();
+		String mobile = member.getMobilephone();
+		String token = memberService.getToken(uid, mobile);
+		cacheService.set(CacheConstants.LOGIN_TOKEN, uid.toString(), token);
+		cacheService.set(CacheConstants.LOGIN_NAME, uid.toString(), mobile);
 		
-		return R.ok();
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		map.put("mobilephone", mobile);
+		map.put("name", member.getName());
+		map.put("token", token);
+		
+		return R.ok(map);
 	}
 	
 	/**
@@ -88,7 +99,7 @@ public class MemberController extends ApiBaseController {
 	@IgnoreAuth
 //	@IgnoreApiSecurity
 	@PostMapping("/modify_password")
-	public R modifyPassword(@RequestParam String oldPassword, HttpServletRequest request){
+	public R modifyPassword(@RequestParam String oldPassword, @RequestParam String newPassword){
 		System.out.println("oldPassword:"+oldPassword);
 //		System.out.println("newPassword:"+newPassword);
 		return R.ok();

@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -40,8 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private SystemPermissionDao systemPermissionDao;
 	
-	@Value("site.security.noauthor")
-	private String noauthor;
+	@Autowired
+	private AdminProperties adminProperties;
+	
 	/**
 	 * 不需要安全认证的url
 	 */
@@ -77,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
             .authorizeRequests();//定义那些url需要保护
-		if("true".equals(noauthor)){
+		if(adminProperties.isNoauthor()){
 			List<SystemPermission> permissions = systemPermissionDao.findAll();
 			//.antMatchers("/", "/home", "/system/**").permitAll()//指定/ 和 /home 不需要保护
 			for (SystemPermission systemPermission : permissions) {

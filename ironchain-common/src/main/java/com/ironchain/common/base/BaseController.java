@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,6 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.util.HtmlUtils;
 
 import com.ironchain.common.kits.DateKit;
 import com.ironchain.common.kits.SpecificationKit;
@@ -34,14 +34,22 @@ public abstract class BaseController {
 	public void initBinder(WebDataBinder binder) {
 
 		// String类型转换，将所有传递进来的String进行HTML编码，防止XSS攻击
-//		binder.registerCustomEditor(String.class, new PropertyEditorSupport() {
-//			@Override
-//			public void setAsText(String text) {
-//				setValue(text == null ? null : StringEscapeUtils.escapeHtml4(text.trim()));
-//			}
-//		});
+		binder.registerCustomEditor(String.class, new PropertyEditorSupport() {
+			@Override
+			public void setAsText(String text) {
+				if(text == null)
+					setValue(null);
+				else{
+					String value = text.trim();
+					if("".equals(value))
+						setValue(null);
+					else
+						setValue(HtmlUtils.htmlEscape(value));
+				}
+			}
+		});
 		// String 类型转换 空串转为null
-		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+//		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 
 		// Date 类型转换
 		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {

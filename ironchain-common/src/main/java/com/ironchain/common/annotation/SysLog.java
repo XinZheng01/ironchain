@@ -16,5 +16,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface SysLog {
 
+	boolean ignore() default false;
+	
 	String value() default "";
 }
