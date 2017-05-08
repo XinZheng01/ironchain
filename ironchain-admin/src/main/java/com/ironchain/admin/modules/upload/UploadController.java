@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ironchain.common.base.BaseController;
 import com.ironchain.common.domain.R;
+import com.ironchain.common.upload.UploadService;
 
 @Controller
 public class UploadController extends BaseController {

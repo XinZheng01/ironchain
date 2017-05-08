@@ -1,10 +1,15 @@
 package com.ironchain.admin.common.config;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.SpringDataWebConfiguration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+
+import com.ironchain.common.upload.FileSystemUploadService;
+import com.ironchain.common.upload.UploadService;
 
 /**
  * Mvc 配置
@@ -40,4 +45,9 @@ public class MvcConfig extends SpringDataWebConfiguration {
 //        registrar.setUseIsoFormat(true);
 //        registrar.registerFormatters(registry);
 //    }
+	
+	@Bean
+	public UploadService getUploadService(@Value("${site.upload-root-path}") String rootPath){
+		return new FileSystemUploadService(rootPath);
+	}
 }

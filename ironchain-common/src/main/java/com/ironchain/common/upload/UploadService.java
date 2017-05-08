@@ -1,4 +1,4 @@
-package com.ironchain.admin.modules.upload;
+package com.ironchain.common.upload;
 
 import org.springframework.web.multipart.MultipartFile;
 

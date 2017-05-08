@@ -1,6 +1,7 @@
 package com.ironchain.intfc.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,8 @@ import org.springframework.data.web.config.SpringDataWebConfiguration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
+import com.ironchain.common.upload.FileSystemUploadService;
+import com.ironchain.common.upload.UploadService;
 import com.ironchain.intfc.web.filter.DecryptFilter;
 import com.ironchain.intfc.web.interceptor.AuthorizationInterceptor;
 
@@ -60,4 +63,8 @@ public class MvcConfig extends SpringDataWebConfiguration {
 	    return registration;
 	} 
 
+	@Bean
+	public UploadService getUploadService(@Value("${site.upload-root-path}") String rootPath){
+		return new FileSystemUploadService(rootPath);
+	}
 }
