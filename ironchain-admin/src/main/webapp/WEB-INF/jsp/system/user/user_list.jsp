@@ -18,15 +18,12 @@
 				<form id="searchForm" action="${ctx}/system/user/list" method="get" class="search-form form-inline">
 				<div class="panel-body">
 					  <div class="form-group">
-					  	<!-- <span>登录名：</span> -->
 					    <input type="text" class="form-control" name="srch_LIKE_loginName" value="${srch_LIKE_loginName}" placeholder="登录名">
 					  </div>
 					  <div class="form-group">
-					  	<!-- <span>用户名：</span> -->
 					    <input type="text" class="form-control" name="srch_LIKE_name" value="${srch_LIKE_name}" placeholder="用户名">
 					  </div>
 					  <div class="form-group">
-					  	<!-- <span>创建时间：</span> -->
 					    <input type="text" class="form-control form-datetime" id="startTime" name="srch_GTE_createTime_D" value="${srch_GTE_createTime_D}" readonly placeholder="创建开始时间" data-end-time="endTime">
 					    -
 					    <input type="text" class="form-control form-datetime" id="endTime" name="srch_LTE_createTime_D" value="${srch_LTE_createTime_D}" readonly placeholder="创建结束时间" data-start-time="startTime">

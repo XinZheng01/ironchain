@@ -1,5 +1,7 @@
 package com.ironchain.admin.common.config;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +49,7 @@ public class MvcConfig extends SpringDataWebConfiguration {
 //    }
 	
 	@Bean
-	public UploadService getUploadService(@Value("${site.upload-root-path}") String rootPath){
-		return new FileSystemUploadService(rootPath);
+	public UploadService getUploadService(@Value("${site.upload-root-path}") String rootPath, ServletContext servletContext){
+		return new FileSystemUploadService(rootPath, servletContext);
 	}
 }

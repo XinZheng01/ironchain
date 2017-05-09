@@ -53,5 +53,5 @@ public class Banner extends DataModel {
 	
 	/** 类型 1 web 2 app*/
 	@Column(name="type")
-	private int type;
+	private int type = 2;
 }
