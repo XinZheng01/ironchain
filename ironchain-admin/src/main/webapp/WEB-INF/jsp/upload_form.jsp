@@ -11,7 +11,20 @@
 <%@include file="/WEB-INF/include/base-style.jsp" %>
 <%@include file="/WEB-INF/include/base-script.jsp" %>
 <link href="${staticUrl}/plugins/zui-1.6.0/lib/uploader/zui.uploader.min.css" rel="stylesheet">
+<script src="${staticUrl}/plugins/zui-1.6.0/lib/sortable/zui.sortable.min.js"></script>
 <script src="${staticUrl}/plugins/zui-1.6.0/lib/uploader/zui.uploader.min.js"></script>
+<style type="text/css">
+/* 为可拖动的条目应用可移动光标类型 */
+#sortableList {list-style: none;}
+#sortableList > li { margin: 17px;}
+#sortableList > li >img {cursor: move;}
+
+/* 为正在被拖动的条目应用半透明外观 */
+#sortableList > li.dragging {
+  visibility: visible;
+  opacity: .3;
+}
+</style>
 </head>
 <body>
 	<div>
@@ -52,6 +65,33 @@
 					<img alt="" src="">
 			    </div>
 			  </div>
+			  <!-- 
+			  <div class="form-group">
+			  	  <label for="description" class="col-sm-1">图片</label>
+			  	  <div class="col-md-7 col-sm9">
+				  	  <button type="button" class="btn uploader-btn-browse"><i class="icon icon-plus"></i> 选择文件</button>
+				  	  <div class="help-block">数字范围为0~255，数字越小越靠前</div>
+				  	  <div class="pull-left" style="border: 1px solid #ddd; min-height: 130px; min-width: 430px;">
+						  <ul style="padding-left: 0px;" id="sortableList">
+							  <li class="pull-left"><img alt="" src="/static/images/bg1.jpg" width="100" height="100"><a >删除</a></li>
+							  <li class="pull-left"><img alt="" src="/static/images/bg1.jpg" width="100" height="100"><i class="icon-remove"></i></li>
+							  <li class="pull-left"><img alt="" src="/static/images/bg3.jpg" width="100" height="100"><i class="icon-remove"></i></li>
+							  <li class="pull-left"><img alt="" src="/static/images/bg4.jpg" width="100" height="100"><i class="icon-remove"></i></li>
+							  <li class="pull-left"><img alt="" src="/static/images/bg4.jpg" width="100" height="100"><i class="icon-remove"></i></li>
+							  <li class="pull-left"><img alt="" src="/static/images/bg4.jpg" width="100" height="100"><i class="icon-remove"></i></li>
+							  <li class="pull-left"><img alt="" src="/static/images/bg4.jpg" width="100" height="100"><i class="icon-remove"></i></li>
+						  </ul>
+				  	  </div>
+			  	  </div>
+			  </div>
+			   -->
+			  <div class="form-group">
+			    <label for="description" class="col-sm-1">轮播图</label>
+			    <div class="col-md-4 col-sm-6">
+			    <img alt="" src="/static/images/bg4.jpg" width="100" height="100">
+			    <button type="button" class="btn btn-link uploader-btn-browse">上传文件</button>
+			    </div>
+			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-1 col-sm-1">
 			      <button type="button" class="btn btn-default back">返回</button>
@@ -66,6 +106,7 @@
 </body>
 <script type="text/javascript">
 $(function(){
+	$('#sortableList').sortable();
 	$('.back').on('click', function(){
 		location.href = "${ctx}/system/permission/list";
 	});
