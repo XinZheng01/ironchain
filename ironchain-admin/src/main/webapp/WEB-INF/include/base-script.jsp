@@ -16,9 +16,9 @@
   <script src="${staticUrl}/plugins/zui-1.6.0/lib/ieonly/excanvas.js"></script>
 <![endif]-->
 <script type="text/javascript">
-var ctx = '<%=ctx%>';
-var STATICURL = '<%=staticUrl%>';
-var UPLOADURL = '<%=uploadUrl%>';
+var ctx = '${ctx}';
+var STATICURL = '${staticUrl}';
+var UPLOADURL = '${uploadUrl}';
 
 $.ajaxSetup({
     beforeSend: function (xhr) {

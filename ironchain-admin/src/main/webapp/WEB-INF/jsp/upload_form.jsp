@@ -90,10 +90,9 @@
 			    <label for="description" class="col-sm-1">轮播图</label>
 			    <div class="col-md-4 col-sm-6">
 			    <input type="hidden" id="userhread">
-			    <img id="userhreadimg" alt="" src="/static/images/bg4.jpg" width="100" height="100">
-			    <input type="file" name="file" class="btn btn-link uploadBtn" id="uploadFile" 
-			    	onchange="upload(this)"
-			    	data-src-input="userhread" data-src-img="userhreadimg">
+			    <img id="userhreadimg" alt="" src="/static/images/image_blank.png" width="100" height="100" data-click-other>
+			    <input type="file" name="file" class="btn btn-link uploader-btn-browse form-control uploadBtn" id="uploadFile" 
+			    	onchange="upload(this)" data-src-input="userhread" data-src-img="userhreadimg" >
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -107,7 +106,6 @@
 			</form>
 		</div>
 	</div>
-</body>
 <script type="text/javascript">
 $(function(){
 	$('#sortableList').sortable();
@@ -184,4 +182,5 @@ $(function(){
 	};
 
 </script>
+</body>
 </html>
