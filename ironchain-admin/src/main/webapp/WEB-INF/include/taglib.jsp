@@ -7,7 +7,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%
 String ctx = request.getContextPath();
+String staticUrl = ctx + "/static";
+String uploadUrl = ctx + "/upload";
 pageContext.setAttribute("ctx", ctx);
-pageContext.setAttribute("staticUrl", ctx + "/static");
-pageContext.setAttribute("uploadUrl", ctx + "/upload");
+pageContext.setAttribute("staticUrl", staticUrl);
+pageContext.setAttribute("uploadUrl", uploadUrl);
 %>

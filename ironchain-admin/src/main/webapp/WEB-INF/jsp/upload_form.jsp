@@ -13,6 +13,7 @@
 <link href="${staticUrl}/plugins/zui-1.6.0/lib/uploader/zui.uploader.min.css" rel="stylesheet">
 <script src="${staticUrl}/plugins/zui-1.6.0/lib/sortable/zui.sortable.min.js"></script>
 <script src="${staticUrl}/plugins/zui-1.6.0/lib/uploader/zui.uploader.min.js"></script>
+<script src="${staticUrl}/plugins/ajaxfileupload.js"></script>
 <style type="text/css">
 /* 为可拖动的条目应用可移动光标类型 */
 #sortableList {list-style: none;}
@@ -88,8 +89,11 @@
 			  <div class="form-group">
 			    <label for="description" class="col-sm-1">轮播图</label>
 			    <div class="col-md-4 col-sm-6">
-			    <img alt="" src="/static/images/bg4.jpg" width="100" height="100">
-			    <button type="button" class="btn btn-link uploader-btn-browse">上传文件</button>
+			    <input type="hidden" id="userhread">
+			    <img id="userhreadimg" alt="" src="/static/images/bg4.jpg" width="100" height="100">
+			    <input type="file" name="file" class="btn btn-link uploadBtn" id="uploadFile" 
+			    	onchange="upload(this)"
+			    	data-src-input="userhread" data-src-img="userhreadimg">
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -151,7 +155,33 @@ $(function(){
 	    file_data_name: 'file',//文件域在表单中的名称
 	    url: '${ctx}/upload'  // 文件上传提交地址
 	});
+	
 })
+	var upload = function(uploadBtn){
+		var $upload = $(uploadBtn);
+		$.ajaxFileUpload({
+			url: '${ctx}/upload',
+			//global: true,
+			data: {'${_csrf.parameterName}': '${_csrf.token}'},
+			secureuri: false,
+			fileElementId: $upload.attr('id'),
+			dataType: 'json',
+			success: function (data, status) {
+				if (data.sc == 200) {
+					alert('#' + $upload.data("srcImg"));
+					alert(UPLOADURL + '/' + data.data[0]);
+					$('#' + $upload.data("srcImg")).attr('src', UPLOADURL + '/' + data.data[0]);
+				}else
+					alert(data.msg);
+			},
+			error: function (data, status, e) { //服务器响应失败时的处理函数
+				console.log(data);
+				console.log(status);
+				console.log(e);
+				alert('图片上传失败，请重试。');
+			}
+		});
+	};
 
 </script>
 </html>
