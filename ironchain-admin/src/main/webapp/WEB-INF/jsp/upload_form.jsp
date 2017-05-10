@@ -89,10 +89,7 @@
 			  <div class="form-group">
 			    <label for="description" class="col-sm-1">轮播图</label>
 			    <div class="col-md-4 col-sm-6">
-			    <input type="hidden" id="userhread">
-			    <img id="userhreadimg" alt="" src="/static/images/image_blank.png" width="100" height="100" data-click-other>
-			    <input type="file" name="file" class="btn btn-link uploader-btn-browse form-control uploadBtn" id="uploadFile" 
-			    	onchange="upload(this)" data-src-input="userhread" data-src-img="userhreadimg" >
+			    	<my:uploadImg id="userHead" width="200" defaultValue="2017/5/11/2f8002e472f0444fa0d9e24dcd7ed4c7.jpg"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -131,7 +128,7 @@ $(function(){
 	});
 	$('.uploader').uploader({
 	    //autoUpload: true,            // 当选择文件后立即自动进行上传操作
-	    multipart_params: {"${_csrf.parameterName}": "${_csrf.token}"},
+	    multipart_params: _csrf,
 	    multi_selection: false,//能否上传多个文件
 	    //staticFiles: [{id:1, name:'test.jpg'}],//默认显示的文件
 	    rename: false, //能否重命名
@@ -153,34 +150,7 @@ $(function(){
 	    file_data_name: 'file',//文件域在表单中的名称
 	    url: '${ctx}/upload'  // 文件上传提交地址
 	});
-	
 })
-	var upload = function(uploadBtn){
-		var $upload = $(uploadBtn);
-		$.ajaxFileUpload({
-			url: '${ctx}/upload',
-			//global: true,
-			data: {'${_csrf.parameterName}': '${_csrf.token}'},
-			secureuri: false,
-			fileElementId: $upload.attr('id'),
-			dataType: 'json',
-			success: function (data, status) {
-				if (data.sc == 200) {
-					alert('#' + $upload.data("srcImg"));
-					alert(UPLOADURL + '/' + data.data[0]);
-					$('#' + $upload.data("srcImg")).attr('src', UPLOADURL + '/' + data.data[0]);
-				}else
-					alert(data.msg);
-			},
-			error: function (data, status, e) { //服务器响应失败时的处理函数
-				console.log(data);
-				console.log(status);
-				console.log(e);
-				alert('图片上传失败，请重试。');
-			}
-		});
-	};
-
 </script>
 </body>
 </html>

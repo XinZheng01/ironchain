@@ -26,14 +26,11 @@ jQuery.extend({
   createUploadForm: function(id, fileElementId, postData) {
     //create form
     var formId = 'jUploadForm' + id;
-    var fileId = 'jUploadFile' + id;
     var form = $('<form  action="" method="POST" name="' + formId + '" id="' + formId + '" enctype="multipart/form-data"></form>');
-    var oldElement = $('#' + fileElementId);
-    var newElement = $(oldElement).clone();
+    var newElement = $('#' + fileElementId).clone();
   
-    $(oldElement).attr('id', fileId);
-    $(oldElement).before(newElement);
-    $(oldElement).appendTo(form);
+    $(newElement).attr('id', 'jUploadFile' + id);
+    $(newElement).appendTo(form);
     //添加自定义参数  
     if (postData) {
       //遍历JSON所有键值  
@@ -72,7 +69,7 @@ jQuery.extend({
           fs = $('#' + s.fileElementId)[0].files[0].size;  
         }  
       } catch(e) {  
-      }  
+      }
       if (fs > s.fileSize) {  
     	top.layer.msg("当前文件大小 (" + fs/1024000 + "M) 超过允许的限制值 (" + s.fileSize/1024000 +"M)！", {icon: 2});
         return;  
@@ -98,22 +95,12 @@ jQuery.extend({
       jQuery.event.trigger("ajaxSend", [xml, s]); //触发 AJAX 请求发送前事件  
     //上载完成的回调函数  
     var uploadCallback = function(isTimeout) {
-      //var io = document.getElementById(frameId);  
-      //try {  
-        //存在跨域脚本访问问题，如遇到‘无法访问’提示则需要在响应流中加一段脚块：<script ...>document.domain = 'xxx.com';</script>  
-        //if (io.contentWindow) { //兼容各个浏览器，可取得子窗口的 window 对象  
-        //  xml.responseText = io.contentWindow.document.body ? io.contentWindow.document.body.innerHTML : null;  
-        //  xml.responseXML = io.contentWindow.document.XMLDocument ? io.contentWindow.document.XMLDocument : io.contentWindow.document;  
-        //} else if (io.contentDocument) { //contentDocument Firefox 支持，> ie8 的ie支持。可取得子窗口的 document 对象。  
-        //  xml.responseText = io.contentDocument.document.body ? io.contentDocument.document.body.innerHTML : null;  
-        //  xml.responseXML = io.contentDocument.document.XMLDocument ? io.contentDocument.document.XMLDocument : io.contentDocument.document;  
-        //}
-      var $io = $("#"+frameId);
-      xml.responseText = $io.contents().find('body').text();
-      xml.responseXML = $io.contents();
-      //} catch(e) {  
-      //  jQuery.handleErrorExt(s, xml, null, e);  
-      //}  
+      try {
+    	  xml.responseText = io.contents().find('body').text();
+    	  xml.responseXML = io.contents();
+      } catch (e) {
+    	  top.layer.msg('上传接口存在跨域', {icon: 2});
+      }
       if (xml || isTimeout == "timeout") {  
         requestDone = true;  
         var status;  
@@ -149,10 +136,10 @@ jQuery.extend({
         if (s.complete)  
           s.complete(xml, status);  
   
-        $io.unbind();
+        io.unbind();
   
         setTimeout(function() {  
-            $io.remove();  
+            io.remove();  
             form.remove();  
         }, 100);
   

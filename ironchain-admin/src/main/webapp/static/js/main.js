@@ -49,6 +49,31 @@ $(function(){
         var url = $(this).attr('data-open');
         $.site.open(url);
     });
+    this.$body.on('click', '[data-click-other]', function () {
+    	$('#'+$(this).attr('data-click-other')).click();
+    });
+    /*! 注册 data-upload-img 事件行为 */
+    this.$body.on('change', '[data-upload-img]', function () {
+    	var $upload = $(this);
+		$.ajaxFileUpload({
+			url: ctx + '/upload',
+			allowType: "gif|jpg|jpeg|png",
+			data: _csrf,
+			secureuri: false,
+			fileElementId: $upload.attr('id'),
+			dataType: 'json',
+			success: function (data, status) {
+				if (data.sc == 200) {
+					$('#' + $upload.attr('data-upload-img')).attr('src', UPLOADURL + '/' + data.data[0]);
+					$('#' + $upload.attr('data-upload-input')).val(data.data[0]);
+				}else
+					$.site.error(data.msg);
+			},
+			error: function (data, status, e) {
+				$.site.error('图片上传失败，请重试。');
+			}
+		});
+    });
     //面包屑导航
     if($('.admin-breadcrumb').length > 0){
     	var _crumb_li = '<li><a href="javascript:;"><i class="icon icon-home"></i> 首页</a></li>';
