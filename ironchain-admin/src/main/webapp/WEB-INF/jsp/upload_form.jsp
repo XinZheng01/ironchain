@@ -63,7 +63,6 @@
 					    <button type="button" class="btn btn-link uploader-btn-start"><i class="icon icon-cloud-upload"></i> 开始上传</button>
 					  </div>
 					</div>
-					<img alt="" src="">
 			    </div>
 			  </div>
 			  <!-- 
@@ -89,7 +88,7 @@
 			  <div class="form-group">
 			    <label for="description" class="col-sm-1">轮播图</label>
 			    <div class="col-md-4 col-sm-6">
-			    	<my:uploadImg id="userHead" width="200" defaultValue="2017/5/11/2f8002e472f0444fa0d9e24dcd7ed4c7.jpg"/>
+			    	<my:uploadImg id="userHead" width="200" defaultValue="http://127.0.0.1:8080/static/upload/2017/5/11/f36d0f589a434099a3c8d04953120950.jpg"/>
 			    </div>
 			  </div>
 			  <div class="form-group">

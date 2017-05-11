@@ -13,6 +13,9 @@ public class AdminProperties {
 	/** 是否不校验登录用户权限*/
 	private boolean noauthor;
 	
-	/** 上传文件的根路径*/
+	/** 上传文件的文件系统根路径*/
 	private String uploadRootPath;
+	
+	/** 上传文件的URL根路径*/
+	private String uploadBaseUrl;
 }

@@ -3,7 +3,6 @@ package com.ironchain.intfc.config;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,7 +65,8 @@ public class MvcConfig extends SpringDataWebConfiguration {
 	} 
 
 	@Bean
-	public UploadService getUploadService(@Value("${site.upload-root-path}") String rootPath, ServletContext servletContext){
-		return new FileSystemUploadService(rootPath, servletContext);
+	public UploadService getUploadService(ApiProperties apiProperties, ServletContext servletContext){
+		return new FileSystemUploadService(apiProperties.getUploadRootPath(),
+				apiProperties.getUploadBaseUrl(), servletContext);
 	}
 }

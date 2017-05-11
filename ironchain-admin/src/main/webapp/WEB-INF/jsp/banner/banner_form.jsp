@@ -27,12 +27,13 @@
 			    <label for="url" class="col-sm-1">链接</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="url" cssClass="form-control" id="url" placeholder="请输入链接"/>
+			      <div class="help-block">如：http://www.baidu.com</div>
 			    </div>
-			    <div class="help-block">如：http://www.baidu.com</div>
 			  </div>
 			  <div class="form-group">
-			    <label for="name" class="col-sm-1 required">图片</label>
+			    <label for="picturePath" class="col-sm-1 required">图片</label>
 			    <div class="col-md-4 col-sm-6">
+			    <my:uploadImg id="picturePath" defaultValue="${picturePath}" width="200" help="建议尺寸：750px * 350px，支持上传bmp/png/jpeg/jpg/gif格式"/>
 			    </div>
 			  </div>
 			  <div class="form-group">

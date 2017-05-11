@@ -27,7 +27,10 @@ public class FileSystemUploadService implements UploadService{
 	
 	private Pattern pattern = Pattern.compile("-");
 	
-	public FileSystemUploadService(String rootPath, ServletContext servletContext){
+	private String baseUrl;
+	
+	public FileSystemUploadService(String rootPath, String baseUrl, ServletContext servletContext){
+		this.baseUrl = baseUrl;
 		if(StringUtils.isBlank(rootPath))
 			this.rootPath = servletContext.getRealPath("/upload");
 		else
@@ -63,7 +66,7 @@ public class FileSystemUploadService implements UploadService{
 				
 				uploadFileName = pattern.matcher(UUID.randomUUID().toString()).replaceAll("") + suffix;
 				Files.copy(files[i].getInputStream(), dirs.resolve(uploadFileName));
-				uploadPaths[i] = now.getYear() + "/" + now.getMonthValue() + "/" + now.getDayOfMonth()
+				uploadPaths[i] = baseUrl + "/" + now.getYear() + "/" + now.getMonthValue() + "/" + now.getDayOfMonth()
 					+ "/" + uploadFileName;
 			}
 		} catch (Exception e) {

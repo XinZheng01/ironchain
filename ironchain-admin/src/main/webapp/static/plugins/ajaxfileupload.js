@@ -51,8 +51,9 @@ jQuery.extend({
     s = jQuery.extend({allowType:"",fileSize:0}, jQuery.ajaxSettings, s);  
     //文件筛选  
     var fielName = $('#' + s.fileElementId).val();
-    
-    if (s.allowType && !RegExp('\\w\\.('+ s.allowType +')$', 'i').test(escape(fielName))) { 
+    if(!fielName)
+      return;
+    if (s.allowType &&!RegExp('\\w\\.('+ s.allowType +')$', 'i').test(escape(fielName))) { 
       top.layer.msg("仅支持 (" + s.allowType + ") 为后缀名的文件!", {icon: 2});
       return;  
     }  

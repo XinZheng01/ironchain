@@ -77,11 +77,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
             .authorizeRequests();//定义那些url需要保护
-		if(adminProperties.isNoauthor()){
+		if(!adminProperties.isNoauthor()){
 			List<SystemPermission> permissions = systemPermissionDao.findAll();
 			//.antMatchers("/", "/home", "/system/**").permitAll()//指定/ 和 /home 不需要保护
 			for (SystemPermission systemPermission : permissions) {
-				if(StringUtils.isNotBlank(systemPermission.getUrl()))
+				if(StringUtils.isNotBlank(systemPermission.getUrl())
+						&& StringUtils.isNotBlank(systemPermission.getCode()))
 					urlRegistry.antMatchers(systemPermission.getUrl().trim()).hasAuthority(systemPermission.getCode());
 			}
 		}

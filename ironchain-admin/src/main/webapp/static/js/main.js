@@ -1,4 +1,6 @@
 $(function(){
+	JPlaceHolder.init();
+	
 	//表格选中
 	$('.check-all').on('click', function(){
 		$(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', this.checked)
@@ -57,14 +59,14 @@ $(function(){
     	var $upload = $(this);
 		$.ajaxFileUpload({
 			url: ctx + '/upload',
-			allowType: "gif|jpg|jpeg|png",
+			allowType: $upload.attr('data-allow-type') || "bmp|gif|jpg|jpeg|png",
 			data: _csrf,
 			secureuri: false,
 			fileElementId: $upload.attr('id'),
 			dataType: 'json',
 			success: function (data, status) {
 				if (data.sc == 200) {
-					$('#' + $upload.attr('data-upload-img')).attr('src', UPLOADURL + '/' + data.data[0]);
+					$('#' + $upload.attr('data-upload-img')).attr('src', data.data[0]);
 					$('#' + $upload.attr('data-upload-input')).val(data.data[0]);
 				}else
 					$.site.error(data.msg);
@@ -73,6 +75,21 @@ $(function(){
 				$.site.error('图片上传失败，请重试。');
 			}
 		});
+    });
+    /*! 注册 data-tips-image 事件行为 */
+    this.$body.on('click', '[data-tips-image]', function () {
+        var src = this.getAttribute('data-tips-image') || this.src, tag = false;
+        var imgWidth = this.getAttribute('data-width') || '480px';
+        var $img = top.$("<img style=\"background:#fff;width:"+imgWidth+";height:auto;display:none;\" src=\""+src+"\">").appendTo('body');
+        $img.on('load', function(){
+        	top.layer.open({
+        		type: 1, area: imgWidth, title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true,
+        		content: $img,
+        		end: function () {
+        			$img.remove();
+        		}
+        	});
+        });
     });
     //面包屑导航
     if($('.admin-breadcrumb').length > 0){
@@ -136,6 +153,32 @@ $(function(){
     	$('#'+$(this).data('end-time')).data('datetimepicker').setStartDate($(this).val());
     });
 });
+/*!
+ * jQuery placeholder, fix for IE6,7,8,9
+ */
+var JPlaceHolder = {
+    _check: function () {
+        return 'placeholder' in document.createElement('input');
+    },
+    init: function () {
+        !this._check() && this.fix();
+    },
+    fix: function () {
+        $(':input[placeholder]').map(function () {
+            var self = $(this), txt = self.attr('placeholder');
+            self.wrap($('<div></div>').css({zoom: '1', margin: 'none', border: 'none', padding: 'none', background: 'none', position: 'relative'}));
+            var pos = self.position(), h = self.outerHeight(true), paddingleft = self.css('padding-left');
+            var holder = $('<span></span>').text(txt).css({position: 'absolute', left: pos.left, top: pos.top, height: h, lineHeight: h + 'px', paddingLeft: paddingleft, color: '#aaa'}).appendTo(self.parent());
+            self.on('focusin focusout change keyup', function () {
+                self.val() ? holder.hide() : holder.show();
+            });
+            holder.click(function () {
+                self.get(0).focus();
+            });
+            self.val() && holder.hide();
+        });
+    }
+};
 /** 获取表格选中的行*/
 var getCheckedVal = function(selector){
 	var chkArr = [];

@@ -1,4 +1,5 @@
 (function ($) {
+	
 	/**
 	 * 表单构造函数
 	 * @private

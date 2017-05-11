@@ -16,4 +16,9 @@ public class ApiProperties {
 	/** 接口是否加密*/
 	private boolean apiDigest;
 	
+	/** 上传文件的文件系统根路径*/
+	private String uploadRootPath;
+	
+	/** 上传文件的URL根路径*/
+	private String uploadBaseUrl;
 }

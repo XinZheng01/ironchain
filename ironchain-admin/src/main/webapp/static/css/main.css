@@ -81,3 +81,9 @@ table thead .sorting_asc_disabled {
 table thead .sorting_desc_disabled {
   background-image: url("../images/sort_desc_disabled.png");
 }
+[data-tips-image] {
+  cursor: pointer !important;
+  cursor: -webkit-zoom-in !important;
+  cursor: -moz-zoom-in !important;
+  cursor: zoom-in !important;
+}

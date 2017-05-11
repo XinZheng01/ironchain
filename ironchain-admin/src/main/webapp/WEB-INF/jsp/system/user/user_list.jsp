@@ -25,7 +25,8 @@
 					  </div>
 					  <div class="form-group">
 					    <input type="text" class="form-control form-datetime" id="startTime" name="srch_GTE_createTime_D" value="${srch_GTE_createTime_D}" readonly placeholder="创建开始时间" data-end-time="endTime">
-					    -
+					  </div>
+					  <div class="form-group">
 					    <input type="text" class="form-control form-datetime" id="endTime" name="srch_LTE_createTime_D" value="${srch_LTE_createTime_D}" readonly placeholder="创建结束时间" data-start-time="startTime">
 					  </div>
 					  <div class="form-group">
