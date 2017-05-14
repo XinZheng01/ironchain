@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
@@ -42,10 +43,12 @@ public class SystemPermission extends DataModel {
 	
 	/** 名称*/
 	@Column(name="name", nullable=false, length=30)
+	@NotNull(message="名称不能为空")
 	private String name;
 	
 	/** 编码*/
 	@Column(name="code", length=50)
+	@NotNull(message="编码不能为空")
 	private String code;
 	
 	/** 类型 1:目录,2:菜单,3:按钮*/

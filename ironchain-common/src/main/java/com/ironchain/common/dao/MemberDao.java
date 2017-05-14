@@ -1,5 +1,7 @@
 package com.ironchain.common.dao;
 
+import org.springframework.data.jpa.repository.Query;
+
 import com.ironchain.common.base.BaseDao;
 import com.ironchain.common.domain.Member;
 
@@ -12,5 +14,13 @@ public interface MemberDao extends BaseDao<Member, Long>{
 	 * @return
 	 */
 	Member findByMobilephoneAndPassword(String mobilephone, String password);
+
+	/**
+	 * 根据手机号码查询id
+	 * @param mobilephone
+	 * @return
+	 */
+	@Query("select m.id from Member m where m.mobilephone = ?1")
+	Long findIdByMobilephone(String mobilephone);
 
 }

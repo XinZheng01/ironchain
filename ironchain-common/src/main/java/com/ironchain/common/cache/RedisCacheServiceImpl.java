@@ -54,4 +54,19 @@ public class RedisCacheServiceImpl implements CacheService {
 	public void delete(String key){
 		redisTemplate.delete(key);
 	}
+
+	@Override
+	public boolean check(CacheConstants constants, String key, Serializable value) {
+		Validate.notNull(constants, "the CacheConstants must not be null!");
+		
+		key = constants.getKey(key);
+		if(!redisTemplate.hasKey(key))
+			return false;
+		
+		Serializable redisValue = redisTemplate.opsForValue().get(key);
+		if(value == null)
+			return value == redisValue;
+		else
+			return value.equals(redisValue);
+	}
 }

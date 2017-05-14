@@ -47,7 +47,7 @@
 							<tr>
 								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
 								<td>${item.title}</td>
-								<td>${item.picturePath}</td>
+								<td><img alt="" src="${item.picturePath}" width="158" height="58"></td>
 								<td>${item.url}</td>
 								<td>${item.sortId}</td>
 								<td><fmt:formatDate value="${item.showTime}" pattern="yyyy-MM-dd"/></td>

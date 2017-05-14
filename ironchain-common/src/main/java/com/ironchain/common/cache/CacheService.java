@@ -16,4 +16,6 @@ public interface CacheService {
 
 	void delete(String key);
 
+	boolean check(CacheConstants constants, String key, Serializable value);
+
 }

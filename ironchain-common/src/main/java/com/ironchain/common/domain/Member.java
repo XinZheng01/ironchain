@@ -8,8 +8,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.ironchain.common.base.DataModel;
+import com.ironchain.common.domain.Constants.RegexConstants;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,9 +30,13 @@ public class Member extends DataModel{
 	private static final long serialVersionUID = 1L;
 	
 	/** 个人*/
-	public final static int type_person = 1;
+	public final static int TYPE_PERSON = 1;
 	/** 企业*/
-	public final static int type_company = 2;
+	public final static int TYPE_COMPANY = 2;
+	
+	public final static int STATUS_SUCCESS = 1;
+	public final static int STATUS_AUDIT = 2;
+	public final static int STATUS_LOCK = 3;
 	
 	/** 用户名*/
 	@Column(name="name")
@@ -41,7 +47,6 @@ public class Member extends DataModel{
 	private String head;
 	
 	/** 类型*/
-	@NotNull(message="类型不能为空")
 	@Column(name="type")
 	private int type;
 	
@@ -51,6 +56,7 @@ public class Member extends DataModel{
 	
 	/** 手机*/
 	@NotNull(message="手机号码不能为空")
+	@Pattern(regexp=RegexConstants.MOBILE_REGEX, message="手机号码格式不正确")
 	@Column(name="mobilephone")
 	private String mobilephone;
 	
@@ -60,6 +66,7 @@ public class Member extends DataModel{
 	private String password;
 	
 	/** 身份证*/
+	@NotNull(message="身份证不能为空")
 	@Column(name="idcard")
 	private String idcard;
 	
@@ -75,9 +82,9 @@ public class Member extends DataModel{
 	@Column(name="company_idcard")
 	private String companyIdcard;
 	
-	/** 企业电话*/
-	@Column(name="company_phone")
-	private String companyPhone;
+	/** 企业固定电话*/
+	@Column(name="company_tel")
+	private String companyTel;
 	
 	/** 企业营业执照路径*/
 	@Column(name="company_license")
@@ -91,6 +98,10 @@ public class Member extends DataModel{
 	@Column(name="last_login_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastLoginTime;
+	
+	/** 状态 1正常 2审核中 3锁定*/
+	@Column(name="status")
+	private int status = STATUS_SUCCESS;
 	
 	public String getTypeStr(){
 		switch (this.type) {

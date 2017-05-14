@@ -4,6 +4,12 @@ public final class Constants {
 	
 	private Constants(){}
 	
+	public final class DateConstants{
+		public static final String YYYYMMDDHHMMSS = "yyyy-MM-dd HH:mm:ss";
+		public static final String YYYYMMDD = "yyyy-MM-dd";
+		public static final String YYYYMMDDHHMM = "yyyy-MM-dd HH:mm";
+		public static final String HHMMSS = "HH:mm:ss";
+	}
 	/**
 	 * 正则常量 
 	 * @author Administrator
@@ -15,6 +21,8 @@ public final class Constants {
 		public static final String EMAIL_REGEX = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
 		/** 用户手机正则*/
 		public static final String MOBILE_REGEX = "^(13|15|18|14|17)[0-9]{9}$";
+		/** 手机号码或固话正则*/
+		public static final String TEL_REGEX = "^(\\(\\d{3,4}\\)|\\d{3,4}-|\\s)?\\d{7,14}$";
 	}
 	
 	/**
@@ -22,8 +30,8 @@ public final class Constants {
 	 * @author Administrator
 	 */
 	public enum CacheConstants{
-		/** 验证码 失效时间3分钟*/
-		VERIFYCODE("ironchain.verifycode:", 60 * 3),
+		/** 验证码 失效时间10分钟*/
+		VERIFYCODE("ironchain.verifycode:", 60 * 10),
 		
 		/** 登录令牌 失效时间1个月*/
 		LOGIN_TOKEN("ironchain.login.token:", 30 * 24 * 60 * 60),

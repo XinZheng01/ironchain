@@ -8,7 +8,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.ironchain.common.base.DataModel;
+import com.ironchain.common.domain.Constants.DateConstants;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +27,12 @@ import lombok.Setter;
 public class Banner extends DataModel {
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final int TYPE_WEB = 1;
+	public static final int TYPE_APP = 2;
+	
+	public static final int POSITION_INDEX = 1;
+	public static final int POSITION_SHOP = 2;
 
 	/** 排序值*/
 	@Column(name="sort_id")
@@ -44,14 +53,40 @@ public class Banner extends DataModel {
 	/** 上架时间*/
 	@Column(name="show_time")
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern=DateConstants.YYYYMMDDHHMM)
 	private Date showTime;
 	
 	/** 下架时间*/
 	@Column(name="un_show_time")
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern=DateConstants.YYYYMMDDHHMM)
 	private Date unShowTime;
 	
 	/** 类型 1 web 2 app*/
 	@Column(name="type")
-	private int type = 2;
+	private int type = TYPE_APP;
+	
+	/** 位置 1 首页 2 商城*/
+	@Column(name="position")
+	private int position = POSITION_INDEX;
+	
+	public String getTypeStr(){
+		switch (this.type) {
+		case 1:
+			return "WEB";
+		case 2:
+			return "APP";
+		}
+		return null;
+	}
+	
+	public String getPositionStr(){
+		switch (this.position) {
+		case 1:
+			return "首页";
+		case 2:
+			return "商城";
+		}
+		return null;
+	}
 }

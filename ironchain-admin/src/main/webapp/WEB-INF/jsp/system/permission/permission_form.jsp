@@ -15,10 +15,7 @@
 	<div>
 		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
-			<div class="alert alert-warning alert-dismissable">
-			  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			  <p>您可以点击右上角的 <i class="icon-remove"></i> 来关闭这条消息。</p>
-			</div>
+			<my:error model="systemPermission"/>
 			<form:form id="saveForm" modelAttribute="systemPermission" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
 			  <div class="form-group">
@@ -112,9 +109,9 @@ $(function(){
 	});
 	$('#saveForm').validate({
 	    rules: {
-	    	name: {
-	    		required: true
-	    	}
+	    	//name: {
+	    	//	required: true
+	    	//}
 	    },
 	    message: {
 	    	

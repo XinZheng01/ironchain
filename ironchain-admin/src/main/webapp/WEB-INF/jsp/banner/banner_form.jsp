@@ -16,7 +16,6 @@
 		<div class="page">
 			<form:form id="saveForm" modelAttribute="banner" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
-		      <form:hidden path="picturePath"/>
 			  <div class="form-group">
 			    <label for="title" class="col-sm-1 required">标题</label>
 			    <div class="col-md-4 col-sm-6">
@@ -33,7 +32,7 @@
 			  <div class="form-group">
 			    <label for="picturePath" class="col-sm-1 required">图片</label>
 			    <div class="col-md-4 col-sm-6">
-			    <my:uploadImg id="picturePath" defaultValue="${picturePath}" width="200" help="建议尺寸：750px * 350px，支持上传bmp/png/jpeg/jpg/gif格式"/>
+			    <my:uploadImg id="picturePath" defaultValue="${banner.picturePath}" width="200" help="建议尺寸：750px * 350px，支持上传bmp/png/jpeg/jpg/gif格式"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -45,7 +44,7 @@
 			  <div class="form-group">
 			    <label for="unShowTime" class="col-sm-1">下架时间</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="unShowTime" cssClass="form-control form-datetime" id="unShowTime" placeholder="请输入下架时间" readonly="true"/>
+				  <form:input path="unShowTime" cssClass="form-control form-datetime" id="unShowTime" placeholder="请输入下架时间" readonly="true" />
 			    </div>
 			  </div>
 			  <div class="form-group">

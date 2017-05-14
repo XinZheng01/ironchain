@@ -57,6 +57,11 @@ public abstract class BaseController {
 			public void setAsText(String text) {
 				setValue(DateKit.parseDate(text));
 			}
+			//使实体字段上的@DateTimeFormat生效
+			@Override
+			public String getAsText() {
+				return null;
+			}
 		});
 	}
 

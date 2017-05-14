@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.SystemPermissionDao;
+import com.ironchain.common.domain.R;
 import com.ironchain.common.domain.SystemPermission;
 
 @Controller
@@ -74,7 +75,7 @@ public class SystemPermissionController extends ModelController<SystemPermission
 			return "system/permission/permission_form";
 		}
 		modelDao.save(systemPermission);
-		redirectAttributes.addFlashAttribute("message", "操作成功");
+		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
 	

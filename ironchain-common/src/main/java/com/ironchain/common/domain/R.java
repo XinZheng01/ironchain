@@ -78,6 +78,18 @@ public class R implements Serializable{
 	
 	/**
 	 * 异常
+	 * @param msg
+	 * @return
+	 */
+	public static R error(String msg){
+		R r = new R();
+		r.sc = SC_ERROR;
+		r.msg = msg;
+		return r;
+	}
+	
+	/**
+	 * 异常
 	 * @param sc
 	 * @param msg
 	 * @return

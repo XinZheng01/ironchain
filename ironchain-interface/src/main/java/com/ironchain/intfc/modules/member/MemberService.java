@@ -2,6 +2,8 @@ package com.ironchain.intfc.modules.member;
 
 import java.nio.charset.Charset;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,12 @@ public class MemberService extends BaseService{
 		if(member == null){
 			throw new ServiceException(R.SC_PARAMERROR, "手机号码或密码错误");
 		}
+		if(member.getStatus() == Member.STATUS_LOCK)
+			throw new ServiceException(R.SC_PARAMERROR, "账号被锁定");
+		
+		if(member.getStatus() == Member.STATUS_AUDIT)
+			throw new ServiceException(R.SC_PARAMERROR, "企业用户需要审核，请耐心等待");
+			
 		return member;
 	}
 	
@@ -48,5 +56,29 @@ public class MemberService extends BaseService{
 		return EncodeKit.encodeHex2String(
 				DigestKit.sha1((loginName + userId + System.currentTimeMillis())
 						.getBytes(Charset.forName("UTF-8"))));
+	}
+	
+	/**
+	 * 手机号码是否存在
+	 * @param mobilephone
+	 * @return
+	 */
+	public boolean mobilephoneExists(String mobilephone) {
+		return memberDao.findIdByMobilephone(mobilephone) != null;
+	}
+	
+	/**
+	 * 修改密码
+	 * @param userId
+	 * @param oldPassword
+	 * @param newPassword
+	 */
+	@Transactional
+	public void modifyPassword(Long userId, String oldPassword, String newPassword) {
+		Member member = memberDao.findOne(userId);
+		if(!member.getPassword().equals(disgestPassword(oldPassword)))
+			throw new ServiceException(R.SC_PARAMERROR, "密码错误");
+		member.setPassword(disgestPassword(newPassword));
+		memberDao.save(member);
 	}
 }
