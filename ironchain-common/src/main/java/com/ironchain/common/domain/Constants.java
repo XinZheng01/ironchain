@@ -4,6 +4,11 @@ public final class Constants {
 	
 	private Constants(){}
 	
+	/**
+	 * 日期常量
+	 * @author Administrator
+	 *
+	 */
 	public final class DateConstants{
 		public static final String YYYYMMDDHHMMSS = "yyyy-MM-dd HH:mm:ss";
 		public static final String YYYYMMDD = "yyyy-MM-dd";
@@ -63,4 +68,5 @@ public final class Constants {
 		}
 		
 	}
+	
 }

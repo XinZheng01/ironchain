@@ -20,7 +20,8 @@ import com.ironchain.common.domain.Constants.CacheConstants;
 import com.ironchain.common.domain.Constants.RegexConstants;
 import com.ironchain.common.domain.Member;
 import com.ironchain.common.domain.R;
-import com.ironchain.common.exception.ServiceException;
+import com.ironchain.common.kits.IdcardKit;
+import com.ironchain.common.sms.SmsService;
 import com.ironchain.intfc.annotation.IgnoreAuth;
 import com.ironchain.intfc.web.ApiBaseController;
 
@@ -39,6 +40,9 @@ public class MemberController extends ApiBaseController {
 	@Autowired
 	private CacheService cacheService;
 	
+	@Autowired
+	private SmsService smsService;
+	
 	/**
 	 * 会员注册
 	 * @return
@@ -46,14 +50,21 @@ public class MemberController extends ApiBaseController {
 	@IgnoreAuth
 	@PostMapping("/register")
 	public R register(@Valid Member member, @RequestParam String verifyCode){
-		if(verifyCode == null || verifyCode.length() != 6)
-			throw new ServiceException(R.SC_PARAMERROR, "非法验证码");
-		if(!cacheService.check(CacheConstants.VERIFYCODE, member.getMobilephone(), verifyCode))
-			throw new ServiceException(R.SC_PARAMERROR, "验证码不正确或已过期");
-		if(memberService.mobilephoneExists(member.getMobilephone()))
-			throw new ServiceException(R.SC_PARAMERROR, "该手机号码已存在");
+		LOGGER.debug("请求会员注册接口 member：{} verifyCode：{}", member, verifyCode);
+		if (verifyCode == null || verifyCode.length() != 6)
+			throw new IllegalArgumentException("非法验证码");
+		if (!cacheService.check(CacheConstants.VERIFYCODE, member.getMobilephone(), verifyCode))
+			throw new IllegalArgumentException("验证码不正确或已过期");
+		if (memberService.mobilephoneExists(member.getMobilephone()))
+			throw new IllegalArgumentException("该手机号码已存在");
+		if (member.getPassword().length() < 6 || member.getPassword().length() > 20)
+			throw new IllegalArgumentException("密码不能小于6位，大于20位");
 		
+		member.setName(member.getMobilephone());
 		if(member.getType() == Member.TYPE_PERSON){//个人用户注册完自动登录
+			if (member.getIdcard() == null || !IdcardKit.validateCard(member.getIdcard()))
+				throw new IllegalArgumentException("请输入正确的身份证号码");
+			
 			member = memberDao.save(member);
 			Long uid = member.getId();
 			String mobile = member.getMobilephone();
@@ -63,7 +74,6 @@ public class MemberController extends ApiBaseController {
 			
 			Map<String, Object> map = new HashMap<>();
 			map.put("userId", uid);
-			map.put("mobilephone", mobile);
 			map.put("name", member.getName());
 			map.put("token", token);
 			
@@ -72,14 +82,15 @@ public class MemberController extends ApiBaseController {
 			Validate.notBlank(member.getCompanyName(), "企业名称不能为空");
 			Validate.notBlank(member.getCompanyLegal(), "法人姓名不能为空");
 			Validate.matchesPattern(member.getCompanyTel(), RegexConstants.TEL_REGEX, "企业电话格式不正确");
-			Validate.notBlank(member.getCompanyIdcard(), "企业法人身份证不能为空");
+			if (member.getCompanyIdcard() == null || !IdcardKit.validateCard(member.getCompanyIdcard()))
+				throw new IllegalArgumentException("请输入正确的法人身份证号码");
 			Validate.notBlank(member.getCompanyAddress(), "企业地址不能为空");
 			Validate.notBlank(member.getCompanyLicense(), "企业营业执照不能为空");
 			
 			member = memberDao.save(member);
 			return R.ok();
 		}else
-			throw new ServiceException(R.SC_PARAMERROR, "非法用户类型");
+			throw new IllegalArgumentException("非法用户类型");
 		
 	}
 	
@@ -92,6 +103,7 @@ public class MemberController extends ApiBaseController {
 	@IgnoreAuth
 	@PostMapping("/login")
 	public R login(@RequestParam String mobilephone, @RequestParam String password){
+		LOGGER.debug("请求会员登录接口 mobilephone：{} password：{}", mobilephone, password);
 		Validate.notBlank(mobilephone, "用户名不能为空");
 		Validate.notBlank(password, "密码不能为空");
 		
@@ -104,7 +116,6 @@ public class MemberController extends ApiBaseController {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", uid);
-		map.put("mobilephone", mobile);
 		map.put("name", member.getName());
 		map.put("token", token);
 		
@@ -119,28 +130,33 @@ public class MemberController extends ApiBaseController {
 	@IgnoreAuth
 	@PostMapping("/send_verify_code")
 	public R sendVerifyCode(@RequestParam String mobilephone, @RequestParam int type){
+		LOGGER.debug("请求发送验证码接口 mobilephone：{} type：{}", mobilephone, type);
 		//检验手机号码
 		Validate.matchesPattern(mobilephone, RegexConstants.MOBILE_REGEX, "手机号码格式不正确");
-		if(type == 1 && memberService.mobilephoneExists(mobilephone))//注册
-			throw new ServiceException(R.SC_PARAMERROR, "手机号码已存在");
-		else if(type == 2 && !memberService.mobilephoneExists(mobilephone))
-			throw new ServiceException(R.SC_PARAMERROR, "手机号码不存在");
-		else if(type < 1 || type > 2)
-			throw new ServiceException(R.SC_PARAMERROR, "非法类型");
 		
-		String code = getRandomCode();
-		//send code
-		
-		LOGGER.info("手机号码：{}， 验证码为：{}", mobilephone, code);
-		//set cache
+		String code = memberService.createRandomCode();
+		Map<String, Object> param = new HashMap<>();
+		param.put("code", code);
+		switch (type) {
+		case 1://注册
+			if(memberService.mobilephoneExists(mobilephone))
+				throw new IllegalArgumentException("手机号码已存在");
+			
+			smsService.send("sms.register-verify-code", new Object[]{code}, mobilephone);
+			break;
+		case 2://忘记密码
+			if(!memberService.mobilephoneExists(mobilephone))
+				throw new IllegalArgumentException("手机号码不存在");
+			
+			smsService.send("sms.reset-verify-code", new Object[]{code}, mobilephone);
+			break;
+		default:
+			throw new IllegalArgumentException("非法type类型");
+		}
+		//保存到缓存
 		cacheService.set(CacheConstants.VERIFYCODE, mobilephone, code);
 		return R.ok();
 	}
-	
-	public String getRandomCode(){
-		return "";
-	}
-	
 	
 	/**
 	 * 重置密码 步骤1
@@ -159,6 +175,7 @@ public class MemberController extends ApiBaseController {
 	@IgnoreAuth
 	@PostMapping("/reset_password_two")
 	public R resetPasswordStepTwo(@RequestParam String newPassword){
+		LOGGER.debug("请求重置密码 步骤2接口 newPassword：{}", newPassword);
 		return R.ok();
 	}
 	
@@ -168,6 +185,7 @@ public class MemberController extends ApiBaseController {
 	 */
 	@PostMapping("/modify_password")
 	public R modifyPassword(@RequestParam Long userId, @RequestParam String oldPassword, @RequestParam String newPassword){
+		LOGGER.debug("请求修改密码接口 userId：{} oldPassword：{} newPassword：{}", userId, oldPassword, newPassword);
 		memberService.modifyPassword(userId, oldPassword, newPassword);
 		return R.ok();
 	}

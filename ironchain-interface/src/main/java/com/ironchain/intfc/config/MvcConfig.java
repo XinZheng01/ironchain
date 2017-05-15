@@ -12,6 +12,8 @@ import org.springframework.data.web.config.SpringDataWebConfiguration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
+import com.ironchain.common.sms.SmsService;
+import com.ironchain.common.sms.SmsServiceImpl;
 import com.ironchain.common.upload.FileSystemUploadService;
 import com.ironchain.common.upload.UploadService;
 import com.ironchain.intfc.web.filter.DecryptFilter;
@@ -68,5 +70,10 @@ public class MvcConfig extends SpringDataWebConfiguration {
 	public UploadService getUploadService(ApiProperties apiProperties, ServletContext servletContext){
 		return new FileSystemUploadService(apiProperties.getUploadRootPath(),
 				apiProperties.getUploadBaseUrl(), servletContext);
+	}
+	
+	@Bean
+	public SmsService getSmsService(){
+		return new SmsServiceImpl();
 	}
 }

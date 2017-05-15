@@ -1,6 +1,5 @@
 package com.ironchain.intfc.modules;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import com.ironchain.common.cache.CacheService;
 import com.ironchain.common.dao.BannerDao;
 import com.ironchain.common.domain.Banner;
 import com.ironchain.common.domain.R;
-import com.ironchain.common.domain.SystemUser;
 import com.ironchain.intfc.annotation.IgnoreApiSecurity;
 import com.ironchain.intfc.annotation.IgnoreAuth;
 import com.ironchain.intfc.web.ApiBaseController;
@@ -29,6 +27,7 @@ public class HomeController extends ApiBaseController{
 	
 	@Autowired
 	private CacheService cacheService;
+	
 	/**
 	 * banner 列表
 	 */

@@ -1,6 +1,7 @@
 package com.ironchain.intfc.modules.member;
 
 import java.nio.charset.Charset;
+import java.security.SecureRandom;
 
 import javax.transaction.Transactional;
 
@@ -80,5 +81,19 @@ public class MemberService extends BaseService{
 			throw new ServiceException(R.SC_PARAMERROR, "密码错误");
 		member.setPassword(disgestPassword(newPassword));
 		memberDao.save(member);
+	}
+	
+	private static final SecureRandom random = new SecureRandom();
+	
+	/**
+	 * 生成验证码
+	 * @return
+	 */
+	public String createRandomCode() {
+		char[] value = new char[6];
+		for (int i = 0; i < 6; i++) {
+		  value[i] = ((char)(random.nextInt(10) + 48));
+		}
+		return new String(value);
 	}
 }

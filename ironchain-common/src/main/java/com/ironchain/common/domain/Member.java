@@ -66,7 +66,6 @@ public class Member extends DataModel{
 	private String password;
 	
 	/** 身份证*/
-	@NotNull(message="身份证不能为空")
 	@Column(name="idcard")
 	private String idcard;
 	
@@ -77,6 +76,10 @@ public class Member extends DataModel{
 	/** 企业法人*/
 	@Column(name="company_legal")
 	private String companyLegal;
+	
+	/** 企业法人电话*/
+	@Column(name="company_legal_phone")
+	private String companyLegalPhone;
 	
 	/** 企业法人身份证*/
 	@Column(name="company_idcard")
