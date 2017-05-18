@@ -1,6 +1,11 @@
 package com.ironchain.common.kits;
 
-import com.ironchain.common.exception.ServiceException;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.zip.ZipOutputStream;
 
 //import io.renren.entity.ColumnEntity;
 //import io.renren.entity.TableEntity;
@@ -9,16 +14,14 @@ import com.ironchain.common.exception.ServiceException;
 //import org.apache.commons.configuration.PropertiesConfiguration;
 //import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+import org.springframework.core.io.ClassPathResource;
 //import org.apache.velocity.Template;
 //import org.apache.velocity.VelocityContext;
 //import org.apache.velocity.app.Velocity;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import com.ironchain.common.exception.ServiceException;
 
 /**
  * 代码生成器   工具类
@@ -46,11 +49,21 @@ public class GenKit {
 	/**
 	 * 生成代码
 	 */
-	public static void generatorCode(Map<String, String> table,
-			List<Map<String, String>> columns, ZipOutputStream zip){
+	public static void generatorCode(Map<String, Object> table,
+			List<Map<String, Object>> columns, ZipOutputStream zip){
 //		//配置信息
-//		Configuration config = getConfig();
-//		
+		Properties config = getConfig();
+		//设置类名
+		table.put("className", tableToJava(table.get("tableName").toString(), null));
+		//设置类名
+		table.put("modelName", StringUtils.uncapitalize(table.get("className").toString()));
+//		StringUtils.uncapitalize(str)
+		//设置字段名
+		for (Map<String, Object> column : columns) {
+			column.get("columnName");
+		}
+		
+		
 //		//表信息
 //		TableEntity tableEntity = new TableEntity();
 //		tableEntity.setTableName(table.get("tableName"));
@@ -137,8 +150,7 @@ public class GenKit {
 	 * 列名转换成Java属性名
 	 */
 	public static String columnToJava(String columnName) {
-		return null;
-//		return WordUtils.capitalizeFully(columnName, new char[]{'_'}).replace("_", "");
+		return WordUtils.capitalizeFully(columnName, '_').replaceAll("_", "");
 	}
 	
 	/**
@@ -151,16 +163,16 @@ public class GenKit {
 		return columnToJava(tableName);
 	}
 	
-//	/**
-//	 * 获取配置信息
-//	 */
-//	public static Configuration getConfig(){
-//		try {
-//			return new PropertiesConfiguration("generator.properties");
-//		} catch (ConfigurationException e) {
-//			throw new ServiceException("获取配置文件失败，", e);
-//		}
-//	}
+	/**
+	 * 获取配置信息
+	 */
+	public static Properties getConfig(){
+		try {
+			return PropertiesLoaderUtils.loadProperties(new ClassPathResource("generator.properties"));
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
 	
 	/**
 	 * 获取文件名

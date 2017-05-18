@@ -16,6 +16,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.ironchain.admin.common.security.SecurityAuditorAware;
 import com.ironchain.common.base.BaseDaoImpl;
+import com.ironchain.common.dao.gen.MysqlTableDao;
 import com.ironchain.common.domain.SystemUser;
 import com.ironchain.common.kits.SpringKit;
 import com.ironchain.common.persistence.SqlHelper;
@@ -80,6 +81,11 @@ public class DatabaseConfig {
     
     @Bean
     public AuditorAware<SystemUser> auditorProvider() {
-      return new SecurityAuditorAware();
+    	return new SecurityAuditorAware();
+    }
+    
+    @Bean
+    public MysqlTableDao getMysqlTableDao(){
+    	return new MysqlTableDao();
     }
 }
