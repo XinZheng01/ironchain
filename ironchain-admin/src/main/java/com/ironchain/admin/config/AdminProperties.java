@@ -1,4 +1,4 @@
-package com.ironchain.admin.common.config;
+package com.ironchain.admin.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

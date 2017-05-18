@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ironchain.admin.common.security.SecurityKit;
+import com.ironchain.admin.security.SecurityKit;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.SystemRoleDao;
 import com.ironchain.common.dao.SystemUserDao;

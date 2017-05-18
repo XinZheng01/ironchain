@@ -5,7 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
-import com.ironchain.admin.common.config.AdminProperties;
+import com.ironchain.admin.config.AdminProperties;
 
 @SpringBootApplication(scanBasePackages = {"com.ironchain.admin"})
 @EnableConfigurationProperties(AdminProperties.class)

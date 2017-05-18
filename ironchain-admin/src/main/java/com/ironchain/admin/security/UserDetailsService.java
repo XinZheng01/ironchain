@@ -1,4 +1,4 @@
-package com.ironchain.admin.common.security;
+package com.ironchain.admin.security;
 
 import java.util.ArrayList;
 import java.util.List;

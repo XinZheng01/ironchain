@@ -1,4 +1,4 @@
-package com.ironchain.admin.common.security;
+package com.ironchain.admin.security;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;

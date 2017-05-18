@@ -1,4 +1,4 @@
-package com.ironchain.admin.common.config;
+package com.ironchain.admin.config;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import com.ironchain.common.domain.SystemPermission;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@Import(com.ironchain.admin.common.security.UserDetailsService.class)
+@Import(com.ironchain.admin.security.UserDetailsService.class)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired

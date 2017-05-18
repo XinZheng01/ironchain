@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.ironchain.admin.common.security.SecurityKit;
+import com.ironchain.admin.security.SecurityKit;
 import com.ironchain.common.base.BaseController;
 import com.ironchain.common.dao.SystemPermissionDao;
 

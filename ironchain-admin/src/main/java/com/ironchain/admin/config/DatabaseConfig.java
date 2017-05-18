@@ -1,4 +1,4 @@
-package com.ironchain.admin.common.config;
+package com.ironchain.admin.config;
 
 import javax.sql.DataSource;
 
@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
-import com.ironchain.admin.common.security.SecurityAuditorAware;
+import com.ironchain.admin.security.SecurityAuditorAware;
 import com.ironchain.common.base.BaseDaoImpl;
 import com.ironchain.common.dao.gen.MysqlTableDao;
 import com.ironchain.common.domain.SystemUser;

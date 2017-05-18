@@ -15,7 +15,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.ironchain.admin.common.security.SecurityKit;
+import com.ironchain.admin.security.SecurityKit;
 import com.ironchain.common.annotation.SysLog;
 import com.ironchain.common.base.BaseController;
 import com.ironchain.common.dao.SystemLogDao;
