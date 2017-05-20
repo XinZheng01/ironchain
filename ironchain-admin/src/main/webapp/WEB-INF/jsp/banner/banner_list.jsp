@@ -55,7 +55,7 @@
 								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd"/></td>
 								<td>
 									<a href="${ctx}/banner/edit?id=${item.id}">编辑</a> | 
-									<a href="${ctx}/banner/delete?id=${item.id}" class="text-danger">删除</a>
+									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -69,11 +69,36 @@
 </body>
 <script type="text/javascript">
 $(function(){
-	//$("#example").DataTable();
 	//删除
 	$('.deleteBtn').on('click', function(){
-		//console.log(getCheckedVal('.dataTable'));
+		var ids = getCheckedVal('.dataTable');
+		if(ids.length == 0){
+			return $.site.alert("请选择一条记录");
+		}
+		del(ids.join(','));
 	});
 });
+function del(id){
+	$.site.confirm("确定要删除选中的记录？", function(){
+		$.site.loading();
+		$.ajax({
+			url: "${ctx}/banner/delete",
+			data: {"ids": id},
+			type: "POST",
+			success: function(data){
+				$.site.close();
+				if(data.sc == 200){
+					location.reload();
+					$.site.success(data.msg);
+				}else{
+					$.site.error(data.msg);
+				}
+			},
+			error: function(){
+				$.site.error("操作失败");
+			}
+		});
+	})
+}
 </script>
 </html>

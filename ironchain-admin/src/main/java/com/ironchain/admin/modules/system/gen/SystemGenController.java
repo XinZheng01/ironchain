@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ironchain.common.base.BaseController;
 
@@ -40,8 +41,8 @@ public class SystemGenController extends BaseController{
 	/**
 	 * 生成代码
 	 */
-	@RequestMapping("/gen_code")
-	public void genCode(String[] tableNames, HttpServletRequest request, HttpServletResponse response) throws IOException{
+	@RequestMapping("/zip")
+	public void genCode(@RequestParam String[] tableNames, HttpServletRequest request, HttpServletResponse response) throws IOException{
 		byte[] data = sysGenService.generatorCode(tableNames);
 		response.reset();
         response.setHeader("Content-Disposition	", "attachment; filename=\"gen_code.zip\"");  

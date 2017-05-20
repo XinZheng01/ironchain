@@ -1,13 +1,14 @@
-package ${package}.dao;
+package com.ironchain.common.dao;
 
-import ${package}.entity.${className};
+import com.ironchain.common.domain.${className};
 
 /**
- * ${comments}
+ * ${tableComment!}
  * 
  * @author ${author}
+<#if email??>
  * @email ${email}
- * @date ${datetime}
+</#if>
  */
 public interface ${className}Dao extends BaseDao<${className}, Long> {
 	
