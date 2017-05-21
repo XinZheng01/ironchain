@@ -92,14 +92,14 @@ public class SystemUserController extends ModelController<SystemUserDao, SystemU
 			return "system/user/user_form";
 		}
 		if(systemUser.getId() == null && StringUtils.isBlank(newPassword)){
-			redirectAttributes.addFlashAttribute("message", "密码不能为空");
+			redirectAttributes.addFlashAttribute(R.error("操作成功"));
 			return "system/user/user_form";
 		}
 		if(StringUtils.isNoneBlank(newPassword))
 			systemUser.setPassword(passwordEncoder.encode(newPassword));
 		
 		modelDao.save(systemUser);
-		redirectAttributes.addFlashAttribute("message", "操作成功");
+		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
 	

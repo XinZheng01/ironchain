@@ -34,7 +34,7 @@ import com.ironchain.common.domain.R;
 </#if>
  */
 @Controller
-@RequestMapping("/${packageName}")
+@RequestMapping("/${pathName}")
 public class ${className}Controller extends ModelController<${className}Dao, ${className}> {
 	
 	@Autowired
@@ -46,7 +46,7 @@ public class ${className}Controller extends ModelController<${className}Dao, ${c
 	@GetMapping("/list")
 	public String list(Pageable pageable, HttpServletRequest request, Model model){
 		model.addAttribute("page", modelDao.findAll(bySearchFilter(request), pageable));
-		return "${packageName}/${packageName}_list";
+		return "${pathName}/${className?lower_case}_list";
 	}
 	
 	
@@ -56,7 +56,7 @@ public class ${className}Controller extends ModelController<${className}Dao, ${c
 	 */
 	@GetMapping("/add")
 	public String add(@ModelAttribute ${className} ${modelName}, Model model){
-		return "${packageName}/${packageName}_form";
+		return "${pathName}/${className?lower_case}_form";
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class ${className}Controller extends ModelController<${className}Dao, ${c
 	 */
 	@GetMapping("/edit")
 	public String edit(@ModelAttribute ${className} ${modelName}, Model model){
-		return "${packageName}/${packageName}_form";
+		return "${pathName}/${className?lower_case}_form";
 	}
 	
 	/**
@@ -76,10 +76,10 @@ public class ${className}Controller extends ModelController<${className}Dao, ${c
 	public String save(@Valid @ModelAttribute ${className} ${modelName}, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
-			return "${packageName}/${packageName}_form";
+			return "${pathName}/${className?lower_case}_form";
 		}
 		modelDao.save(${modelName});
-		redirectAttributes.addFlashAttribute("message", "操作成功");
+		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
 	

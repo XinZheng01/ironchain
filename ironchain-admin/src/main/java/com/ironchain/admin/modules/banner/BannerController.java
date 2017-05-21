@@ -66,7 +66,7 @@ public class BannerController extends ModelController<BannerDao, Banner>{
 			return "banner/banner_form";
 		}
 		modelDao.save(banner);
-		redirectAttributes.addFlashAttribute("message", "操作成功");
+		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
 	

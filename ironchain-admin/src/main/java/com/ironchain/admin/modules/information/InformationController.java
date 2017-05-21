@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.InformationDao;
 import com.ironchain.common.domain.Information;
+import com.ironchain.common.domain.R;
 
 /**
  * 资讯管理
@@ -66,7 +67,7 @@ public class InformationController extends ModelController<InformationDao, Infor
 			return "information/information_form";
 		}
 		modelDao.save(information);
-		redirectAttributes.addFlashAttribute("message", "操作成功");
+		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
 	

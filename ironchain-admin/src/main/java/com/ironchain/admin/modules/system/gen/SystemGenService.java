@@ -110,12 +110,15 @@ public class SystemGenService {
 		Configuration cfg = getConfiguration(config);
 		//封装模板数据
 		Map<String, Object> map = new HashMap<>();
-		String className = tableToJava(table.get("tableName").toString(), config.getProperty("tablePrefix"));
-		String packageName = className.toLowerCase();
+		String tableName = replacePrefix(table.get("tableName").toString(), config.getProperty("tablePrefix"));
+		String className = columnToJava(tableName);
+		String packageName = StringUtils.replace(tableName.toLowerCase(), "_", ".");
+		String pathName = StringUtils.replace(tableName.toLowerCase(), "_", "/");
 		map.putAll(table);
 		map.put("className", className);//设置类名
 		map.put("modelName", StringUtils.uncapitalize(className));//设置模型名
 		map.put("packageName", packageName);//包路径
+		map.put("pathName", pathName);//url路径
 		map.put("columns", columns);//属性
 		map.put("author", config.getProperty("author"));//作者
 		map.put("email", config.getProperty("email"));//邮箱
@@ -127,7 +130,7 @@ public class SystemGenService {
 				ByteArrayOutputStream bout = new ByteArrayOutputStream();
 				template = cfg.getTemplate(templateName);
 				template.process(map, new OutputStreamWriter(bout));
-				zip.putNextEntry(new ZipEntry(getZipDir(config, templateName, className)));
+				zip.putNextEntry(new ZipEntry(getZipDir(config, templateName, className, pathName)));
 				zip.write(bout.toByteArray());
 			} catch (Exception e) {
 				throw new ServiceException("渲染模板失败，表名：" + table.get("tableName"), e);
@@ -166,17 +169,17 @@ public class SystemGenService {
 	 * 列名转换成Java属性名
 	 */
 	public static String columnToJava(String columnName) {
-		return WordUtils.capitalizeFully(columnName, '_').replaceAll("_", "");
+		return StringUtils.replace(WordUtils.capitalizeFully(columnName, '_'), "_", "");
 	}
 	
 	/**
-	 * 表名转换成Java类名
+	 * 替换前缀
 	 */
-	public static String tableToJava(String tableName, String tablePrefix) {
+	public static String replacePrefix(String tableName, String tablePrefix) {
 		if(StringUtils.isNotBlank(tablePrefix)){
 			tableName = tableName.replace(tablePrefix, "");
 		}
-		return columnToJava(tableName);
+		return tableName;
 	}
 	
 	/**
@@ -190,22 +193,22 @@ public class SystemGenService {
 		}
 	}
 	
-	public static String getOutputDir(Properties properties, String tmplName, String className){
-		String[] arr = StringUtils.split(tmplName, '.');
-		Map<String, Object> map = new HashMap<>();
-		map.put("className", className);
-		map.put("packageName", className.toLowerCase());
-		return FormatKit.formatString(properties.getProperty(arr[0] + "OutputDir"), map);
-	}
+//	public static String getOutputDir(Properties properties, String tmplName, String className){
+//		String[] arr = StringUtils.split(tmplName, '.');
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("className", className);
+//		map.put("pathName", className.toLowerCase());
+//		return FormatKit.formatString(properties.getProperty(arr[0] + "OutputDir"), map);
+//	}
 	
 	/**
 	 * 获取文件名
 	 */
-	public static String getZipDir(Properties properties, String tmplName, String className){
+	public static String getZipDir(Properties properties, String tmplName, String className, String pathName){
 		String[] arr = StringUtils.split(tmplName, '.');
 		Map<String, Object> map = new HashMap<>();
 		map.put("className", className);
-		map.put("packageName", className.toLowerCase());
+		map.put("pathName", pathName);
 		return FormatKit.formatString(properties.getProperty(arr[0] + "ZipDir"), map);
 	}
 }

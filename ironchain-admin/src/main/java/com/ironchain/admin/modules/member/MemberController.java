@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.MemberDao;
 import com.ironchain.common.domain.Member;
+import com.ironchain.common.domain.R;
 
 /**
  * 会员管理
@@ -66,7 +67,7 @@ public class MemberController extends ModelController<MemberDao, Member>{
 			return "member/member_form";
 		}
 		modelDao.save(member);
-		redirectAttributes.addFlashAttribute("message", "操作成功");
+		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
 	

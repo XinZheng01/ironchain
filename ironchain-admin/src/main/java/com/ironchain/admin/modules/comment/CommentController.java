@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.CommentDao;
 import com.ironchain.common.domain.Comment;
+import com.ironchain.common.domain.R;
 
 /**
  * 评论管理
@@ -65,7 +66,7 @@ public class CommentController extends ModelController<CommentDao, Comment>{
 			return "comment/comment_form";
 		}
 		modelDao.save(comment);
-		redirectAttributes.addFlashAttribute("message", "操作成功");
+		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
 	

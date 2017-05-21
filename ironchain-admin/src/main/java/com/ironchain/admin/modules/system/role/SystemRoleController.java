@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.SystemPermissionDao;
 import com.ironchain.common.dao.SystemRoleDao;
+import com.ironchain.common.domain.R;
 import com.ironchain.common.domain.SystemPermission;
 import com.ironchain.common.domain.SystemRole;
 import com.ironchain.common.kits.JsonKit;
@@ -82,7 +83,7 @@ public class SystemRoleController extends ModelController<SystemRoleDao, SystemR
 		if(permissions == null)
 			systemRole.getPermissions().clear();
 		modelDao.save(systemRole);
-		redirectAttributes.addFlashAttribute("message", "操作成功");
+		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
 	
