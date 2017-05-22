@@ -117,6 +117,7 @@ public class SystemGenService {
 		String pathName = StringUtils.replace(tableNameLower, "_", "/");
 		map.putAll(table);
 		map.put("className", className);//设置类名
+		map.put("tableNameLower", tableNameLower);//表名去前缀小写
 		map.put("modelName", StringUtils.uncapitalize(className));//设置模型名
 		map.put("packageName", packageName);//包路径
 		map.put("pathName", pathName);//url路径

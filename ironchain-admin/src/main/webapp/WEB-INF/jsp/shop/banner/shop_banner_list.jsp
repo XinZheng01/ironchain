@@ -6,7 +6,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp" %>
 <%@include file="/WEB-INF/include/meta.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${tableComment!}</title>
+<title></title>
 <%@include file="/WEB-INF/include/base-style.jsp" %>
 <%@include file="/WEB-INF/include/base-script.jsp" %>
 </head>
@@ -15,11 +15,11 @@
 		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
 			<div class="panel">
-				<form id="searchForm" action="${r"${ctx}"}/${pathName}/list" method="get" class="search-form form-inline">
+				<form id="searchForm" action="${ctx}/shop/banner/list" method="get" class="search-form form-inline">
 				<div class="panel-body">
 					<%--
 					  <div class="form-group">
-					    <input type="text" name="srch_LIKE_name" class="form-control" value="${r"${srch_LIKE_name}"}" placeholder="名称">
+					    <input type="text" name="srch_LIKE_name" class="form-control" value="${srch_LIKE_name}" placeholder="名称">
 					  </div>
 					  <div class="form-group">
 					  	<button type="submit" class="btn btn-primary">查询</button>
@@ -28,38 +28,43 @@
 					 --%>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${r"${ctx}"}/${pathName}/add';">新增</button>
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/shop/banner/add';">新增</button>
 					<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
 						<tr>
-						<#assign ignore = ["id", "updateTime", "createBy", "updateBy"]>
-						<#list columns as column>
-							<#if !ignore?seq_contains(column.attrName)>
-							<th data-sort-column="${column.attrName}">${column.columnComment}</th>
-							</#if>
-						</#list>
+							<th data-sort-column="title">标题</th>
+							<th data-sort-column="picturePath">图片</th>
+							<th data-sort-column="url">链接</th>
+							<th data-sort-column="type">类型</th>
+							<th data-sort-column="sortId">排序值</th>
+							<th data-sort-column="showTime">上架时间</th>
+							<th data-sort-column="unShowTime">下架时间</th>
+							<th data-sort-column="createTime">创建时间</th>
 							<th width="120">操作</th>
 						</tr>
 					</thead>
 	                <tbody>
-						<c:forEach items="${r"${page.content}"}" var="item">
+						<c:forEach items="${page.content}" var="item">
 							<tr>
-								<#list columns as column>
-								<#if !ignore?seq_contains(column.attrName)>
-								<td>${r"${item."}${column.attrName}${r"}"}</td>
-								</#if>
-								</#list>
+								<td>${item.title}</td>
+								<td>${item.picturePath}</td>
+								<td>${item.url}</td>
+								<td>${item.type}</td>
+								<td>${item.sortId}</td>
+								<td>${item.showTime}</td>
+								<td>${item.unShowTime}</td>
+								<td>${item.createTime}</td>
 								<td>
-									<a href="${r"${ctx}"}/${pathName}/edit?id=">编辑</a> | 
-									<a href="javascript:;" onclick="del('${r"${item.id}"}')" class="text-danger">删除</a>
+									<a href="${ctx}/shop/banner/edit?id=">编辑</a> | 
+									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
 								</td>
 							</tr>
 						</c:forEach>
 	                </tbody>
             	</table>
-            	<my:pagination page="${r"${page}"}"/>
+            	<my:pagination page="${page}"/>
             	</form>
            	</div>
 		</div>
@@ -70,7 +75,7 @@ function del(id){
 	$.site.confirm("确定要删除选中的记录？", function(){
 		$.site.loading();
 		$.ajax({
-			url: "${r"${ctx}"}/${pathName}/delete",
+			url: "${ctx}/shop/banner/delete",
 			data: {"ids": id},
 			type: "POST",
 			success: function(data){

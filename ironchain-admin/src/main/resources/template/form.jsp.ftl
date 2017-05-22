@@ -16,13 +16,16 @@
 		<div class="page">
 			<form:form id="saveForm" modelAttribute="${modelName}" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
+			  <#assign ignore = ["id", "createTime", "updateTime", "createBy", "updateBy"]>
 			  <#list columns as column>
+			  <#if !ignore?seq_contains(column.attrName)>
 			  <div class="form-group">
-			    <label for="${column.attrName}" class="col-sm-1 ${column.isNullable == "YES"?string("required", "")}">${column.columnComment}</label>
+			    <label for="${column.attrName}" class="col-sm-1${(column.isNullable == "NO")?string(" required", "")}">${column.columnComment}</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="${column.attrName}" cssClass="form-control" id="${column.attrName}" placeholder="请输入${column.columnComment}"/>
 			    </div>
 			  </div>
+			  </#if>
 			  </#list>
 			  <div class="form-group">
 			    <div class="col-sm-offset-1 col-sm-1">
@@ -39,17 +42,17 @@
 <script type="text/javascript">
 $(function(){
 	$('.back').on('click', function(){
-		location.href = "$\{ctx}/${pathName}/list";
+		location.href = "${r"${ctx}"}/${pathName}/list";
 	});
 	$('#saveForm').validate({
 	    rules: {
 	    	<#assign rules="">
 	    	<#list columns as column>
-	    	<#if column.isNullable == "YES">
-	    	<#assign rules=rules+column.attrName+": \"required\",">
+	    	<#if !ignore?seq_contains(column.attrName) && column.isNullable == "NO">
+	    		<#assign rules=rules+column.attrName+": \"required\",\n">
 	    	</#if>
 	    	</#list>
-	    	${rules}
+	    	${rules?substring(0,rules?length-2)}
 	    },
 	    message: {
 	    	

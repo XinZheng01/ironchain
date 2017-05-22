@@ -7,7 +7,6 @@
 </#list>
 package com.ironchain.common.domain;
 
-import java.io.Serializable;
 <#if hasBigDecimal??>
 import java.math.BigDecimal;
 </#if>
@@ -46,7 +45,7 @@ public class ${className} extends ${(bod=="1")?string("BaseModel","DataModel")} 
 	<#if bod == "11111" && ignore?seq_contains(column.attrName)>
 	<#elseif bod == "1" && column.attrName == "id">
 	<#else>
-	<#if columnComment??>/** ${columnComment}*/</#if>
+	<#if column.columnComment??>/** ${column.columnComment}*/</#if>
 	@Column(name="${column.columnName}")
 	private ${column.javaType} ${column.attrName};
 	
