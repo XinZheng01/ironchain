@@ -112,8 +112,9 @@ public class SystemGenService {
 		Map<String, Object> map = new HashMap<>();
 		String tableName = replacePrefix(table.get("tableName").toString(), config.getProperty("tablePrefix"));
 		String className = columnToJava(tableName);
-		String packageName = StringUtils.replace(tableName.toLowerCase(), "_", ".");
-		String pathName = StringUtils.replace(tableName.toLowerCase(), "_", "/");
+		String tableNameLower = tableName.toLowerCase();
+		String packageName = StringUtils.replace(tableNameLower, "_", ".");
+		String pathName = StringUtils.replace(tableNameLower, "_", "/");
 		map.putAll(table);
 		map.put("className", className);//设置类名
 		map.put("modelName", StringUtils.uncapitalize(className));//设置模型名
@@ -130,7 +131,7 @@ public class SystemGenService {
 				ByteArrayOutputStream bout = new ByteArrayOutputStream();
 				template = cfg.getTemplate(templateName);
 				template.process(map, new OutputStreamWriter(bout));
-				zip.putNextEntry(new ZipEntry(getZipDir(config, templateName, className, pathName)));
+				zip.putNextEntry(new ZipEntry(getZipDir(config, templateName, className, tableNameLower, pathName)));
 				zip.write(bout.toByteArray());
 			} catch (Exception e) {
 				throw new ServiceException("渲染模板失败，表名：" + table.get("tableName"), e);
@@ -204,10 +205,11 @@ public class SystemGenService {
 	/**
 	 * 获取文件名
 	 */
-	public static String getZipDir(Properties properties, String tmplName, String className, String pathName){
+	public static String getZipDir(Properties properties, String tmplName, String className, String tableNameLower, String pathName){
 		String[] arr = StringUtils.split(tmplName, '.');
 		Map<String, Object> map = new HashMap<>();
 		map.put("className", className);
+		map.put("tableNameLower", tableNameLower);
 		map.put("pathName", pathName);
 		return FormatKit.formatString(properties.getProperty(arr[0] + "ZipDir"), map);
 	}

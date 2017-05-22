@@ -91,6 +91,14 @@ $(function(){
         	});
         });
     });
+    //delete all btn
+    this.$body.on('click', '[data-del-select]', function () {
+    	var ids = getCheckedVal('.dataTable');
+		if(ids.length == 0){
+			return $.site.alert("请选择一条记录");
+		}
+		del(ids.join(','));
+    });
     //面包屑导航
     if($('.admin-breadcrumb').length > 0){
     	var _crumb_li = '<li><a href="javascript:;"><i class="icon icon-home"></i> 首页</a></li>';

@@ -1,5 +1,8 @@
 package com.ironchain.admin.modules.comment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -12,10 +15,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.CommentDao;
+import com.ironchain.common.domain.Banner;
 import com.ironchain.common.domain.Comment;
 import com.ironchain.common.domain.R;
 
@@ -70,12 +75,23 @@ public class CommentController extends ModelController<CommentDao, Comment>{
 		return "redirect:list";
 	}
 	
-	/**
-	 * 删除评论
-	 * @return
-	 */
-	@PostMapping("/delete")
-	public void delete(@RequestParam Long id){
-//		modelDao.delete(id);
-	}
+//	/**
+//	 * 删除轮播图
+//	 * @return
+//	 */
+//	@PostMapping("/delete")
+//	@ResponseBody
+//	public R delete(@RequestParam Long[] ids){
+//		if(ids == null || ids.length == 0)
+//			return R.error("请选择删除数据");
+//		List<Banner> entitys = new ArrayList<>();
+//		Banner banner = null;
+//		for (Long id : ids) {
+//			banner = new Banner();
+//			banner.setId(id);
+//			entitys.add(banner);
+//		}
+//		modelDao.deleteInBatch(entitys);
+//		return R.ok().setMsg("操作成功");
+//	}
 }

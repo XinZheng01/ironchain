@@ -29,6 +29,7 @@
 				</div>
 			 	<div class="panel-toolbar">
 			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='$\{ctx}/${pathName}/add';">新增</button>
+					<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
@@ -36,7 +37,7 @@
 						<#assign ignore = ["id", "updateTime", "createBy", "updateBy"]>
 						<#list columns as column>
 							<#if !ignore?seq_contains(column.attrName)>
-							<th>${column.columnComment}</th>
+							<th data-sort-column="${column.attrName}">${column.columnComment}</th>
 							</#if>
 						</#list>
 							<th width="120">操作</th>
@@ -51,7 +52,7 @@
 								</#if>
 								</#list>
 								<td>
-									<a href="$\{ctx}/${packageName}/edit?id=">编辑</a> | 
+									<a href="$\{ctx}/${pathName}/edit?id=">编辑</a> | 
 									<a href="javascript:;" onclick="del('$\{item.id}')" class="text-danger">删除</a>
 								</td>
 							</tr>
@@ -65,21 +66,11 @@
 	</div>
 </body>
 <script type="text/javascript">
-$(function(){
-	//删除
-	$('.deleteBtn').on('click', function(){
-		var ids = getCheckedVal('.dataTable');
-		if(ids.length == 0){
-			return $.site.alert("请选择一条记录");
-		}
-		del(ids.join(','));
-	});
-});
 function del(id){
 	$.site.confirm("确定要删除选中的记录？", function(){
 		$.site.loading();
 		$.ajax({
-			url: "${ctx}/banner/delete",
+			url: "$\{ctx}/${pathName}/delete",
 			data: {"ids": id},
 			type: "POST",
 			success: function(data){

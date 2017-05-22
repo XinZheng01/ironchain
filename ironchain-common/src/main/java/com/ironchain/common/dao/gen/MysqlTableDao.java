@@ -54,7 +54,7 @@ public class MysqlTableDao {
 	 * @return
 	 */
 	public List<Map<String, Object>> findColumnByTableName(String tableName){
-		return jdbcTemplate.queryForList("select column_name columnName, data_type dataType, column_comment columnComment, column_key columnKey, extra from information_schema.`COLUMNS`" +
+		return jdbcTemplate.queryForList("select column_name columnName, data_type dataType, column_comment columnComment, column_key columnKey, extra, is_nullable isNullable from information_schema.`COLUMNS`" +
 				" where table_schema = (select database()) and table_name = ? order by ordinal_position", tableName);
 	}
 }

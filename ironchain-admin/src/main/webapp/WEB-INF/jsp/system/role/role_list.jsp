@@ -36,7 +36,7 @@
 				</div>
 			 	<div class="panel-toolbar">
 			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/role/add';"><i class="icon icon-plus"></i>新增</button>
-			 		<button class="btn btn-danger deleteBtn" type="button"><i class="icon icon-times"></i>删除</button>
+			 		<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>

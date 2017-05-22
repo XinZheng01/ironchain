@@ -20,7 +20,7 @@
 			 	</div>
 			 	<div class="panel-toolbar">
 			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/permission/add';"><i class="icon icon-plus"></i>新增</button>
-			 		<button class="btn btn-danger deleteBtn" type="button"><i class="icon icon-times"></i>删除</button>
+			 		<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
 			 	</div>
 				<table class="row-border table-hover dataTable treetable">
 	                <thead>
@@ -72,11 +72,6 @@
 <script src="${staticUrl}/plugins/jquery-treetable/jquery.treetable.js"></script>
 <script type="text/javascript">
 $(function(){
-	//删除
-	$('.deleteBtn').on('click', function(){
-		console.log(getCheckedVal('.dataTable'));
-	});
-	
 	$('.treetable').treetable({expandable:true, column:1});
 });
 function del(id){
