@@ -62,4 +62,24 @@ public class Information extends DataModel {
 	@Lob
 	@Column(name="content")
 	private String content;
+	
+	public String getTypeStr(){
+		switch (this.type) {
+		case 1:
+			return "文章";
+		case 2:
+			return "广告";
+		}
+		return null;
+	}
+	
+	public String getStatusStr(){
+		switch (this.status) {
+		case 0:
+			return "未发布";
+		case 1:
+			return "已发布";
+		}
+		return null;
+	}
 }

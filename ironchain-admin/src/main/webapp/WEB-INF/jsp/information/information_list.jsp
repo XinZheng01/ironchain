@@ -42,9 +42,11 @@
 							<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
 							<th>类型</th>
 							<th>标题</th>
-							<th>来源</th>
-							<th>封面</th>
+							<th>文章来源</th>
+							<th>缩略图</th>
 							<th>排序值</th>
+							<th>网页关键字</th>
+							<th>网页描述</th>
 							<th>状态</th>
 							<th>创建时间</th>
 							<th width="120">操作</th>
@@ -62,8 +64,14 @@
 								</td>
 								<td>${item.title}</td>
 								<td>${item.source}</td>
-								<td>${item.picture}</td>
+								<td>
+								<c:if test="${not empty item.picture}">
+								<img src="${item.picture}">
+								</c:if>
+								</td>
 								<td>${item.orderNum}</td>
+								<td>${item.keywords}</td>
+								<td>${item.description}</td>
 								<td>
 								<c:choose>
 								<c:when test="${item.status == 0}"><span class="text-danger">${item.statusStr}</span></c:when>
@@ -73,7 +81,7 @@
 								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd"/></td>
 								<td>
 									<a href="${ctx}/information/edit?id=${item.id}">编辑</a> | 
-									<a href="${ctx}/information/delete?id=${item.id}" class="text-danger">删除</a>
+									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -86,5 +94,27 @@
 	</div>
 </body>
 <script type="text/javascript">
+function del(id){
+	$.site.confirm("确定要删除选中的记录？", function(){
+		$.site.loading();
+		$.ajax({
+			url: "${ctx}/information/delete",
+			data: {"ids": id},
+			type: "POST",
+			success: function(data){
+				$.site.close();
+				if(data.sc == 200){
+					location.reload();
+					$.site.success(data.msg);
+				}else{
+					$.site.error(data.msg);
+				}
+			},
+			error: function(){
+				$.site.error("操作失败");
+			}
+		});
+	})
+}
 </script>
 </html>

@@ -1,5 +1,8 @@
 package com.ironchain.admin.modules.information;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.ModelController;
@@ -19,18 +23,22 @@ import com.ironchain.common.dao.InformationDao;
 import com.ironchain.common.domain.Information;
 import com.ironchain.common.domain.R;
 
+
 /**
- * 资讯管理
- * @author Administrator
- *
+ * 资讯
+ * 
+ * @author zheng xin
+ * @email 
  */
 @Controller
 @RequestMapping("/information")
 public class InformationController extends ModelController<InformationDao, Information> {
 	
+//	@Autowired
+//	private InformationService informationService;
+	
 	/**
-	 * 资讯列表
-	 * @return
+	 * 列表
 	 */
 	@GetMapping("/list")
 	public String list(Pageable pageable, HttpServletRequest request, Model model){
@@ -38,8 +46,9 @@ public class InformationController extends ModelController<InformationDao, Infor
 		return "information/information_list";
 	}
 	
+	
 	/**
-	 * 资讯编辑页面
+	 * 编辑页面
 	 * @return
 	 */
 	@GetMapping("/add")
@@ -48,7 +57,7 @@ public class InformationController extends ModelController<InformationDao, Infor
 	}
 	
 	/**
-	 * 资讯编辑页面
+	 * 编辑页面
 	 * @return
 	 */
 	@GetMapping("/edit")
@@ -57,7 +66,7 @@ public class InformationController extends ModelController<InformationDao, Infor
 	}
 	
 	/**
-	 * 保存资讯
+	 * 保存
 	 * @return
 	 */
 	@PostMapping("/save")
@@ -72,11 +81,23 @@ public class InformationController extends ModelController<InformationDao, Infor
 	}
 	
 	/**
-	 * 删除资讯
+	 * 删除
 	 * @return
 	 */
 	@PostMapping("/delete")
-	public void delete(@RequestParam Long id){
-//		modelDao.delete(id);
+	@ResponseBody
+	public R delete(@RequestParam Long[] ids){
+		if(ids == null || ids.length == 0)
+			return R.error("请选择删除数据");
+		List<Information> entitys = new ArrayList<>();
+		Information entity = null;
+		for (Long id : ids) {
+			entity = new Information();
+			entity.setId(id);
+			entitys.add(entity);
+		}
+		modelDao.deleteInBatch(entitys);
+		return R.ok().setMsg("操作成功");
 	}
+	
 }

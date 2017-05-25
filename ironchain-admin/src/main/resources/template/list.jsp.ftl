@@ -52,7 +52,7 @@
 								</#if>
 								</#list>
 								<td>
-									<a href="${r"${ctx}"}/${pathName}/edit?id=">编辑</a> | 
+									<a href="${r"${ctx}"}/${pathName}/edit?id=${r"${item.id}"}">编辑</a> | 
 									<a href="javascript:;" onclick="del('${r"${item.id}"}')" class="text-danger">删除</a>
 								</td>
 							</tr>

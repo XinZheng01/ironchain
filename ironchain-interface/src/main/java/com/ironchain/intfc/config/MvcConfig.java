@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.SpringDataWebConfiguration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
@@ -64,7 +65,13 @@ public class MvcConfig extends SpringDataWebConfiguration {
 	    registration.setName("decryptFilter");
 	    registration.setOrder(1);
 	    return registration;
-	} 
+	}
+	
+	//添加支持跨域的url
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+//			registry.addMapping("/api/**").allowedHeaders("*").allowedMethods("*").allowedOrigins("*");
+	}
 
 	@Bean
 	public UploadService getUploadService(ApiProperties apiProperties, ServletContext servletContext){

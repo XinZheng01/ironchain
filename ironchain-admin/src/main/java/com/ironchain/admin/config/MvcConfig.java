@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.SpringDataWebConfiguration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 import com.ironchain.common.upload.FileSystemUploadService;
@@ -51,5 +52,11 @@ public class MvcConfig extends SpringDataWebConfiguration {
 	public UploadService getUploadService(AdminProperties adminProperties, ServletContext servletContext){
 		return new FileSystemUploadService(adminProperties.getUploadRootPath(),
 				adminProperties.getUploadBaseUrl(), servletContext);
+	}
+	
+	//添加支持跨域的url
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+//		registry.addMapping("/api/**").allowedHeaders("*").allowedMethods("*").allowedOrigins("*");
 	}
 }

@@ -1,3 +1,5 @@
+<%@page import="org.jsoup.safety.Whitelist"%>
+<%@page import="org.jsoup.Jsoup"%>
 <%@page import="java.util.Enumeration"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -14,6 +16,9 @@
 <script src="${staticUrl}/plugins/zui-1.6.0/lib/sortable/zui.sortable.min.js"></script>
 <script src="${staticUrl}/plugins/zui-1.6.0/lib/uploader/zui.uploader.min.js"></script>
 <script src="${staticUrl}/plugins/ajaxfileupload.js"></script>
+
+<script src="${staticUrl}/plugins/kindeditor/kindeditor-all-min.js"></script>
+<script src="${staticUrl}/plugins/kindeditor/lang/zh-CN.js"></script>
 <style type="text/css">
 /* 为可拖动的条目应用可移动光标类型 */
 #sortableList {list-style: none;}
@@ -92,6 +97,15 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
+			    <label for="content" class="col-sm-1">内容</label>
+			    <div class="col-md-4 col-sm-6">
+			    <textarea id="content" name="content" class="form-control kindeditor">
+			    <%=Jsoup.clean("<script type=\"text/javascript\"> location.href=\"http://www.baidu.com\";</script>\r\n<p>哈哈哈你好</p><font>hahah</font> alert(1)<script>alert(1)</script>", Whitelist.basic()) %>
+			    </textarea>
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
 			    <div class="col-sm-offset-1 col-sm-1">
 			      <button type="button" class="btn btn-default back">返回</button>
 			    </div>
@@ -150,6 +164,24 @@ $(function(){
 	    url: '${ctx}/upload'  // 文件上传提交地址
 	});
 })
+KindEditor.ready(function(K) {
+	var editor = K.create('textarea[name="content"]', {
+		//去掉 code template flash insertfile about		
+		items : [
+			'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'cut', 'copy', 'paste',
+			'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+			'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+			'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+			'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+			'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+		    'media', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+			'anchor', 'link', 'unlink'
+		],
+		uploadJson : '/editor/upload',
+		filterMode : false,//过滤html
+		extraFileUploadParams: {"${_csrf.parameterName}":"${_csrf.token}"}
+	});
+});
 </script>
 </body>
 </html>
