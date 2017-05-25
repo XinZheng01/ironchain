@@ -34,6 +34,7 @@
 				<table class="row-border table-hover dataTable">
 	                <thead>
 						<tr>
+	                	<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
 						<#assign ignore = ["id", "updateTime", "createBy", "updateBy"]>
 						<#list columns as column>
 							<#if !ignore?seq_contains(column.attrName)>
@@ -46,6 +47,7 @@
 	                <tbody>
 						<c:forEach items="${r"${page.content}"}" var="item">
 							<tr>
+								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
 								<#list columns as column>
 								<#if !ignore?seq_contains(column.attrName)>
 								<td>${r"${item."}${column.attrName}${r"}"}</td>

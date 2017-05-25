@@ -23,6 +23,12 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
+			    <label for="picturePath" class="col-sm-1 required">图片</label>
+			    <div class="col-md-4 col-sm-6">
+			    <my:uploadImg id="picturePath" defaultValue="${banner.picturePath}" width="200" help="建议尺寸：750px * 350px，支持上传bmp/png/jpeg/jpg/gif格式"/>
+			    </div>
+			  </div>
+			  <div class="form-group">
 			    <label for="url" class="col-sm-1">链接</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="url" cssClass="form-control" id="url" placeholder="请输入链接"/>
@@ -30,13 +36,23 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="picturePath" class="col-sm-1 required">图片</label>
+			    <label for="type" class="col-sm-1">类型</label>
 			    <div class="col-md-4 col-sm-6">
-			    <my:uploadImg id="picturePath" defaultValue="${banner.picturePath}" width="200" help="建议尺寸：750px * 350px，支持上传bmp/png/jpeg/jpg/gif格式"/>
+				  <form:select path="type" cssClass="form-control" id="type">
+			      	<form:option value="2">APP</form:option>
+			      	<form:option value="1">WEB</form:option>
+			      </form:select>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="showTime" class="col-sm-1 required">上架时间</label>
+			    <label for="sortId" class="col-sm-1">排序值</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:input path="sortId" cssClass="form-control" id="sortId" placeholder="请输入排序值"/>
+				  <div class="help-block">数字范围为0~255，数字越小越靠前</div>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="showTime" class="col-sm-1">上架时间</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="showTime" cssClass="form-control form-datetime" id="showTime" placeholder="请输入上架时间" readonly="true"/>
 			    </div>
@@ -65,17 +81,9 @@ $(function(){
 		location.href = "${ctx}/banner/list";
 	});
 	$('#saveForm').validate({
-	    rules: {
-	    	/* loginName: {
-	    		required: true
-	    	},
-	    	name: {
-	    		required: true
-	    	},
-	    	newPassword: "pwd",
-	    	email: "email",
-	    	mobilephone: "mobilephone",
-	    	roles: "required" */
+		rules: {
+	    	title: "required",
+			picturePath: "required"
 	    },
 	    message: {
 	    	

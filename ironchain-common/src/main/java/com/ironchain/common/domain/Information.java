@@ -1,7 +1,9 @@
 package com.ironchain.common.domain;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
@@ -59,7 +61,7 @@ public class Information extends DataModel {
 	private String description;
 	
 	/** 内容*/
-	@Lob
+	@Lob @Basic(fetch=FetchType.LAZY)
 	@Column(name="content")
 	private String content;
 	

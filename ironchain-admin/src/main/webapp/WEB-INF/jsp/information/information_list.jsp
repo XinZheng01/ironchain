@@ -66,7 +66,7 @@
 								<td>${item.source}</td>
 								<td>
 								<c:if test="${not empty item.picture}">
-								<img src="${item.picture}">
+								<img src="${item.picture}" width="100" height="50">
 								</c:if>
 								</td>
 								<td>${item.orderNum}</td>
@@ -78,7 +78,7 @@
 								<c:when test="${item.status == 1}"><span class="text-success">${item.statusStr}</span></c:when>
 								</c:choose>
 								</td>
-								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd"/></td>
+								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
 									<a href="${ctx}/information/edit?id=${item.id}">编辑</a> | 
 									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>

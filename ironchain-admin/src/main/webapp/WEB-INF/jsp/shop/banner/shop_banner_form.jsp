@@ -25,37 +25,42 @@
 			  <div class="form-group">
 			    <label for="picturePath" class="col-sm-1 required">图片</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="picturePath" cssClass="form-control" id="picturePath" placeholder="请输入图片"/>
+				  <my:uploadImg id="picturePath" defaultValue="${shopBanner.picturePath}"></my:uploadImg>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="url" class="col-sm-1">链接</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="url" cssClass="form-control" id="url" placeholder="请输入链接"/>
+				  <div class="help-block">如：http://www.baidu.com</div>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="type" class="col-sm-1">类型</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="type" cssClass="form-control" id="type" placeholder="请输入类型"/>
+				  <form:select path="type" cssClass="form-control" id="type">
+			      	<form:option value="2">APP</form:option>
+			      	<form:option value="1">WEB</form:option>
+			      </form:select>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="sortId" class="col-sm-1">排序值</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="sortId" cssClass="form-control" id="sortId" placeholder="请输入排序值"/>
+				  <div class="help-block">数字范围为0~255，数字越小越靠前</div>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="showTime" class="col-sm-1">上架时间</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="showTime" cssClass="form-control" id="showTime" placeholder="请输入上架时间"/>
+				  <form:input path="showTime" cssClass="form-control form-datetime" id="showTime" placeholder="请输入上架时间" readonly="true"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="unShowTime" class="col-sm-1">下架时间</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="unShowTime" cssClass="form-control" id="unShowTime" placeholder="请输入下架时间"/>
+				  <form:input path="unShowTime" cssClass="form-control form-datetime" id="unShowTime" placeholder="请输入下架时间" readonly="true"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -78,7 +83,7 @@ $(function(){
 	$('#saveForm').validate({
 	    rules: {
 	    	title: "required",
-picturePath: "required"
+			picturePath: "required"
 	    },
 	    message: {
 	    	

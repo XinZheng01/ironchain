@@ -44,12 +44,12 @@
 	                <thead>
 						<tr>
 							<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
-							<th class="sort-column loginName">登录名</th>
-							<th class="sort-column name">用户名</th>
-							<th class="sort-column email">邮箱</th>
-							<th class="sort-column mobilephone">手机号码</th>
-							<th class="sort-column status">状态</th>
-							<th class="sort-column createTime">创建时间</th>
+							<th data-sort-column="loginName">登录名</th>
+							<th data-sort-column="name">用户名</th>
+							<th data-sort-column="email">邮箱</th>
+							<th data-sort-column="mobilephone">手机号码</th>
+							<th data-sort-column="status">状态</th>
+							<th data-sort-column="createTime">创建时间</th>
 							<th width="120">操作</th>
 						</tr>
 					</thead>

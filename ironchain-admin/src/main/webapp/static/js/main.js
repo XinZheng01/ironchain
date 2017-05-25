@@ -14,22 +14,22 @@ $(function(){
 		}
 		$(this).parents('tr').toggleClass('active');
 	});
-	//表格排序
-	$(".sort-column").each(function(){
+	//提示信息
+	$('[data-toggle="tooltip"]').tooltip();
+	this.$body = $('body');
+	/*! 注册 data-sort-column 事件行为 */
+	$("th[data-sort-column]").each(function(){
 		var sort = $("input[name='sort']").val().split(",");
 		var _cur = $(this);
-		if (_cur.hasClass(sort[0])){
+		if (_cur.attr('data-sort-column') == sort[0]){
 			_cur.addClass('sorting_'+sort[1].toLowerCase());
 		}else{
 			_cur.addClass('sorting');
 		}
 	});
-	$(".sort-column").click(function(){
-		var order = $(this).attr("class").split(" ");
+	this.$body.on('click', '[data-sort-column]', function () {
+		var order = $(this).attr("data-sort-column");
 		var sort = $("input[name='sort']").val().split(",");
-		for(var i=0, len=order.length; i < len; i++){
-			if (order[i] == "sort-column"){order = order[i+1]; break;}
-		}
 		if (order == sort[0]){
 			$("input[name='sort']").val(order + "," + (sort[1].toLowerCase() == 'desc'?'asc':'desc'));
 		}else{
@@ -37,9 +37,6 @@ $(function(){
 		}
 		refreshTable();
 	});
-	//提示信息
-	$('[data-toggle="tooltip"]').tooltip();
-	this.$body = $('body');
 	/*! 注册 data-icon 事件行为 */
     this.$body.on('click', '[data-icon]', function () {
         var field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';

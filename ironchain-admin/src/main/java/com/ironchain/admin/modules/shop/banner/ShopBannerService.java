@@ -1,13 +1,11 @@
 package com.ironchain.admin.modules.shop.banner;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ironchain.common.base.BaseService;
-import com.ironchain.common.dao.ShopBannerDao;
 
 /**
- * 
+ * 商城轮播图
  * 
  * @author zheng xin
  * @email 
@@ -15,6 +13,6 @@ import com.ironchain.common.dao.ShopBannerDao;
 @Service
 public class ShopBannerService extends BaseService {
 	
-	@Autowired
-	private ShopBannerDao shopBannerDao;
+	//@Autowired
+	//private ShopBannerDao shopBannerDao;
 }

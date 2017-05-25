@@ -32,13 +32,14 @@
 	                <thead>
 						<tr>
 							<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
-							<th>标题</th>
-							<th>图片</th>
-							<th>链接</th>
-							<th>排序值</th>
-							<th>上架时间</th>
-							<th>下架时间</th>
-							<th>创建时间</th>
+							<th data-sort-column="title">标题</th>
+							<th data-sort-column="picturePath">图片</th>
+							<th data-sort-column="url">链接</th>
+							<th data-sort-column="type">类型</th>
+							<th data-sort-column="sortId">排序值</th>
+							<th data-sort-column="showTime">上架时间</th>
+							<th data-sort-column="unShowTime">下架时间</th>
+							<th data-sort-column="createTime">创建时间</th>
 							<th width="120">操作</th>
 						</tr>
 					</thead>
@@ -49,10 +50,11 @@
 								<td>${item.title}</td>
 								<td><img alt="" src="${item.picturePath}" width="158" height="58"></td>
 								<td>${item.url}</td>
+								<td>${item.typeStr}</td>
 								<td>${item.sortId}</td>
-								<td><fmt:formatDate value="${item.showTime}" pattern="yyyy-MM-dd"/></td>
-								<td><fmt:formatDate value="${item.unShowTime}" pattern="yyyy-MM-dd"/></td>
-								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd"/></td>
+								<td><fmt:formatDate value="${item.showTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+								<td><fmt:formatDate value="${item.unShowTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
 									<a href="${ctx}/banner/edit?id=${item.id}">编辑</a> | 
 									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>

@@ -42,11 +42,11 @@
 	                <thead>
 						<tr>
 							<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
-							<th class="sort-column name">名称</th>
-							<th class="sort-column code">英文名称</th>
+							<th data-sort-column="name">名称</th>
+							<th data-sort-column="code">英文名称</th>
 							<th>描述</th>
-							<th class="sort-column status">状态</th>
-							<th class="sort-column createTime">创建时间</th>
+							<th data-sort-column="status">状态</th>
+							<th data-sort-column="createTime">创建时间</th>
 							<th width="120">操作</th>
 						</tr>
 					</thead>

@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.ShopBannerDao;
-import com.ironchain.common.domain.R;
 import com.ironchain.common.domain.ShopBanner;
+import com.ironchain.common.domain.R;
 
 
 /**
- * 
+ * 商城轮播图
  * 
  * @author zheng xin
  * @email 
@@ -35,8 +34,8 @@ import com.ironchain.common.domain.ShopBanner;
 @RequestMapping("/shop/banner")
 public class ShopBannerController extends ModelController<ShopBannerDao, ShopBanner> {
 	
-	@Autowired
-	private ShopBannerService shopBannerService;
+	//@Autowired
+	//private ShopBannerService shopBannerService;
 	
 	/**
 	 * 列表
@@ -44,7 +43,7 @@ public class ShopBannerController extends ModelController<ShopBannerDao, ShopBan
 	@GetMapping("/list")
 	public String list(Pageable pageable, HttpServletRequest request, Model model){
 		model.addAttribute("page", modelDao.findAll(bySearchFilter(request), pageable));
-		return "shop/banner/shopbanner_list";
+		return "shop/banner/shop_banner_list";
 	}
 	
 	
@@ -54,7 +53,7 @@ public class ShopBannerController extends ModelController<ShopBannerDao, ShopBan
 	 */
 	@GetMapping("/add")
 	public String add(@ModelAttribute ShopBanner shopBanner, Model model){
-		return "shop/banner/shopbanner_form";
+		return "shop/banner/shop_banner_form";
 	}
 	
 	/**
@@ -63,7 +62,7 @@ public class ShopBannerController extends ModelController<ShopBannerDao, ShopBan
 	 */
 	@GetMapping("/edit")
 	public String edit(@ModelAttribute ShopBanner shopBanner, Model model){
-		return "shop/banner/shopbanner_form";
+		return "shop/banner/shop_banner_form";
 	}
 	
 	/**
@@ -74,7 +73,7 @@ public class ShopBannerController extends ModelController<ShopBannerDao, ShopBan
 	public String save(@Valid @ModelAttribute ShopBanner shopBanner, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
-			return "shop/banner/shopbanner_form";
+			return "shop/banner/shop_banner_form";
 		}
 		modelDao.save(shopBanner);
 		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));

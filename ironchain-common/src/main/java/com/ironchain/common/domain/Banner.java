@@ -31,12 +31,9 @@ public class Banner extends DataModel {
 	public static final int TYPE_WEB = 1;
 	public static final int TYPE_APP = 2;
 	
-	public static final int POSITION_INDEX = 1;
-	public static final int POSITION_SHOP = 2;
-
 	/** 排序值*/
 	@Column(name="sort_id")
-	private int sortId;
+	private int sortId = 0;
 	
 	/** 广告图片标题*/
 	@Column(name="title")
@@ -66,10 +63,6 @@ public class Banner extends DataModel {
 	@Column(name="type")
 	private int type = TYPE_APP;
 	
-	/** 位置 1 首页 2 商城*/
-	@Column(name="position")
-	private int position = POSITION_INDEX;
-	
 	public String getTypeStr(){
 		switch (this.type) {
 		case 1:
@@ -80,13 +73,4 @@ public class Banner extends DataModel {
 		return null;
 	}
 	
-	public String getPositionStr(){
-		switch (this.position) {
-		case 1:
-			return "首页";
-		case 2:
-			return "商城";
-		}
-		return null;
-	}
 }

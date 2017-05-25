@@ -6,7 +6,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp" %>
 <%@include file="/WEB-INF/include/meta.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title></title>
+<title>商城轮播图</title>
 <%@include file="/WEB-INF/include/base-style.jsp" %>
 <%@include file="/WEB-INF/include/base-script.jsp" %>
 </head>
@@ -34,6 +34,7 @@
 				<table class="row-border table-hover dataTable">
 	                <thead>
 						<tr>
+							<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
 							<th data-sort-column="title">标题</th>
 							<th data-sort-column="picturePath">图片</th>
 							<th data-sort-column="url">链接</th>
@@ -48,16 +49,17 @@
 	                <tbody>
 						<c:forEach items="${page.content}" var="item">
 							<tr>
+								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
 								<td>${item.title}</td>
-								<td>${item.picturePath}</td>
+								<td><img alt="" src="${item.picturePath}" width="158" height="58"></td>
 								<td>${item.url}</td>
-								<td>${item.type}</td>
+								<td>${item.typeStr}</td>
 								<td>${item.sortId}</td>
-								<td>${item.showTime}</td>
-								<td>${item.unShowTime}</td>
-								<td>${item.createTime}</td>
+								<td><fmt:formatDate value="${item.showTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+								<td><fmt:formatDate value="${item.unShowTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
-									<a href="${ctx}/shop/banner/edit?id=">编辑</a> | 
+									<a href="${ctx}/shop/banner/edit?id=${item.id}">编辑</a> | 
 									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
 								</td>
 							</tr>
