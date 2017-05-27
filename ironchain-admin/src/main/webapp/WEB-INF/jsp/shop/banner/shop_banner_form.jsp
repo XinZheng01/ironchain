@@ -23,9 +23,9 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="picturePath" class="col-sm-1 required">图片</label>
+			    <label for="img" class="col-sm-1 required">图片</label>
 			    <div class="col-md-4 col-sm-6">
-				  <my:uploadImg id="picturePath" defaultValue="${shopBanner.picturePath}"></my:uploadImg>
+				  <my:uploadImg id="img" defaultValue="${shopBanner.img}"></my:uploadImg>
 			    </div>
 			  </div>
 			  <div class="form-group">

@@ -1,12 +1,15 @@
 package com.ironchain.admin.modules.upload;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,33 +49,56 @@ public class UploadController extends BaseController {
 		
 	}
 	
+	private static List<String> imgExt = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp");
+	
 	@PostMapping(value="/editor/upload")
-	public void ueditorUpload(StandardMultipartHttpServletRequest request , HttpServletResponse response) throws IOException{
+	public void ueditorUpload(@RequestParam(value="dir", defaultValue="image", required=false) String dir, StandardMultipartHttpServletRequest request , HttpServletResponse response) throws IOException{
 		Collection<MultipartFile> files = request.getFileMap().values();
 		response.setContentType("text/html;charset=UTF-8");
-		Map<String, Object> map = new HashMap<>();
 		if(files == null || files.size() == 0){
-			map.put("error", 1);
-			map.put("message", "请选择文件。");
-			write(response, map);
+			write(response, getError("请选择文件。"));
 			return;
+		}
+		String fileName = null;
+		int idx = -1;
+		for (MultipartFile multipartFile : files) {
+			if("image".equals(dir)){
+				if(multipartFile.getSize() > 10000000){//10M
+					write(response, getError("上传文件大小超过限制。"));
+					return;
+				}
+				fileName = multipartFile.getOriginalFilename();
+				idx = fileName.lastIndexOf(".");
+				if(idx == -1 || !imgExt.contains(fileName.substring(idx + 1).toLowerCase())){
+					write(response, getError("上传文件扩展名是不允许的扩展名。\n只允许" + StringUtils.join(imgExt, ",")+ "格式。"));
+					return;
+				}
+			}else{
+				write(response, getError("不允许上传该类型的文件。"));
+				return;
+			}
 		}
 		try {
 			String url = uploadService.store(files.toArray(new MultipartFile[files.size()]))[0];
-			System.out.println("上传文件个数：" + files.size());
-			System.out.println("上传url：" + url);
+			Map<String, Object> map = new HashMap<>();
 			map.put("error", 0);
 			map.put("url", url);
 			write(response, map);
 		} catch (Exception e) {
 			LOGGER.error("ueditor 上传文件失败。", e);
-			map.put("error", 1);
-			map.put("message", "上传文件失败。");
-			write(response, map);
+			write(response, getError("上传文件失败。"));
 		}
 	}
 	
-	public void write(HttpServletResponse response, Object r) throws IOException{
+	public static Map<String, Object> getError(String message){
+		Map<String, Object> map = new HashMap<>();
+		map.put("error", 1);
+		map.put("message", message);
+		return map;
+	}
+	
+	
+	public static void write(HttpServletResponse response, Object r) throws IOException{
 		response.getWriter().write(JsonKit.normal().toJson(r));
 	}
 }

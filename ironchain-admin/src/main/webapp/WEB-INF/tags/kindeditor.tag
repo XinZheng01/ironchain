@@ -18,7 +18,7 @@ String staticUrl = request.getContextPath() + "/static";
 <script type="text/javascript">
 KindEditor.ready(function(K) {
 	var <%=path %>Editor = K.create('textarea[name="<%=path %>"]', {
-		//去掉 preview code template flash insertfile about selectall
+		//去掉 preview code template flash insertfile about selectall media
 		items : [
 			'source', '|', 'undo', 'redo', '|', 'print', 'cut', 'copy', 'paste',
 			'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
@@ -26,11 +26,12 @@ KindEditor.ready(function(K) {
 			'superscript', 'clearhtml', 'quickformat', '|',
 			'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
 			'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
-		    'media', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+		    'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
 			'anchor', 'link', 'unlink', '|', 'fullscreen'
 		],
 		uploadJson : '/editor/upload',
 		filterMode : false,//过滤html
+		formatUploadUrl : false,
 		extraFileUploadParams: _csrf
 	});
 });

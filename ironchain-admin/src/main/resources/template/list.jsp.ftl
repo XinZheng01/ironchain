@@ -28,8 +28,12 @@
 					 --%>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${r"${ctx}"}/${pathName}/add';">新增</button>
+			 	<sec:authorize url="/${pathName}/add">
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${r"${ctx}"}/${pathName}/add';"><i class="icon icon-plus"></i>新增</button>
+			 	</sec:authorize>
+			 	<sec:authorize url="/${pathName}/delete">
 					<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
+				</sec:authorize> 
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
@@ -47,15 +51,19 @@
 	                <tbody>
 						<c:forEach items="${r"${page.content}"}" var="item">
 							<tr>
-								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
+								<td class="dt-body-center"><input type="checkbox" value="${r"${item.id}"}"></td>
 								<#list columns as column>
 								<#if !ignore?seq_contains(column.attrName)>
-								<td>${r"${item."}${column.attrName}${r"}"}</td>
+								<td>${r"${item."}${column.attrName}}</td>
 								</#if>
 								</#list>
 								<td>
-									<a href="${r"${ctx}"}/${pathName}/edit?id=${r"${item.id}"}">编辑</a> | 
+								<sec:authorize url="/${pathName}/edit">
+									<a href="${r"${ctx}"}/${pathName}/edit?id=${r"${item.id}"}">编辑</a> |
+								</sec:authorize>
+								<sec:authorize url="/${pathName}/delete"> 
 									<a href="javascript:;" onclick="del('${r"${item.id}"}')" class="text-danger">删除</a>
+								</sec:authorize>
 								</td>
 							</tr>
 						</c:forEach>

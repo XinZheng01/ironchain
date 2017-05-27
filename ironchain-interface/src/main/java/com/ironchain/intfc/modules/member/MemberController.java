@@ -85,7 +85,7 @@ public class MemberController extends ApiBaseController {
 			if (member.getCompanyIdcard() == null || !IdcardKit.validateCard(member.getCompanyIdcard()))
 				throw new IllegalArgumentException("请输入正确的法人身份证号码");
 			Validate.notBlank(member.getCompanyAddress(), "企业地址不能为空");
-			Validate.notBlank(member.getCompanyLicense(), "企业营业执照不能为空");
+			Validate.notBlank(member.getCompanyLicenseImg(), "企业营业执照不能为空");
 			
 			member = memberDao.save(member);
 			return R.ok();

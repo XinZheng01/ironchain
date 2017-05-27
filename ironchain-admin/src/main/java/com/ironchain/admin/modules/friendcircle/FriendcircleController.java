@@ -1,4 +1,4 @@
-package com.ironchain.admin.modules.member;
+package com.ironchain.admin.modules.friendcircle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,23 +19,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.ModelController;
-import com.ironchain.common.dao.MemberDao;
-import com.ironchain.common.domain.Member;
+import com.ironchain.common.dao.FriendcircleDao;
+import com.ironchain.common.domain.Friendcircle;
 import com.ironchain.common.domain.R;
 
 
 /**
- * 会员
+ * 朋友圈
  * 
  * @author zheng xin
  * @email 
  */
 @Controller
-@RequestMapping("/member")
-public class MemberController extends ModelController<MemberDao, Member> {
+@RequestMapping("/friendcircle")
+public class FriendcircleController extends ModelController<FriendcircleDao, Friendcircle> {
 	
 	//@Autowired
-	//private MemberService memberService;
+	//private FriendcircleService friendcircleService;
 	
 	/**
 	 * 列表
@@ -43,7 +43,7 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	@GetMapping("/list")
 	public String list(Pageable pageable, HttpServletRequest request, Model model){
 		model.addAttribute("page", modelDao.findAll(bySearchFilter(request), pageable));
-		return "member/member_list";
+		return "friendcircle/friendcircle_list";
 	}
 	
 	
@@ -52,8 +52,8 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	 * @return
 	 */
 	@GetMapping("/add")
-	public String add(@ModelAttribute Member member, Model model){
-		return "member/member_form";
+	public String add(@ModelAttribute Friendcircle friendcircle, Model model){
+		return "friendcircle/friendcircle_form";
 	}
 	
 	/**
@@ -61,8 +61,8 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	 * @return
 	 */
 	@GetMapping("/edit")
-	public String edit(@ModelAttribute Member member, Model model){
-		return "member/member_form";
+	public String edit(@ModelAttribute Friendcircle friendcircle, Model model){
+		return "friendcircle/friendcircle_form";
 	}
 	
 	/**
@@ -70,12 +70,12 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute Member member, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid @ModelAttribute Friendcircle friendcircle, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
-			return "member/member_form";
+			return "friendcircle/friendcircle_form";
 		}
-		modelDao.save(member);
+		modelDao.save(friendcircle);
 		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
@@ -89,10 +89,10 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	public R delete(@RequestParam Long[] ids){
 		if(ids == null || ids.length == 0)
 			return R.error("请选择删除数据");
-		List<Member> entitys = new ArrayList<>();
-		Member entity = null;
+		List<Friendcircle> entitys = new ArrayList<>();
+		Friendcircle entity = null;
 		for (Long id : ids) {
-			entity = new Member();
+			entity = new Friendcircle();
 			entity.setId(id);
 			entitys.add(entity);
 		}

@@ -21,8 +21,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="equipment_demand")
-public class EquipmentDemand extends BaseModel {
+@Table(name="demand_equipment")
+public class DemandEquipment extends BaseModel {
 
 	private static final long serialVersionUID = 1L;
 	/** 新建*/

@@ -4,8 +4,13 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.ironchain.common.base.DataModel;
+import com.ironchain.common.domain.Constants.DateConstants;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,8 +36,8 @@ public class ShopBanner extends DataModel {
 	private String title;
 	
 	/** 图片*/
-	@Column(name="picture_path")
-	private String picturePath;
+	@Column(name="img")
+	private String img;
 	
 	/** 链接*/
 	@Column(name="url")
@@ -48,10 +53,14 @@ public class ShopBanner extends DataModel {
 	
 	/** 上架时间*/
 	@Column(name="show_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern=DateConstants.YYYYMMDDHHMM)
 	private Date showTime;
 	
 	/** 下架时间*/
 	@Column(name="un_show_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern=DateConstants.YYYYMMDDHHMM)
 	private Date unShowTime;
 	
 	public String getTypeStr(){

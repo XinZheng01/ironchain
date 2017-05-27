@@ -29,9 +29,9 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="picture" class="col-sm-1">缩略图</label>
+			    <label for="img" class="col-sm-1">缩略图</label>
 			    <div class="col-md-4 col-sm-6">
-				  <my:uploadImg id="picture" defaultValue="${information.picture}"></my:uploadImg>
+				  <my:uploadImg id="img" defaultValue="${information.img}"></my:uploadImg>
 			    </div>
 			  </div>
 			  <div class="form-group">

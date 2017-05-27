@@ -43,12 +43,12 @@ public class Member extends DataModel{
 	private String name;
 	
 	/** 用户头像*/
-	@Column(name="head")
-	private String head;
+	@Column(name="head_img")
+	private String headImg;
 	
 	/** 类型*/
 	@Column(name="type")
-	private int type;
+	private int type = TYPE_PERSON;
 	
 	/** 邮箱*/
 	@Column(name="email")
@@ -90,8 +90,8 @@ public class Member extends DataModel{
 	private String companyTel;
 	
 	/** 企业营业执照路径*/
-	@Column(name="company_license")
-	private String companyLicense;
+	@Column(name="company_license_img")
+	private String companyLicenseImg;
 	
 	/** 企业地址*/
 	@Column(name="company_address")

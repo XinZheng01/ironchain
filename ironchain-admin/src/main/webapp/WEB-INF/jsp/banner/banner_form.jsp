@@ -23,9 +23,9 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="picturePath" class="col-sm-1 required">图片</label>
+			    <label for="img" class="col-sm-1 required">图片</label>
 			    <div class="col-md-4 col-sm-6">
-			    <my:uploadImg id="picturePath" defaultValue="${banner.picturePath}" width="200" help="建议尺寸：750px * 350px，支持上传bmp/png/jpeg/jpg/gif格式"/>
+			    <my:uploadImg id="img" defaultValue="${banner.img}" width="200" help="建议尺寸：750px * 350px，支持上传bmp/png/jpeg/jpg/gif格式"/>
 			    </div>
 			  </div>
 			  <div class="form-group">

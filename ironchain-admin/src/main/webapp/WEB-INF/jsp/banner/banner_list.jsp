@@ -25,15 +25,19 @@
 					  </div>
 				</div>
 			 	<div class="panel-toolbar">
+			 	<sec:authorize url="/banner/add">
 			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/banner/add';"><i class="icon icon-plus"></i>新增</button>
+			 	</sec:authorize>
+			 	<sec:authorize url="/banner/delete">
 			 		<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
+			 	</sec:authorize>
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
 						<tr>
 							<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
 							<th data-sort-column="title">标题</th>
-							<th data-sort-column="picturePath">图片</th>
+							<th data-sort-column="img">图片</th>
 							<th data-sort-column="url">链接</th>
 							<th data-sort-column="type">类型</th>
 							<th data-sort-column="sortId">排序值</th>
@@ -48,7 +52,7 @@
 							<tr>
 								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
 								<td>${item.title}</td>
-								<td><img alt="" src="${item.picturePath}" width="158" height="58"></td>
+								<td><img alt="" src="${item.img}" width="158" height="58"></td>
 								<td>${item.url}</td>
 								<td>${item.typeStr}</td>
 								<td>${item.sortId}</td>
@@ -56,8 +60,12 @@
 								<td><fmt:formatDate value="${item.unShowTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
-									<a href="${ctx}/banner/edit?id=${item.id}">编辑</a> | 
+								<sec:authorize url="/banner/edit">
+									<a href="${ctx}/banner/edit?id=${item.id}">编辑</a> |
+								</sec:authorize> 
+								<sec:authorize url="/banner/delete">
 									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
+								</sec:authorize>
 								</td>
 							</tr>
 						</c:forEach>

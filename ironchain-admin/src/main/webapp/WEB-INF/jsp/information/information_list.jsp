@@ -33,8 +33,12 @@
 					  </div>
 				</div>
 			 	<div class="panel-toolbar">
+			 		<sec:authorize url="/information/add">
 			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/information/add';"><i class="icon icon-plus"></i>新增</button>
+			 		</sec:authorize>
+			 		<sec:authorize url="/information/delete">
 			 		<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
+			 		</sec:authorize>
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
@@ -65,8 +69,8 @@
 								<td>${item.title}</td>
 								<td>${item.source}</td>
 								<td>
-								<c:if test="${not empty item.picture}">
-								<img src="${item.picture}" width="100" height="50">
+								<c:if test="${not empty item.img}">
+								<img src="${item.img}" width="100" height="50">
 								</c:if>
 								</td>
 								<td>${item.orderNum}</td>
@@ -80,8 +84,12 @@
 								</td>
 								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
+									<sec:authorize url="/information/edit">
 									<a href="${ctx}/information/edit?id=${item.id}">编辑</a> | 
+									</sec:authorize>
+									<sec:authorize url="/information/delete">
 									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
+									</sec:authorize>
 								</td>
 							</tr>
 						</c:forEach>

@@ -6,7 +6,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp" %>
 <%@include file="/WEB-INF/include/meta.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>会员</title>
 <%@include file="/WEB-INF/include/base-style.jsp" %>
 <%@include file="/WEB-INF/include/base-script.jsp" %>
 </head>
@@ -17,81 +17,109 @@
 			<div class="panel">
 				<form id="searchForm" action="${ctx}/member/list" method="get" class="search-form form-inline">
 				<div class="panel-body">
+					<%--
 					  <div class="form-group">
-					  	<!-- <span>名称：</span> -->
-					    <input type="text" name="srch_LIKE_name" class="form-control" value="${srch_LIKE_name}" placeholder="用户名">
-					  </div>
-					  <div class="form-group">
-					  	<!-- <span>手机号码：</span> -->
-					    <input type="text" name="srch_LIKE_mobilephone" class="form-control" value="${srch_LIKE_mobilephone}" placeholder="手机号码">
-					  </div>
-					  <div class="form-group">
-					  	<!-- <span>公司名称：</span> -->
-					    <input type="text" name="srch_LIKE_companyName" class="form-control" value="${srch_LIKE_companyName}" placeholder="公司名称">
-					  </div>
-					  <div class="form-group">
-					  	<!-- <span>企业法人：</span> -->
-					    <input type="text" name="srch_LIKE_companyLegal" class="form-control" value="${srch_LIKE_companyLegal}" placeholder="企业法人">
-					  </div>
-					  <div class="form-group">
-					  	<span>用户类型：</span>
-					    <select name="srch_EQ_type_I" class="form-control">
-					    	<option value="" ${srch_EQ_type_I eq ""?"selected":""}>全部</option>
-					    	<option value="1" ${srch_EQ_type_I eq "1"?"selected":""}>个人</option>
-					    	<option value="2" ${srch_EQ_type_I eq "2"?"selected":""}>企业</option>
-					    </select>
+					    <input type="text" name="srch_LIKE_name" class="form-control" value="${srch_LIKE_name}" placeholder="名称">
 					  </div>
 					  <div class="form-group">
 					  	<button type="submit" class="btn btn-primary">查询</button>
 					  	<button type="reset" class="btn" >重置</button>
 					  </div>
+					 --%>
 				</div>
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/system/role/add';">新增</button>
+			 	<sec:authorize url="/member/add">
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/member/add';"><i class="icon icon-plus"></i>新增</button>
+			 	</sec:authorize>
+			 	<sec:authorize url="/member/delete">
+					<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
+				</sec:authorize> 
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
 						<tr>
-							<th>头像</th>
-							<th>用户名</th>
-							<th>手机号码</th>
-							<th>用户类型</th>
-							<th>公司名称</th>
-							<th>企业法人</th>
-							<th>最后登录时间</th>
+	                	<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
+							<th data-sort-column="name">用户名</th>
+							<th data-sort-column="headImg">用户头像</th>
+							<th data-sort-column="type">类型</th>
+							<th data-sort-column="mobilephone">手机号码</th>
+							<th data-sort-column="email">邮箱</th>
+							<th data-sort-column="password">密码</th>
+							<th data-sort-column="idcard">身份证</th>
+							<th data-sort-column="companyName">企业名称</th>
+							<th data-sort-column="companyLegal">企业法人</th>
+							<th data-sort-column="companyLegalPhone">企业法人电话</th>
+							<th data-sort-column="companyIdcard">企业法人身份证</th>
+							<th data-sort-column="companyTel">企业固定电话</th>
+							<th data-sort-column="companyLicenseImg">企业营业执照</th>
+							<th data-sort-column="companyAddress">企业地址</th>
+							<th data-sort-column="status">状态</th>
+							<th data-sort-column="lastLoginTime">最后登录时间</th>
+							<th data-sort-column="createTime">创建时间</th>
 							<th width="120">操作</th>
 						</tr>
 					</thead>
 	                <tbody>
-						<c:forEach items="${memberPage.content}" var="member">
+						<c:forEach items="${page.content}" var="item">
 							<tr>
-								<td>${member.head}</td>
-								<td>${member.name}</td>
-								<td>${member.mobilephone}</td>
-								<td>${member.typeStr}</td>
-								<td>${member.companyName}</td>
-								<td>${member.companyLegal}</td>
-								<td><fmt:formatDate value="${member.lastLoginTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
+								<td>${item.name}</td>
+								<td>${item.headImg}</td>
+								<td>${item.type}</td>
+								<td>${item.mobilephone}</td>
+								<td>${item.email}</td>
+								<td>${item.password}</td>
+								<td>${item.idcard}</td>
+								<td>${item.companyName}</td>
+								<td>${item.companyLegal}</td>
+								<td>${item.companyLegalPhone}</td>
+								<td>${item.companyIdcard}</td>
+								<td>${item.companyTel}</td>
+								<td>${item.companyLicenseImg}</td>
+								<td>${item.companyAddress}</td>
+								<td>${item.status}</td>
+								<td>${item.lastLoginTime}</td>
+								<td>${item.createTime}</td>
 								<td>
-									<a href="${ctx}/system/role/edit?id=">编辑</a> | 
-									<a href="${ctx}/system/role/delete?id=" class="text-danger">锁定</a>
+								<sec:authorize url="/member/edit">
+									<a href="${ctx}/member/edit?id=${item.id}">编辑</a> |
+								</sec:authorize>
+								<sec:authorize url="/member/delete"> 
+									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
+								</sec:authorize>
 								</td>
 							</tr>
 						</c:forEach>
 	                </tbody>
             	</table>
-            	<my:pagination page="${memberPage}"/>
+            	<my:pagination page="${page}"/>
             	</form>
            	</div>
 		</div>
 	</div>
 </body>
 <script type="text/javascript">
-$(function(){
-	//删除
-	$('.deleteBtn').on('click', function(){
-		console.log(getCheckedVal('.dataTable'));
-	});
-});
+function del(id){
+	$.site.confirm("确定要删除选中的记录？", function(){
+		$.site.loading();
+		$.ajax({
+			url: "${ctx}/member/delete",
+			data: {"ids": id},
+			type: "POST",
+			success: function(data){
+				$.site.close();
+				if(data.sc == 200){
+					location.reload();
+					$.site.success(data.msg);
+				}else{
+					$.site.error(data.msg);
+				}
+			},
+			error: function(){
+				$.site.error("操作失败");
+			}
+		});
+	})
+}
 </script>
 </html>

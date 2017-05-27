@@ -14,19 +14,26 @@
 	<div>
 		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
-			<form:form id="saveForm" modelAttribute="${modelName}" action="save" cssClass="form-horizontal">
+			<form:form id="saveForm" modelAttribute="friendcircle" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
-			  <#assign ignore = ["id", "createTime", "updateTime", "createBy", "updateBy"]>
-			  <#list columns as column>
-			  <#if !ignore?seq_contains(column.attrName)>
 			  <div class="form-group">
-			    <label for="${column.attrName}" class="col-sm-1${(column.isNullable == "NO")?string(" required", "")}">${column.columnComment}</label>
+			    <label for="content" class="col-sm-1 required">内容</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="${column.attrName}" cssClass="form-control" id="${column.attrName}" placeholder="请输入${column.columnComment}"/>
+				  <form:input path="content" cssClass="form-control" id="content" placeholder="请输入内容"/>
 			    </div>
 			  </div>
-			  </#if>
-			  </#list>
+			  <div class="form-group">
+			    <label for="memberId" class="col-sm-1 required">发送人</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:input path="memberId" cssClass="form-control" id="memberId" placeholder="请输入发送人"/>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="sendTime" class="col-sm-1">发送时间</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:input path="sendTime" cssClass="form-control" id="sendTime" placeholder="请输入发送时间"/>
+			    </div>
+			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-1 col-sm-1">
 			      <button type="button" class="btn btn-default back">返回</button>
@@ -42,19 +49,12 @@
 <script type="text/javascript">
 $(function(){
 	$('.back').on('click', function(){
-		location.href = "${r"${ctx}"}/${pathName}/list";
+		location.href = "${ctx}/friendcircle/list";
 	});
 	$('#saveForm').validate({
 	    rules: {
-	    	<#assign rules="">
-	    	<#list columns as column>
-	    	<#if !ignore?seq_contains(column.attrName) && column.isNullable == "NO">
-	    		<#assign rules=rules+column.attrName+": \"required\",\n">
-	    	</#if>
-	    	</#list>
-	    	<#if rules?length gt 0 >
-	    	${rules[0..rules?length-2]}
-	    	</#if>
+	    	content: "required",
+memberId: "required",
 	    },
 	    message: {
 	    	
