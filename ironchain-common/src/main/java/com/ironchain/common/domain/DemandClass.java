@@ -1,5 +1,6 @@
 package com.ironchain.common.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -20,5 +21,8 @@ import lombok.Setter;
 public class DemandClass extends DataModel {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	/** 分类名称*/
+	@Column(name="name")
+	private String name;
 }

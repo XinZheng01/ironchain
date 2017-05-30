@@ -8,15 +8,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 设备服务需求
+ * 加工需求
  * @author Administrator
  *
  */
 @Getter
 @Setter
 @Entity
-@Table(name="demand_equipment")
-public class DemandEquipment extends BaseDemand {
+@Table(name="demand_machined")
+public class DemandMachined extends BaseDemand {
 
 	private static final long serialVersionUID = 1L;
 	/** 新建*/
@@ -26,21 +26,21 @@ public class DemandEquipment extends BaseDemand {
 	/** 竞标中*/
 	public static final int progress_bid = 3;
 	
-	/** 品牌*/
-	@Column(name="brand")
-	private String brand;
+	/** 材料*/
+	@Column(name="machined")
+	private String machined;
 	
-	/** 型号*/
-	@Column(name="kinds")
-	private String kinds;
+	/** 交期天数*/
+	@Column(name="term")
+	private Integer term;
+	
+	/** 付款描述*/
+	@Column(name="payment")
+	private String payment;
 	
 	/** 描述*/
 	@Column(name="description")
 	private String description;
-	
-	/** 年限*/
-	@Column(name="life")
-	private Integer life;
 	
 	/** 进度*/
 	@Column(name="progress")
