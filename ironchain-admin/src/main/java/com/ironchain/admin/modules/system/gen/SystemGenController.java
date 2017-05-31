@@ -1,6 +1,7 @@
 package com.ironchain.admin.modules.system.gen;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +44,7 @@ public class SystemGenController extends BaseController{
 	 */
 	@RequestMapping("/zip")
 	public void genCode(@RequestParam String[] tableNames, HttpServletRequest request, HttpServletResponse response) throws IOException{
+		System.out.println(Arrays.toString(tableNames));
 		byte[] data = sysGenService.generatorCode(tableNames);
 		response.reset();
         response.setHeader("Content-Disposition	", "attachment; filename=\"gen_code.zip\"");  

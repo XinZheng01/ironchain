@@ -3,36 +3,47 @@ package com.ironchain.common.domain;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.ironchain.common.base.BaseModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 需求报价
  * @author Administrator
  *
  */
-public class DemandOffer {
+@Getter
+@Setter
+@Entity
+@Table(name="demand_offer")
+public class DemandOffer extends BaseModel {
 	
-	/** 设备服务*/
-	public static final int TYPE_EQUIPMENT = 1;
-	/** 加工需求*/
-	public static final int TYPE_MACHINED = 2;
+	private static final long serialVersionUID = 1L;
+
+	/** 报价*/
+	public static final int STATUS_CREATE = 1;
+	
+	/** 选中*/
+	public static final int STATUS_SELECT = 2;
 	
 	/** 报价人*/
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="member_id")
 	private Member offer;
 	
-	/** 类型*/
-	@Column(name="type")
-	private int type = TYPE_EQUIPMENT;
-	
 	/** 需求id*/
-	@Column(name="demand_id")
-	private Long demandId;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="demand_id")
+	private Demand demand;
 	
 	/** 工时费用*/
 	@Column(name="hour_fee")
@@ -50,8 +61,13 @@ public class DemandOffer {
 	@Column(name="status")
 	private int status;
 	
-	/** 报价时间*/
+	/** 创建时间*/
 	@Column(name="create_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createTime;
+	
+	/** 更新时间*/
+	@Column(name="update_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updateTime;
 }

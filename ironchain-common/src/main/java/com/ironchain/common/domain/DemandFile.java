@@ -22,14 +22,16 @@ public class DemandFile extends BaseModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	/** 设备服务*/
-	public static final int TYPE_EQUIPMENT = 1;
-	/** 加工需求*/
-	public static final int TYPE_MACHINED = 2;
+	/** 图档*/
+	public static final int TYPE_FILE = 1;
+	/** 故障*/
+	public static final int TYPE_FAULT = 2;
+	/** 外观*/
+	public static final int TYPE_LOOKS = 3;
 	
 	/** 类型*/
 	@Column(name="type")
-	private int type = TYPE_EQUIPMENT;
+	private int type = TYPE_FILE;
 	
 	/** 需求id*/
 	@Column(name="demand_id")

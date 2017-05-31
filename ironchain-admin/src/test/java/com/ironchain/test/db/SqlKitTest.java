@@ -1,11 +1,19 @@
 package com.ironchain.test.db;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.ironchain.common.dao.DemandClassDao;
 import com.ironchain.common.dao.SystemUserDao;
+import com.ironchain.common.domain.DemandClass;
 import com.ironchain.common.domain.SystemUser;
 import com.ironchain.test.AbstractNoneWebTest;
 
@@ -17,7 +25,12 @@ public class SqlKitTest extends AbstractNoneWebTest{
 	@Autowired
 	private SystemUserDao systemUserDao;
 	
-	@Test
+	@Autowired
+	private DemandClassDao demandClassDao;
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	//@Test
 	public void sqlTest(){
 		Page<SystemUser> page = systemUserDao.createSqlHelper().from(SystemUser.class)
 			.appendSql("select * from system_user").query2Page(new PageRequest(0, 10));
@@ -29,5 +42,42 @@ public class SqlKitTest extends AbstractNoneWebTest{
 //		System.out.println(page.getContent());
 		
 //		System.out.println(sqlHelper == this.sqlHelper);
+	}
+	
+	//@Test
+	public void test1(){//28 44 20 18
+		long start = System.currentTimeMillis();
+		List<DemandClass> list =  demandClassDao.findAll();
+		List<Map<String, Object>> mlist = new ArrayList<>();
+		Map<String, Object> map = null;
+		for (DemandClass demandClass : list) {
+			map = new HashMap<>();
+			map.put("id", demandClass.getId());
+			map.put("name", demandClass.getName());
+			mlist.add(map);
+		}
+		System.out.println(System.currentTimeMillis() - start);
+	}
+	
+//	@Test
+	public void test2(){//50 52 44
+		long start = System.currentTimeMillis();
+		List<Object[]> list =  demandClassDao.findIdAndNameAll();
+		List<Map<String, Object>> mlist = new ArrayList<>();
+		Map<String, Object> map = null;
+		for (Object[] arr : list) {
+			map = new HashMap<>();
+			map.put("id", arr[0]);
+			map.put("name", arr[1]);
+			mlist.add(map);
+		}
+		System.out.println(System.currentTimeMillis() - start);
+	}
+	
+	@Test
+	public void test3(){//50 52 44
+		long start = System.currentTimeMillis();
+		System.out.println(jdbcTemplate.queryForList("select id, name from demand_class"));
+		System.out.println(System.currentTimeMillis() - start);
 	}
 }

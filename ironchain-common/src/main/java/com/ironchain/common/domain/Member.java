@@ -1,15 +1,21 @@
 package com.ironchain.common.domain;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
 import com.ironchain.common.domain.Constants.RegexConstants;
 
@@ -96,6 +102,14 @@ public class Member extends DataModel{
 	/** 企业地址*/
 	@Column(name="company_address")
 	private String companyAddress;
+	
+	/** 企业设备*/
+	@JsonIgnore
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="member_equ_ref",
+		joinColumns={@JoinColumn(name="member_id")},
+		inverseJoinColumns={@JoinColumn(name="equ_id")})
+	private Set<EquipmentClass> companyEquipment;
 	
 	/** 最后登录时间*/
 	@Column(name="last_login_time")

@@ -19,7 +19,7 @@
 			 	</div>
 				<form id="searchForm" action="${ctx}/system/gen/list" method="get" class="search-form form-inline">
 			 	<div class="panel-toolbar">
-			 		<button class="btn btn-primary" type="button"><i class="icon icon-rocket"></i> 生成代码</button>
+			 		<button class="btn btn-primary" type="button" onclick="genSelect()"><i class="icon icon-rocket"></i> 生成代码</button>
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
@@ -36,14 +36,14 @@
 	                <tbody>
 						<c:forEach items="${page.content}" var="item">
 							<tr>
-								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
+								<td class="dt-body-center"><input type="checkbox" value="${item.tableName}"></td>
 								<td>${item.tableSchema}</td>
 								<td>${item.tableName}</td>
 								<td>${item.engine}</td>
 								<td>${item.tableComment}</td>
 								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
-								<a href="JavaScript:;" onclick="gen('${item.tableName}')">生成代码</a>
+								<a href="JavaScript:;" onclick="gen(['${item.tableName}'])">生成代码</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -56,31 +56,31 @@
 	</div>
 </body>
 <script type="text/javascript">
-$(function(){
-	//$("#example").DataTable();
-	//删除
-	$('.deleteBtn').on('click', function(){
-		//console.log(getCheckedVal('.dataTable'));
-	});
-	
-});
+function genSelect(){
+	gen(getCheckedVal('.dataTable'));
+}
+
 function gen(tableName){
 	var form=$("<form>");//定义一个form表单
 	form.attr("style","display:none");
 	form.attr("method","POST");
 	form.attr("action","${ctx}/system/gen/zip");
-	var input=$("<input>");
-	input.attr("type","hidden");
-	input.attr("name","tableNames");
-	input.attr("value",tableName);
+	
+	for(var i = 0, len = tableName.length; i < len; i++){
+		var input=$("<input>");
+		input.attr("type","hidden");
+		input.attr("name","tableNames");
+		input.attr("value",tableName[i]);
+		form.append(input);
+	}
+	
 	var c=$("<input>");
 	c.attr("type","hidden");
 	c.attr("name",csrfParameter);
 	c.attr("value",csrfToken);
-	$("body").append(form);//将表单放置在web中
-	form.append(input);
 	form.append(c);
 	
+	$("body").append(form);//将表单放置在web中
 	form.submit();//表单提交
 }
 </script>

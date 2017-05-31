@@ -64,20 +64,6 @@ public class MemberController extends ApiBaseController {
 		if(member.getType() == Member.TYPE_PERSON){//个人用户注册完自动登录
 			if (member.getIdcard() == null || !IdcardKit.validateCard(member.getIdcard()))
 				throw new IllegalArgumentException("请输入正确的身份证号码");
-			
-			member = memberDao.save(member);
-			Long uid = member.getId();
-			String mobile = member.getMobilephone();
-			String token = memberService.getToken(uid, mobile);
-			cacheService.set(CacheConstants.LOGIN_TOKEN, uid.toString(), token);
-			cacheService.set(CacheConstants.LOGIN_NAME, uid.toString(), mobile);
-			
-			Map<String, Object> map = new HashMap<>();
-			map.put("userId", uid);
-			map.put("name", member.getName());
-			map.put("token", token);
-			
-			return R.ok(map);
 		}else if(member.getType() == Member.TYPE_COMPANY){//企业用户等待后台审核
 			Validate.notBlank(member.getCompanyName(), "企业名称不能为空");
 			Validate.notBlank(member.getCompanyLegal(), "法人姓名不能为空");
@@ -86,11 +72,22 @@ public class MemberController extends ApiBaseController {
 				throw new IllegalArgumentException("请输入正确的法人身份证号码");
 			Validate.notBlank(member.getCompanyAddress(), "企业地址不能为空");
 			Validate.notBlank(member.getCompanyLicenseImg(), "企业营业执照不能为空");
-			
-			member = memberDao.save(member);
-			return R.ok();
 		}else
 			throw new IllegalArgumentException("非法用户类型");
+		
+		member = memberDao.save(member);
+		Long uid = member.getId();
+		String mobile = member.getMobilephone();
+		String token = memberService.getToken(uid, mobile);
+		cacheService.set(CacheConstants.LOGIN_TOKEN, uid.toString(), token);
+		cacheService.set(CacheConstants.LOGIN_NAME, uid.toString(), mobile);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		map.put("name", member.getName());
+		map.put("token", token);
+		
+		return R.ok(map);
 		
 	}
 	
