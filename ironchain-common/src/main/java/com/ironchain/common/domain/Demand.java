@@ -35,6 +35,11 @@ public class Demand extends BaseModel {
 	/** 竞标中*/
 	public static final int PROGRESS_BID = 3;
 	
+	/** 设备服务*/
+	public static final int TYPE_EQUIPMENT = 1;
+	/** 加工需求*/
+	public static final int TYPE_MACHINED = 2;
+	
 	/** 标题*/
 	@Column(name="title")
 	private String title;
@@ -42,6 +47,10 @@ public class Demand extends BaseModel {
 	/** 数量*/
 	@Column(name="number")
 	private String number;
+	
+	/** 类型*/
+	@Column(name="type")
+	private int type;
 	
 	/******** 竞价条件 **********/
 	/** 区域*/

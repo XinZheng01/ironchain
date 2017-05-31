@@ -18,9 +18,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.ironchain.common.persistence.dialect.Dialect;
+import com.ironchain.common.persistence.dialect.MySQLDialect;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 @Component
@@ -45,10 +47,18 @@ public class SqlHelper{
 	/** 方言*/
 	private Dialect dialect;
 	
+	private static Dialect defaultDialect = new MySQLDialect();
+	
 	public SqlHelper(){}
 	
 	public SqlHelper(EntityManager em){
 		this.em = em;
+		this.dialect = defaultDialect;
+	}
+	
+	public SqlHelper(EntityManager em, Dialect dialect){
+		this.em = em;
+		this.dialect = dialect;
 	}
 	
 	@PersistenceContext
@@ -226,6 +236,20 @@ public class SqlHelper{
 			query.setParameter(i, params[i - 1]);
 		}
 		return Long.parseLong(query.getSingleResult().toString());
+	}
+	
+	public static Page<Map<String, Object>> queryPage(JdbcTemplate jdbcTemplate, String nativeSql, Pageable pageable, Object...params){
+		String limitSql = pageable == null? nativeSql : 
+			defaultDialect.getLimitString(nativeSql, pageable.getOffset(), pageable.getPageSize());
+		
+		List<Map<String, Object>> content = jdbcTemplate.queryForList(limitSql, params);
+		if(pageable == null){
+			return new PageImpl<Map<String, Object>>(content, null, content.size());
+		}else{
+			long total = content.size() != 0 && pageable.getPageSize() > content.size()? pageable.getOffset() + content.size() :
+					jdbcTemplate.queryForObject("SELECT COUNT(*) FROM (" + nativeSql + ") AS _A", long.class, params);
+			return new PageImpl<Map<String, Object>>(content, pageable, total);
+		}
 	}
 	
 	/**

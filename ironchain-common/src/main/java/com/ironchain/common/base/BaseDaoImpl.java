@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.ironchain.common.kits.SpringKit;
 import com.ironchain.common.persistence.SqlHelper;
 
 @NoRepositoryBean
@@ -28,6 +27,6 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
 	
 	@Override
 	public SqlHelper createSqlHelper(){
-		return SpringKit.getBean(SqlHelper.class);
+		return new SqlHelper(em);
 	}
 }

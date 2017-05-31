@@ -8,6 +8,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -15,6 +16,7 @@ import com.ironchain.common.dao.DemandClassDao;
 import com.ironchain.common.dao.SystemUserDao;
 import com.ironchain.common.domain.DemandClass;
 import com.ironchain.common.domain.SystemUser;
+import com.ironchain.common.persistence.SqlHelper;
 import com.ironchain.test.AbstractNoneWebTest;
 
 public class SqlKitTest extends AbstractNoneWebTest{
@@ -44,7 +46,7 @@ public class SqlKitTest extends AbstractNoneWebTest{
 //		System.out.println(sqlHelper == this.sqlHelper);
 	}
 	
-	//@Test
+//	@Test
 	public void test1(){//28 44 20 18
 		long start = System.currentTimeMillis();
 		List<DemandClass> list =  demandClassDao.findAll();
@@ -74,10 +76,22 @@ public class SqlKitTest extends AbstractNoneWebTest{
 		System.out.println(System.currentTimeMillis() - start);
 	}
 	
-	@Test
+//	@Test
 	public void test3(){//50 52 44
 		long start = System.currentTimeMillis();
-		System.out.println(jdbcTemplate.queryForList("select id, name from demand_class"));
+		List<Map<String, Object>> list = jdbcTemplate.queryForList("select id, name from demand_class");
+		new PageImpl<>(list, null, list.size());
 		System.out.println(System.currentTimeMillis() - start);
+	}
+	
+	@Test
+	public void test4(){//50 52 44
+		long start = System.currentTimeMillis();
+		Page<Map<String, Object>> page = SqlHelper.queryPage(jdbcTemplate, "select id, name from demand_class", null);
+		System.out.println(System.currentTimeMillis() - start);
+//		System.out.println(page.getSize());
+//		System.out.println(page.getTotalPages());
+//		System.out.println(page.getTotalElements());
+//		System.out.println(page.getContent());
 	}
 }
