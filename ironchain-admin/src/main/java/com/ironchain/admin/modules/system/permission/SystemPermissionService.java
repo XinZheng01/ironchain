@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ironchain.common.base.BaseService;
 import com.ironchain.common.dao.SystemPermissionDao;
 import com.ironchain.common.domain.SystemPermission;
+import com.ironchain.common.kits.SqlKit;
 
 @Service
 public class SystemPermissionService extends BaseService {
@@ -77,10 +78,10 @@ public class SystemPermissionService extends BaseService {
 	 * @return
 	 */
 	public List<Map<String, Object>> findTreeChild(int type) {
-		return systemPermissionDao.createSqlHelper()
-				.appendSql("select id, name, icon, url, type, status, parent_id as parentId")
-				.appendSql(" from system_permission where status = ?", SystemPermission.STATUS_SHOW)
-				.appendSql(type > 0, " and type = ?", type).query2Map();
+		return SqlKit.create()
+				.append("select id, name, icon, url, type, status, parent_id as parentId")
+				.append(" from system_permission where status = ?", SystemPermission.STATUS_SHOW)
+				.append(type > 0, " and type = ?", type).query2Map(systemPermissionDao);
 	}
 	
 }

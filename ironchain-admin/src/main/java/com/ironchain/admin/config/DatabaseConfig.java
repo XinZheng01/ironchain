@@ -19,7 +19,6 @@ import com.ironchain.common.base.BaseDaoImpl;
 import com.ironchain.common.dao.gen.MysqlTableDao;
 import com.ironchain.common.domain.SystemUser;
 import com.ironchain.common.kits.SpringKit;
-import com.ironchain.common.persistence.SqlHelper;
 import com.ironchain.common.persistence.dialect.Dialect;
 import com.ironchain.common.persistence.dialect.MySQLDialect;
 
@@ -33,7 +32,7 @@ import com.ironchain.common.persistence.dialect.MySQLDialect;
 @EnableJpaRepositories(repositoryBaseClass = BaseDaoImpl.class, basePackages="com.ironchain.common.dao")
 @EntityScan({"com.ironchain.common.domain"})
 @EnableJpaAuditing
-@Import({SpringKit.class, SqlHelper.class})
+@Import({SpringKit.class})
 public class DatabaseConfig {
 	
 	/**====== Druid Config Start =====*/

@@ -1,15 +1,17 @@
 package com.ironchain.intfc.modules.demand;
 
-import java.awt.print.Pageable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ironchain.common.base.BaseService;
-import com.ironchain.common.persistence.SqlHelper;
+import com.ironchain.common.kits.SqlKit;
 
 @Service
 public class DemandService extends BaseService {
@@ -31,9 +33,9 @@ public class DemandService extends BaseService {
 	 * @param pageable
 	 * @return
 	 */
-	public List<Map<String, Object>> findDemandByType(int type, Pageable pageable) {
-//		SqlHelper.queryPage(jdbcTemplate, "select id", pageable, params)
-		
-		return null;
+	public Page<Map<String, Object>> findDemandByType(int type, Pageable pageable) {
+		return SqlKit.create().append("select id, name from demand_class")
+				.append(type > 0, " where type = ?", type)
+				.query2PageMap(jdbcTemplate, pageable);
 	}
 }
