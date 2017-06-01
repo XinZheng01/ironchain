@@ -10,7 +10,7 @@ import com.ironchain.intfc.web.ApiBaseController;
  * @author Administrator
  *
  */
-@RestController
+@RestController("memberDemandController")
 @RequestMapping("/api/member/demand")
 public class DemandController extends ApiBaseController {
 

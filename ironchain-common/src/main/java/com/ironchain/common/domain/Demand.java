@@ -46,7 +46,11 @@ public class Demand extends BaseModel {
 	
 	/** 数量*/
 	@Column(name="number")
-	private String number;
+	private long number;
+	
+	/** 预算*/
+	@Column(name="budget")
+	private long budget;
 	
 	/** 类型*/
 	@Column(name="type")

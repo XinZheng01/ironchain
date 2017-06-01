@@ -66,7 +66,7 @@ public class ResponseEncryptAdvice implements ResponseBodyAdvice<Object>{
 			return body;
 		
 		try {
-			String result = JsonKit.normal().toJson(body);
+			String result = JsonKit.nonNull().toJson(body);//非空输出
 			logger.debug("加密前数据：{}", result);
 			OutputStream out = response.getBody();
 			out.write(Base64.getEncoder().encode(DigestKit.aesEncrypt(result.getBytes(Charset.forName("UTF-8")), aesKey)));

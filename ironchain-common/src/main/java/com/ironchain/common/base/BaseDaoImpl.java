@@ -17,8 +17,8 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 
-import com.ironchain.common.kits.SpringKit;
 import com.ironchain.common.persistence.dialect.Dialect;
+import com.ironchain.common.persistence.dialect.MySQLDialect;
 
 @NoRepositoryBean
 @SuppressWarnings("unchecked")
@@ -26,18 +26,16 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
 
 	protected final EntityManager em;
 	
-	private Dialect dialect;
+	private static Dialect dialect = new MySQLDialect();
 	
 	public BaseDaoImpl(final JpaEntityInformation<T, ?> entityInformation, EntityManager em) {
 		super(entityInformation, em);
 		this.em = em;
-		this.dialect = (Dialect) SpringKit.getBean("pageDialect");
 	}
 
 	public BaseDaoImpl(Class<T> domainClass, EntityManager em) {
 		super(domainClass, em);
 		this.em = em;
-		this.dialect = (Dialect) SpringKit.getBean("pageDialect");
 	}
 	
 	/**

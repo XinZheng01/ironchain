@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ironchain.common.domain.R;
+import com.ironchain.intfc.annotation.IgnoreApiSecurity;
 import com.ironchain.intfc.annotation.IgnoreAuth;
 import com.ironchain.intfc.web.ApiBaseController;
 
@@ -32,19 +33,25 @@ public class DemandController extends ApiBaseController{
 	 * @return
 	 */
 	@IgnoreAuth
+	@IgnoreApiSecurity
 	@GetMapping("/class")
 	public R demandClass(){
 		return R.ok(demandService.findClassIdAndNameAll());
 	}
 	
 	/**
-	 * 需求列表
+	 * 获取需求列表
+	 * @param type 类型
+	 * @param classId 需求分类id
+	 * @param pageable 分页对象
 	 * @return
 	 */
 	@IgnoreAuth
+	@IgnoreApiSecurity
 	@GetMapping("/list")
-	public R list(@RequestParam int type, Pageable pageable){
-		Page<Map<String, Object>> page = demandService.findDemandByType(type, pageable);
+	public R list(@RequestParam(required=false, defaultValue="-1") int type, 
+			@RequestParam(required=false, defaultValue="-1") Long classId, Pageable pageable){
+		Page<Map<String, Object>> page = demandService.findDemandByTypeAndClassId(type, classId, pageable);
 		Map<String, Object> map = new HashMap<>();
 		map.put("content", page.getContent());
 		map.put("hasNext", page.hasNext());

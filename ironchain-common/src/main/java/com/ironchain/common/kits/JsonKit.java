@@ -38,6 +38,7 @@ public class JsonKit {
 	private static JsonKit normal;
 	private static JsonKit nonEmpty;
 	private static JsonKit nonDefault;
+	private static JsonKit nonNull;
 	
 	private JsonKit(Include include) {
 		if (include != null) {
@@ -77,6 +78,16 @@ public class JsonKit {
 		return nonDefault;
 	}
 
+	/**
+	 * 创建只输出初始值被改变的属性到Json字符串的Mapper, 最节约的存储方式，建议在内部接口中使用。
+	 */
+	public static JsonKit nonNull() {
+		if(nonNull == null){
+			nonNull = new JsonKit(Include.NON_NULL);
+		}
+		return nonNull;
+	}
+	
 	/**
 	 * Object可以是POJO，也可以是Collection或数组。
 	 * 如果对象为Null, 返回"null".
