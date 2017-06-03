@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ironchain.common.cache.CacheService;
 import com.ironchain.common.dao.BannerDao;
 import com.ironchain.common.domain.Banner;
 import com.ironchain.common.domain.R;
@@ -24,9 +23,6 @@ public class HomeController extends ApiBaseController{
 	
 	@Autowired
 	private BannerDao bannerDao;
-	
-	@Autowired
-	private CacheService cacheService;
 	
 	/**
 	 * banner 列表
@@ -51,17 +47,4 @@ public class HomeController extends ApiBaseController{
 		return R.ok();
 	}
 	
-	@IgnoreApiSecurity
-	@IgnoreAuth
-	@RequestMapping("/test")
-	public R test(String aaa){
-		return R.ok(aaa);
-	}
-	
-	@IgnoreApiSecurity
-	@IgnoreAuth
-	@GetMapping("/test2")
-	public R testget(){
-		return R.ok(cacheService.get("test_banner_1"));
-	}
 }

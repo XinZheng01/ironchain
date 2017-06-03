@@ -59,11 +59,13 @@ public class JsonKit {
 		return normal;
 	}
 	/**
-	 * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper,建议在外部接口中使用.
+	 * 创建只输出非Null、非空字符串且非Empty(如List.isEmpty)的属性到Json字符串的Mapper,建议在外部接口中使用.
 	 */
 	public static JsonKit nonEmpty() {
 		if(nonEmpty == null){
 			nonEmpty = new JsonKit(Include.NON_EMPTY);
+			//map value 为null 不输出
+			nonEmpty.mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
 		}
 		return nonEmpty;
 	}
@@ -79,11 +81,13 @@ public class JsonKit {
 	}
 
 	/**
-	 * 创建只输出初始值被改变的属性到Json字符串的Mapper, 最节约的存储方式，建议在内部接口中使用。
+	 * 创建只输出非Null的属性到Json字符串的Mapper,建议在外部接口中使用.
 	 */
 	public static JsonKit nonNull() {
 		if(nonNull == null){
 			nonNull = new JsonKit(Include.NON_NULL);
+			//map value 为null 不输出
+			nonNull.mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
 		}
 		return nonNull;
 	}
