@@ -13,6 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.BaseModel;
@@ -51,10 +56,12 @@ public class Demand extends BaseModel {
 	public static final int TYPE_EQUIPMENT = 2;
 	
 	/** 标题*/
+	@NotBlank(message="标题不能为空")
 	@Column(name="title")
 	private String title;
 	
 	/** 数量*/
+	@Min(value=1, message="数量必须大于0")
 	@Column(name="number")
 	private long number;
 	
@@ -63,15 +70,19 @@ public class Demand extends BaseModel {
 	private long budget;
 	
 	/** 类型*/
+	@Min(value=TYPE_MACHINED, message="错误的需求类型")
+	@Max(value=TYPE_EQUIPMENT, message="错误的需求类型")
 	@Column(name="type")
 	private int type = TYPE_MACHINED;
 	
 	/******** 竞价条件 **********/
 	/** 区域*/
+	@NotNull(message="区域不能为空")
 	@Column(name="adcode")
 	private GdArea gdArea;
 	
 	/** 竞方数量*/
+	@Min(value=1, message="竞方数量必须大于0")
 	@Column(name="bid_number")
 	private Integer bidNumber;
 	
@@ -84,11 +95,13 @@ public class Demand extends BaseModel {
 	private Set<EquipmentClass> mainEquipment;
 	
 	/** 开始时间*/
+	@NotNull(message="开始时间不能为空")
 	@Column(name="start_date")
 	@Temporal(TemporalType.DATE)
 	private Date startDate;
 	
 	/** 结束时间*/
+	@NotNull(message="结束时间不能为空")
 	@Column(name="end_date")
 	@Temporal(TemporalType.DATE)
 	private Date endDate;
@@ -100,6 +113,7 @@ public class Demand extends BaseModel {
 	private Member publisher;
 	
 	/** 需求分类*/
+	@NotNull(message="分类不能为空")
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="class_id")
 	private DemandClass demandClass;

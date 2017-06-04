@@ -1,5 +1,6 @@
 package com.ironchain.common.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
@@ -94,6 +95,10 @@ public class Member extends DataModel{
 	/** 企业固定电话*/
 	@Column(name="company_tel")
 	private String companyTel;
+	
+	/** 企业能达到的精度*/
+	@Column(name="company_precision")
+	private BigDecimal companyPrecision;
 	
 	/** 企业营业执照路径*/
 	@Column(name="company_license_img")

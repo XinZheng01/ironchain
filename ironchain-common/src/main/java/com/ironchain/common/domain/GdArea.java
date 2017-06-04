@@ -1,6 +1,8 @@
 package com.ironchain.common.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,4 +49,11 @@ public class GdArea implements Serializable{
 	/** 级别 country province city district*/
 	@Column(name="level")
 	private String level;
+	
+	public Map<String, Object> toSimpleMap(){
+		Map<String, Object> map = new HashMap<>();
+		map.put("adcode", adcode);
+		map.put("name", name);
+		return map;
+	}
 }

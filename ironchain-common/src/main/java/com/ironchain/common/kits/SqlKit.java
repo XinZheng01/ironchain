@@ -105,7 +105,7 @@ public class SqlKit {
 	 * @param pageable
 	 * @return
 	 */
-	public Page<Map<String, Object>> query2PageMap(JdbcTemplate jdbcTemplate, Pageable pageable){
+	public Page<Map<String, Object>> query2Page(JdbcTemplate jdbcTemplate, Pageable pageable){
 		String nativeSql = sql.toString();
 		String limitSql = pageable == null? nativeSql : 
 			dialect.getLimitString(nativeSql, pageable.getOffset(), pageable.getPageSize());
@@ -120,5 +120,9 @@ public class SqlKit {
 	
 	public List<Object> getParamsList() {
 		return paramsList;
+	}
+
+	public List<Map<String,Object>> query2Map(JdbcTemplate jdbcTemplate) {
+		return jdbcTemplate.queryForList(sql.toString(), paramsList.toArray());
 	}
 }

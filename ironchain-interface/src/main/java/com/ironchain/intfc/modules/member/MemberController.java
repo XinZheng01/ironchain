@@ -1,6 +1,8 @@
 package com.ironchain.intfc.modules.member;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -9,6 +11,7 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +21,10 @@ import com.ironchain.common.cache.CacheService;
 import com.ironchain.common.dao.MemberDao;
 import com.ironchain.common.domain.Constants.CacheConstants;
 import com.ironchain.common.domain.Constants.RegexConstants;
+import com.ironchain.common.domain.EquipmentClass;
 import com.ironchain.common.domain.Member;
 import com.ironchain.common.domain.R;
+import com.ironchain.common.exception.ServiceException;
 import com.ironchain.common.kits.IdcardKit;
 import com.ironchain.common.sms.SmsService;
 import com.ironchain.intfc.annotation.IgnoreAuth;
@@ -185,5 +190,33 @@ public class MemberController extends ApiBaseController {
 		LOGGER.debug("请求修改密码接口 userId：{} oldPassword：{} newPassword：{}", userId, oldPassword, newPassword);
 		memberService.modifyPassword(userId, oldPassword, newPassword);
 		return R.ok();
+	}
+	
+	/**
+	 * 查看企业信息
+	 */
+	@GetMapping("/company_info")
+	public R companyInfo(@RequestParam Long id, Long userId){
+		Member member = memberDao.findOne(id);
+		if(member == null || member.getType() != Member.TYPE_COMPANY)
+			throw new ServiceException(R.SC_PARAMERROR, "用户不存在或用户类型非法， id:" + id + ", userId:" + userId);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("id", member.getId());
+		result.put("name", member.getCompanyName());
+		result.put("legal", member.getCompanyLegal());
+		result.put("legalPhone", member.getCompanyLegalPhone());
+		result.put("idcard", member.getCompanyIdcard());
+		//TODO 企业评级 交易数量 
+		List<Map<String, Object>> companyEqus = new ArrayList<>();
+		for (EquipmentClass equClass : member.getCompanyEquipment()) {
+			companyEqus.add(equClass.toMap());
+		}
+		result.put("equipment", companyEqus);
+		result.put("precision", member.getCompanyPrecision());
+		result.put("address", member.getCompanyAddress());
+		result.put("tel", member.getCompanyTel());
+		result.put("licenseImg", member.getCompanyLicenseImg());
+		return R.ok(result);
 	}
 }

@@ -6,12 +6,14 @@ import java.security.SecureRandom;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ironchain.common.base.BaseService;
 import com.ironchain.common.dao.MemberDao;
 import com.ironchain.common.domain.Member;
 import com.ironchain.common.domain.R;
+import com.ironchain.common.domain.Constants.CacheConstants;
 import com.ironchain.common.exception.ServiceException;
 import com.ironchain.common.kits.DigestKit;
 import com.ironchain.common.kits.EncodeKit;
@@ -21,6 +23,9 @@ public class MemberService extends BaseService{
 
 	@Autowired
 	private MemberDao memberDao;
+	
+	@Autowired
+	private StringRedisTemplate redisTemplate;
 	
 	public Member findByMobilephoneAndPassword(String mobilephone, String password) {
 		Member member = memberDao.findByMobilephoneAndPassword(mobilephone,
@@ -95,5 +100,18 @@ public class MemberService extends BaseService{
 		  value[i] = ((char)(random.nextInt(10) + 48));
 		}
 		return new String(value);
+	}
+	
+	/**
+	 * 检验用户是否登录
+	 * @param userId
+	 * @param token
+	 * @return
+	 */
+	public boolean isLogin(Long userId, String token){
+		if(userId == null || token == null || !token.equals(redisTemplate.opsForValue()
+				.get(CacheConstants.LOGIN_TOKEN.getKey(userId.toString()))))
+			return false;
+		return true;
 	}
 }
