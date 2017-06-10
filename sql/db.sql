@@ -179,3 +179,17 @@ CREATE TABLE `member_equ_ref` (
 `equ_id`  bigint(20) NOT NULL ,
 PRIMARY KEY (`member_id`, `equ_id`)
 )ENGINE=InnoDB COMMENT='会员设备分类关系';
+
+CREATE TABLE `shop_class` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分类名称' ,
+`parent_id`  bigint(20) NULL COMMENT '上级分类',
+`sort_id` int(11) COMMENT '排序值',
+`create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+`update_time`  datetime NULL DEFAULT NULL ,
+`create_by`  bigint(20) NULL DEFAULT NULL ,
+`update_by`  bigint(20) NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB COMMENT='商品分类';
+
+

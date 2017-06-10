@@ -133,12 +133,4 @@ public class DemandController extends ApiBaseController{
 		return R.ok();
 	}
 	
-	/**
-	 * 竞标
-	 * @return
-	 */
-	@PostMapping("/offer")
-	public R offer(){
-		return R.ok();
-	}
 }

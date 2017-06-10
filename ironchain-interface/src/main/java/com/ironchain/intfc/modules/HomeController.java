@@ -33,7 +33,7 @@ public class HomeController extends ApiBaseController{
 	 * @return
 	 */
 	@IgnoreAuth
-	@GetMapping("/demand")
+	@GetMapping("/list")
 	public R demand(){
 		return R.ok();
 	}

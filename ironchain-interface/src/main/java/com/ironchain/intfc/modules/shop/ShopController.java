@@ -25,7 +25,7 @@ public class ShopController extends ApiBaseController {
 	 */
 	@IgnoreAuth
 	@IgnoreApiSecurity
-	@GetMapping("/banner")
+	@GetMapping("/home/banner")
 	public R banner(){
 		return R.ok(shopService.findApiBannerList(getPageable(1, 6, null)));
 	}
@@ -36,7 +36,7 @@ public class ShopController extends ApiBaseController {
 	 */
 	@IgnoreAuth
 	@IgnoreApiSecurity
-	@GetMapping("/home_list")
+	@GetMapping("/home/list")
 	public R homeList(){
 		return R.ok();
 	}
@@ -48,6 +48,7 @@ public class ShopController extends ApiBaseController {
 	 * @param sortType 排序类型 1综合 2销量 3评分 4价格
 	 * @return
 	 */
+	@GetMapping("/goods/list")
 	public R list(@RequestParam int shopClass, Pageable pageable, @RequestParam(defaultValue="1") int sortType){
 		return R.ok();
 	}
@@ -56,7 +57,8 @@ public class ShopController extends ApiBaseController {
 	 * 商品分类
 	 * @return
 	 */
-	public R shopClass(){
+	@GetMapping("/goods/class")
+	public R goodsClass(){
 		return R.ok();
 	}
 }
