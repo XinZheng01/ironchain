@@ -46,7 +46,7 @@ public class SqlKitTest extends AbstractNoneWebTest{
 //		Page<SystemUser> page = SqlKit.create().append("select * from system_user").query2Page(systemUserDao, new PageRequest(0, 10));
 //		Page<DemandClass> page = SqlKit.create().append("select * from demand_class").query2Page(demandClassDao, new PageRequest(0, 10));
 		
-		Page<Map<String, Object>> page = SqlKit.create().append("select * from system_user").query2PageMap(jdbcTemplate, new PageRequest(0, 10));
+//		Page<Map<String, Object>> page = SqlKit.create().append("select * from system_user").query2PageMap(jdbcTemplate, new PageRequest(0, 10));
 		
 //		Page<SystemUser> page = systemUserDao.createSqlHelper().from(SystemUser.class)
 //			.appendSql("select * from system_user").query2Page(new PageRequest(0, 10));
@@ -54,9 +54,9 @@ public class SqlKitTest extends AbstractNoneWebTest{
 //		System.out.println(page);
 //		Page<Map> page = systemUserDao.createSqlHelper().from(HashMap.class)
 //			.appendSql("select * from system_user").query2Page(new PageRequest(0, 10));
-		System.out.println(System.currentTimeMillis() - start);
-		System.out.println(page);
-		System.out.println(page.getContent());
+//		System.out.println(System.currentTimeMillis() - start);
+//		System.out.println(page);
+//		System.out.println(page.getContent());
 		
 //		System.out.println(sqlHelper == this.sqlHelper);
 	}
