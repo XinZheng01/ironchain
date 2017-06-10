@@ -11,6 +11,6 @@ public interface DemandDao extends BaseDao<Demand, Long> {
 	
 	@EntityGraph(attributePaths={"d.gdArea", "d.mainEquipment", "d.demandClass"},
 		type=EntityGraphType.FETCH)
-	@Query("select d from Demand where id=?1")
+	@Query("select d from Demand d where d.id=?1")
 	public Demand readById(Long id);
 }
