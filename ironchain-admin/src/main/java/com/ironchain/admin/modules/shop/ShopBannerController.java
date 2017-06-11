@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,31 +19,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.ModelController;
-import com.ironchain.common.dao.ShopClassDao;
+import com.ironchain.common.dao.ShopBannerDao;
+import com.ironchain.common.domain.ShopBanner;
 import com.ironchain.common.domain.R;
-import com.ironchain.common.domain.ShopClass;
 
 
 /**
- * 商品分类
+ * 商城轮播图
  * 
  * @author zheng xin
  * @email 
  */
 @Controller
-@RequestMapping("/shop/class")
-public class ShopClassController extends ModelController<ShopClassDao, ShopClass> {
+@RequestMapping("/shop/banner")
+public class ShopBannerController extends ModelController<ShopBannerDao, ShopBanner> {
 	
-	@Autowired
-	private ShopClassService shopClassService;
+	//@Autowired
+	//private ShopBannerService shopBannerService;
 	
 	/**
 	 * 列表
 	 */
 	@GetMapping("/list")
 	public String list(Pageable pageable, HttpServletRequest request, Model model){
-		model.addAttribute("shopClassList", shopClassService.findTreeSortList(null));
-		return "shop/shop_class_list";
+		model.addAttribute("page", modelDao.findAll(bySearchFilter(request), pageable));
+		return "shop/shop_banner_list";
 	}
 	
 	
@@ -53,13 +52,8 @@ public class ShopClassController extends ModelController<ShopClassDao, ShopClass
 	 * @return
 	 */
 	@GetMapping("/add")
-	public String add(@ModelAttribute ShopClass shopClass, @RequestParam(required=false) Long parentId, Model model){
-		if(parentId != null){
-			ShopClass parent = modelDao.findOne(parentId);
-			shopClass.setParent(parent);
-		}
-		model.addAttribute("shopClassList", modelDao.findByParentIsNull());
-		return "shop/shop_class_form";
+	public String add(@ModelAttribute ShopBanner shopBanner, Model model){
+		return "shop/shop_banner_form";
 	}
 	
 	/**
@@ -67,9 +61,8 @@ public class ShopClassController extends ModelController<ShopClassDao, ShopClass
 	 * @return
 	 */
 	@GetMapping("/edit")
-	public String edit(@ModelAttribute ShopClass shopClass, Model model){
-		model.addAttribute("shopClassList", modelDao.findByParentIsNull());
-		return "shop/shop_class_form";
+	public String edit(@ModelAttribute ShopBanner shopBanner, Model model){
+		return "shop/shop_banner_form";
 	}
 	
 	/**
@@ -77,12 +70,12 @@ public class ShopClassController extends ModelController<ShopClassDao, ShopClass
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute ShopClass shopClass, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid @ModelAttribute ShopBanner shopBanner, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
-			return "shop/shop_class_form";
+			return "shop/shop_banner_form";
 		}
-		modelDao.save(shopClass);
+		modelDao.save(shopBanner);
 		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
@@ -96,10 +89,10 @@ public class ShopClassController extends ModelController<ShopClassDao, ShopClass
 	public R delete(@RequestParam Long[] ids){
 		if(ids == null || ids.length == 0)
 			return R.error("请选择删除数据");
-		List<ShopClass> entitys = new ArrayList<>();
-		ShopClass entity = null;
+		List<ShopBanner> entitys = new ArrayList<>();
+		ShopBanner entity = null;
 		for (Long id : ids) {
-			entity = new ShopClass();
+			entity = new ShopBanner();
 			entity.setId(id);
 			entitys.add(entity);
 		}

@@ -6,17 +6,16 @@
 <%@include file="/WEB-INF/include/taglib.jsp" %>
 <%@include file="/WEB-INF/include/meta.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>商品分类</title>
+<title>商品</title>
 <%@include file="/WEB-INF/include/base-style.jsp" %>
 <%@include file="/WEB-INF/include/base-script.jsp" %>
-<link href="${staticUrl}/plugins/jquery-treetable/css/jquery.treetable.css" rel="stylesheet">
 </head>
 <body>
 	<div>
 		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
 			<div class="panel">
-				<form id="searchForm" action="${ctx}/shop/class/list" method="get" class="search-form form-inline">
+				<form id="searchForm" action="${ctx}/shop/product/list" method="get" class="search-form form-inline">
 				<div class="panel-body">
 					<%--
 					  <div class="form-group">
@@ -29,38 +28,49 @@
 					 --%>
 				</div>
 			 	<div class="panel-toolbar">
-			 	<sec:authorize url="/shop/class/add">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/shop/class/add';"><i class="icon icon-plus"></i>新增</button>
+			 	<sec:authorize url="/shop/product/add">
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/shop/product/add';"><i class="icon icon-plus"></i>新增</button>
 			 	</sec:authorize>
-			 	<sec:authorize url="/shop/class/delete">
+			 	<sec:authorize url="/shop/product/delete">
 					<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
 				</sec:authorize> 
 			 	</div>
-				<table class="row-border table-hover dataTable treetable">
+				<table class="row-border table-hover dataTable">
 	                <thead>
 						<tr>
 	                	<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
-							<th>分类名称</th>
-							<th>排序值</th>
-							<th>创建时间</th>
-							<th width="140">操作</th>
+							<th data-sort-column="title">商品标题</th>
+							<th>所属分类</th>
+							<th data-sort-column="code">商品编号</th>
+							<th data-sort-column="price">商品价格</th>
+							<th data-sort-column="stock">商品库存</th>
+							<th data-sort-column="freight">商品运费</th>
+							<th data-sort-column="status">状态</th>
+							<th data-sort-column="sortId">排序值</th>
+							<th data-sort-column="saleDate">上下架时间</th>
+							<th data-sort-column="createTime">创建时间</th>
+							<th width="120">操作</th>
 						</tr>
 					</thead>
 	                <tbody>
-						<c:forEach items="${shopClassList}" var="item">
-							<tr data-tt-id="${item.id}" data-tt-parent-id="${item.parent.id}">
+						<c:forEach items="${page.content}" var="item">
+							<tr>
 								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
-								<td>${item.name}</td>
+								<td>${item.title}</td>
+								<td>${item.shopClass.name}</td>
+								<td>${item.code}</td>
+								<td>${item.price}</td>
+								<td>${item.stock}</td>
+								<td>${item.freight}</td>
+								<td>${item.status}</td>
 								<td>${item.sortId}</td>
-								<td>${item.createTime}</td>
+								<td>${item.saleDate}</td>
+								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
-								<sec:authorize url="/shop/class/edit">
-									<a href="${ctx}/shop/class/edit?id=${item.id}">编辑</a> |
+								<sec:authorize url="/shop/product/edit">
+									<a href="${ctx}/shop/product/edit?id=${item.id}">编辑</a> |
 								</sec:authorize>
-									<c:if test="${empty item.parent}">
-									<a href="${ctx}/shop/class/add?parentId=${item.id}">新增子级</a> | 
-									</c:if>
-								<sec:authorize url="/shop/class/delete"> 
+								<sec:authorize url="/shop/product/delete"> 
 									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
 								</sec:authorize>
 								</td>
@@ -68,21 +78,18 @@
 						</c:forEach>
 	                </tbody>
             	</table>
+            	<my:pagination page="${page}"/>
             	</form>
            	</div>
 		</div>
 	</div>
 </body>
-<script src="${staticUrl}/plugins/jquery-treetable/jquery.treetable.js"></script>
 <script type="text/javascript">
-$(function(){
-	$('.treetable').treetable({expandable:true, column:1, initialState:'expanded'});
-});
 function del(id){
 	$.site.confirm("确定要删除选中的记录？", function(){
 		$.site.loading();
 		$.ajax({
-			url: "${ctx}/shop/class/delete",
+			url: "${ctx}/shop/product/delete",
 			data: {"ids": id},
 			type: "POST",
 			success: function(data){

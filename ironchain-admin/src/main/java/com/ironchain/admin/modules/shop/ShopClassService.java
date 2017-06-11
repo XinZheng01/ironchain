@@ -54,4 +54,5 @@ public class ShopClassService extends BaseService {
             }
         }
     }
+    
 }

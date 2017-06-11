@@ -102,17 +102,17 @@ $(function(){
     	var _pathname = location.pathname;
     	var _group = _pathname.match(/(.+)(\/add|\/edit)$/);
     	if(_group != null)
-    		_pathname = _group[1];
+    		_pathname = _group[1] + '/list';
     	
     	top.$('.site-demo-nav dl a').each(function(){
-    		if($(this).attr('href').indexOf(_pathname) > -1){
+    		if($(this).attr('href') == _pathname){
     			_crumb_li += '<li><a href="javascript:;">'
     				+ $(this).closest('dl.layui-nav-child').siblings('a').text()+'</a></li>';
     			_crumb_li += '<li'+(_group == null?' class="active">':'><a href="'+$(this).attr('href')+'">')
     				+$(this).children('cite').text()+(_group == null?'':'</a>')+'</li>';
     			if(_group != null)
     				_crumb_li += '<li class="active">'+(_group[2] == '/add'?'新增':'编辑')+'</li>';
-    			return;
+    			return false;
     		}
     	});
     	$('.admin-breadcrumb').html(_crumb_li);

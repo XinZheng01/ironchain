@@ -192,4 +192,114 @@ CREATE TABLE `shop_class` (
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB COMMENT='商品分类';
 
+CREATE TABLE `shop_product` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`title`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品标题' ,
+`class_id`  bigint(20) NULL COMMENT '所属分类',
+`code` varchar(255) NOT NULL COMMENT '商品编号',
+`price` decimal(13,2) NOT NULL COMMENT '商品价格',
+`stock` INT(11) NOT NULL DEFAULT 0 COMMENT '商品库存',
+`freight` decimal(13,2) NOT NULL DEFAULT 0.00 COMMENT '商品运费',
+`status` TINYINT(2) COMMENT '状态',
+`sort_id` int(11) COMMENT '排序值',
+`content` text NOT NULL COMMENT '商品详情',
+`sale_date` datetime COMMENT '上下架时间',
+`create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+`update_time`  datetime NULL DEFAULT NULL ,
+`create_by`  bigint(20) NULL DEFAULT NULL ,
+`update_by`  bigint(20) NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB COMMENT='商品';
+
+CREATE TABLE `shop_product_param` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`product_id`  bigint(20) NOT NULL COMMENT '商品' ,
+`name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '参数名' ,
+`value`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '参数值' ,
+`sort_id` int(11) COMMENT '排序值',
+`create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+`update_time`  datetime NULL DEFAULT NULL ,
+`create_by`  bigint(20) NULL DEFAULT NULL ,
+`update_by`  bigint(20) NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB COMMENT='商品参数';
+
+CREATE TABLE `shop_product_spec` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规格名' ,
+`create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+`update_time`  datetime NULL DEFAULT NULL ,
+`create_by`  bigint(20) NULL DEFAULT NULL ,
+`update_by`  bigint(20) NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB COMMENT='商品规格';
+
+CREATE TABLE `shop_product_spec_value` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`spec_id`  bigint(20) NOT NULL COMMENT '商品规格' ,
+`value`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规格值' ,
+`create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+`update_time`  datetime NULL DEFAULT NULL ,
+`create_by`  bigint(20) NULL DEFAULT NULL ,
+`update_by`  bigint(20) NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB COMMENT='商品规格值';
+
+CREATE TABLE `shop_product_sku` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`product_id`  bigint(20) NOT NULL COMMENT '商品' ,
+`spec_value_id`  bigint(20) NOT NULL COMMENT '商品规格值' ,
+`code` varchar(255) NOT NULL COMMENT '商品编号',
+`price` decimal(13,2) NOT NULL COMMENT '商品价格',
+`stock` INT(11) NOT NULL DEFAULT 0 COMMENT '商品库存',
+`create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+`update_time`  datetime NULL DEFAULT NULL ,
+`create_by`  bigint(20) NULL DEFAULT NULL ,
+`update_by`  bigint(20) NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB COMMENT='商品SKU';
+
+
+CREATE TABLE `shop_order` (
+`id` bigint(20) NOT NULL AUTO_INCREMENT,
+`order_no` VARCHAR(255) NOT NULL COMMENT '订单编号',
+`out_trade_no` VARCHAR(100) NULL COMMENT '外部交易号',
+`payment_type` TINYINT(2) NOT NULL COMMENT '支付类型',
+`buyer_id` bigint(20) NOT NULL COMMENT '买家id',
+`member_name` VARCHAR(50) NOT NULL COMMENT '买家会员名称',
+`buyer_ip` VARCHAR(100) NULL COMMENT '买家ip',
+`buyer_message` VARCHAR(255) NULL DEFAULT NULL COMMENT '买家附言',
+`receiver_mobile` VARCHAR(11) NULL COMMENT '收货人的手机号码',
+`receiver_province` bigint(20) NOT NULL COMMENT '收货人所在省',
+`receiver_city` bigint(20) NOT NULL COMMENT '收货人所在市',
+`receiver_district` bigint(20) NULL COMMENT '收货人所在区',
+`receiver_address` VARCHAR(255) NOT NULL COMMENT '收货人详细地址',
+`receiver_name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '收货人姓名',
+`products_price` DECIMAL(13, 2) NOT NULL COMMENT '商品总价',
+`freight` DECIMAL(13, 2) NOT NULL COMMENT '订单运费',
+`order_price` DECIMAL(13, 2) NOT NULL COMMENT '订单总价',
+`status` TINYINT(2) NOT NULL DEFAULT 1 COMMENT '订单状态',
+`pay_time` DATETIME NULL DEFAULT NULL COMMENT '订单付款时间',
+`consign_time` DATETIME NULL COMMENT '卖家发货时间',
+`sign_time` DATETIME NULL COMMENT '买家签收时间',
+`create_time` DATETIME NULL COMMENT '订单创建时间',
+`finish_time` DATETIME NULL COMMENT '订单完成时间',
+PRIMARY KEY (id)
+)ENGINE = INNODB COMMENT = '订单表';
+##支付类型 1支付宝 2微信 3银联
+##订单状态 1 待付款 2待发货 3待收货 4待收货 5已完成 6已关闭
+
+CREATE TABLE `shop_order_product` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `order_id` bigint(20) NOT NULL COMMENT '订单ID',
+  `product_id` bigint(20) NOT NULL COMMENT '商品ID',
+  `product_title` varchar(255) NOT NULL COMMENT '商品标题',
+  `product_img` INT(11) NOT NULL DEFAULT 0 COMMENT '商品图片',
+  `sku_id` bigint(20) NOT NULL COMMENT 'skuID',
+  `price` DECIMAL(13, 2) NOT NULL DEFAULT 0.00 COMMENT '商品价格',
+  `num` int(11) NOT NULL DEFAULT 0 COMMENT '购买数量',
+  `adjust_price` DECIMAL(13, 2) NOT NULL DEFAULT 0.00 COMMENT '调整金额',
+  `total_price` DECIMAL(13, 2) NOT NULL DEFAULT 0.00 COMMENT '商品总价',
+  PRIMARY KEY (id)
+)ENGINE=INNODB COMMENT='订单商品表';
 

@@ -6,7 +6,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp" %>
 <%@include file="/WEB-INF/include/meta.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${tableComment!}</title>
+<title>商品规格</title>
 <%@include file="/WEB-INF/include/base-style.jsp" %>
 <%@include file="/WEB-INF/include/base-script.jsp" %>
 </head>
@@ -15,23 +15,21 @@
 		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
 			<div class="panel">
-				<form id="searchForm" action="${r"${ctx}"}/${pathName}/list" method="get" class="search-form form-inline">
+				<form id="searchForm" action="${ctx}/shop/product/spec/list" method="get" class="search-form form-inline">
 				<div class="panel-body">
-					<%--
 					  <div class="form-group">
-					    <input type="text" name="srch_LIKE_name" class="form-control" value="${r"${srch_LIKE_name}"}" placeholder="名称">
+					    <input type="text" name="srch_LIKE_name" class="form-control" value="${srch_LIKE_name}" placeholder="规格名">
 					  </div>
 					  <div class="form-group">
 					  	<button type="submit" class="btn"><i class="icon icon-search"></i>查询</button>
-					  	<button type="reset" class="btn"><i class="icon icon-history"></i>重置</button>
+					  	<button type="reset" class="btn" ><i class="icon icon-history"></i>重置</button>
 					  </div>
-					 --%>
 				</div>
 			 	<div class="panel-toolbar">
-			 	<sec:authorize url="/${pathName}/add">
-			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${r"${ctx}"}/${pathName}/add';"><i class="icon icon-plus"></i>新增</button>
+			 	<sec:authorize url="/shop/product/spec/add">
+			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/shop/product/spec/add';"><i class="icon icon-plus"></i>新增</button>
 			 	</sec:authorize>
-			 	<sec:authorize url="/${pathName}/delete">
+			 	<sec:authorize url="/shop/product/spec/delete">
 					<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
 				</sec:authorize> 
 			 	</div>
@@ -39,37 +37,30 @@
 	                <thead>
 						<tr>
 	                	<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
-						<#assign ignore = ["id", "updateTime", "createBy", "updateBy"]>
-						<#list columns as column>
-							<#if !ignore?seq_contains(column.attrName)>
-							<th data-sort-column="${column.attrName}">${column.columnComment}</th>
-							</#if>
-						</#list>
+							<th data-sort-column="name">规格名</th>
+							<th data-sort-column="createTime">创建时间</th>
 							<th width="120">操作</th>
 						</tr>
 					</thead>
 	                <tbody>
-						<c:forEach items="${r"${page.content}"}" var="item">
+						<c:forEach items="${page.content}" var="item">
 							<tr>
-								<td class="dt-body-center"><input type="checkbox" value="${r"${item.id}"}"></td>
-								<#list columns as column>
-								<#if !ignore?seq_contains(column.attrName)>
-								<td>${r"${item."}${column.attrName}}</td>
-								</#if>
-								</#list>
+								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
+								<td>${item.name}</td>
+								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
-								<sec:authorize url="/${pathName}/edit">
-									<a href="${r"${ctx}"}/${pathName}/edit?id=${r"${item.id}"}">编辑</a> |
+								<sec:authorize url="/shop/product/spec/edit">
+									<a href="${ctx}/shop/product/spec/edit?id=${item.id}">编辑</a> |
 								</sec:authorize>
-								<sec:authorize url="/${pathName}/delete"> 
-									<a href="javascript:;" onclick="del('${r"${item.id}"}')" class="text-danger">删除</a>
+								<sec:authorize url="/shop/product/spec/delete"> 
+									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
 								</sec:authorize>
 								</td>
 							</tr>
 						</c:forEach>
 	                </tbody>
             	</table>
-            	<my:pagination page="${r"${page}"}"/>
+            	<my:pagination page="${page}"/>
             	</form>
            	</div>
 		</div>
@@ -80,7 +71,7 @@ function del(id){
 	$.site.confirm("确定要删除选中的记录？", function(){
 		$.site.loading();
 		$.ajax({
-			url: "${r"${ctx}"}/${pathName}/delete",
+			url: "${ctx}/shop/product/spec/delete",
 			data: {"ids": id},
 			type: "POST",
 			success: function(data){
