@@ -65,7 +65,6 @@ public class DemandController extends ApiBaseController{
 	 * @return
 	 */
 	@IgnoreAuth
-	@IgnoreApiSecurity
 	@GetMapping("/list")
 	public R list(@RequestParam(required=false, defaultValue="-1") int type, 
 			@RequestParam(required=false) Long classId,
@@ -78,7 +77,7 @@ public class DemandController extends ApiBaseController{
 				adcode, startDate, endDate, pageable);
 		Map<String, Object> map = new HashMap<>();
 		map.put("content", page.getContent());
-		map.put("hasNext", page.hasNext());
+		map.put("hasNext", page.hasNext()?1:0);
 		return R.ok(map);
 	}
 	
@@ -88,7 +87,6 @@ public class DemandController extends ApiBaseController{
 	 * @return
 	 */
 	@IgnoreAuth
-	@IgnoreApiSecurity
 	@GetMapping("/details")
 	public R details(@RequestParam Long id, @RequestParam(required=false) Long userId, @RequestParam(required=false) String token){
 		//检验登录
@@ -106,10 +104,8 @@ public class DemandController extends ApiBaseController{
 	 * @param userId
 	 * @return
 	 */
-	@IgnoreAuth
-	@IgnoreApiSecurity
 	@PostMapping("/publish")
-	public R publish(@Valid Demand demand, @Valid List<DemandFile> demandFile, @RequestParam Long userId){
+	public R publish(@Valid Demand demand, @Valid @RequestParam List<DemandFile> demandFile, @RequestParam Long userId){
 		if(demand == null)
 			throw new ServiceException(R.SC_PARAMERROR, "非法请求");
 		if(demand.getType() == Demand.TYPE_MACHINED){//检验机加工

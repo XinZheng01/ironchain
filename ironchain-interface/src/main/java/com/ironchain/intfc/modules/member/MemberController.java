@@ -219,4 +219,21 @@ public class MemberController extends ApiBaseController {
 		result.put("licenseImg", member.getCompanyLicenseImg());
 		return R.ok(result);
 	}
+	
+	/**
+	 * 个人账户信息
+	 * @return
+	 */
+	@GetMapping("/info")
+	public R info(@RequestParam Long userId){
+		Member member = memberDao.findOne(userId);
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("name", member.getName());
+		result.put("headImg", member.getHeadImg());
+		result.put("status", member.getType() == 2?"已开通":"未开通");
+		result.put("type", member.getTypeStr());
+		
+		return R.ok();
+	}
 }

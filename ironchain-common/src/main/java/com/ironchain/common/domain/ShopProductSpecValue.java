@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.ironchain.common.base.DataModel;
 
 import lombok.Getter;
@@ -33,5 +35,14 @@ public class ShopProductSpecValue extends DataModel {
 	/** 规格值*/
 	@Column(name="value")
 	private String value;
+	
+	public interface SpecValueVO{
+		Long getId();
+		
+		String getValue();
+		
+		@Value("#{target.spec.id}")
+		Long getSpecId();
+	}
 	
 }

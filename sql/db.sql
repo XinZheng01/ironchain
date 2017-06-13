@@ -248,7 +248,7 @@ PRIMARY KEY (`id`)
 CREATE TABLE `shop_product_sku` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
 `product_id`  bigint(20) NOT NULL COMMENT '商品' ,
-`spec_value_id`  bigint(20) NOT NULL COMMENT '商品规格值' ,
+`spec_value_ids` varchar(2000) NOT NULL COMMENT '商品规格值ID' ,
 `code` varchar(255) NOT NULL COMMENT '商品编号',
 `price` decimal(13,2) NOT NULL COMMENT '商品价格',
 `stock` INT(11) NOT NULL DEFAULT 0 COMMENT '商品库存',
@@ -303,3 +303,26 @@ CREATE TABLE `shop_order_product` (
   PRIMARY KEY (id)
 )ENGINE=INNODB COMMENT='订单商品表';
 
+CREATE TABLE `letter` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `send_time` DATETIME NOT NULL COMMENT '发送时间',
+  `status` INT(11) NOT NULL DEFAULT 0 COMMENT '状态',
+  `content` varchar(2000) NOT NULL COMMENT '内容',
+  PRIMARY KEY (id)
+)ENGINE=INNODB COMMENT='站内信';
+
+CREATE TABLE `letter_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `content` varchar(2000) NOT NULL COMMENT '内容',
+  `number` INT(11) NOT NULL COMMENT '接受人数',
+  `send_time` DATETIME NOT NULL COMMENT '发送时间',
+  `status` INT(11) NOT NULL DEFAULT 0 COMMENT '状态',
+  `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+  `update_time`  datetime NULL DEFAULT NULL ,
+  `create_by`  bigint(20) NULL DEFAULT NULL ,
+  `update_by`  bigint(20) NULL DEFAULT NULL ,
+  PRIMARY KEY (id)
+)ENGINE=INNODB COMMENT='站内信日志';

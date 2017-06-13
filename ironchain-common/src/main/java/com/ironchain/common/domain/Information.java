@@ -28,6 +28,9 @@ public class Information extends DataModel {
 	public static final int TYPE_ARTICLE = 1;
 	public static final int TYPE_AD = 2;
 	
+	public static final int STATUS_SHOW = 1;
+	public static final int STATUS_UNSHOW = 0;
+	
 	/** 类型 1 文章 2广告*/
 	@Column(name="type")
 	private int type = 1;
@@ -41,8 +44,8 @@ public class Information extends DataModel {
 	private String source;
 	
 	/** 封面图片*/
-	@Column(name="picture")
-	private String picture;
+	@Column(name="img")
+	private String img;
 	
 	/** 排序值*/
 	@Column(name="order_num")

@@ -62,10 +62,10 @@ public class DemandService extends BaseService {
 	public Page<Map<String, Object>> findDemandByParam(int type, Long classId, int progress, String adcode,
 			Date startDate, Date endDate, Pageable pageable) {
 		Page<Map<String, Object>> page = SqlKit.create().append("select d.id, d.title, d.description,")
-			.append(" c.name, d.start_date startDate, d.end_date endDate, d.progress")
+			.append(" c.name className, d.start_date startDate, d.end_date endDate, d.progress")
 			.append(" from demand d, demand_class c where d.class_id = c.id")
 			.append(type > 0, " and d.type = ?", type)//类型
-			.append(classId > 0, " and d.class_id = ?", classId)//分类
+			.append(classId != null && classId > 0, " and d.class_id = ?", classId)//分类
 			.append(progress > -1, " d.progress = ?", progress)//筛选状态
 			.append(progress == -1, " and d.progress in(?,?,?,?,?) ",
 					Demand.PROGRESS_PUBLISH, Demand.PROGRESS_BID, Demand.PROGRESS_SEND,
@@ -164,6 +164,12 @@ public class DemandService extends BaseService {
 			file.setDemandId(demand.getId());
 		}
 		demandFileDao.save(demandFile);
+	}
+
+	public void findListByUser(Long userId, int type, int progress, Pageable pageable) {
+		SqlKit.create().append("select d.id, d.title, d.description,")
+			.append(" c.name className, d.start_date startDate, d.end_date endDate, d.progress")
+			.append(" from demand d, demand_class c where d.class_id = c.id");
 	}
 
 }

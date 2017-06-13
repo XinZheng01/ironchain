@@ -83,7 +83,7 @@
 						  		<input name="params.value" class="form-control" value="${param.value}" placeholder="请输入参数值">
 						  	</div>
 						  	<div class="col-sm-2">
-						  		<a class="btn btn-link" onclick="delParam(this)">删除</a>
+						  		<a class="btn btn-link" onclick="delRow(this)">删除</a>
 						  	</div>
 				  		</div>
 				  		</c:forEach>
@@ -109,43 +109,37 @@
 						<div class="col-sm-10">
 							<div class="row">
 								<div class="col-sm-2">
-									<select name="" class="form-control">
-										<option>全部</option>
+									<select name="spec" class="form-control" onChange="changeSpecVal(this)" spec-id="">
+										<option value="">请选择</option>
 									</select>
 								</div>
-								<div class="col-sm-12">
-									<label class="checkbox-inline">
-									  <input type="checkbox"> 多选框 1
-									</label>
-									<label class="checkbox-inline">
-									  <input type="checkbox"> 多选框 2
-									</label>
-									<label class="checkbox-inline">
-									  <input type="checkbox"> 多选框 1
-									</label>
-									<label class="checkbox-inline">
-									  <input type="checkbox"> 多选框 2
-									</label>
-									<label class="checkbox-inline">
-									  <input type="checkbox"> 多选框 1
-									</label>
-									<label class="checkbox-inline">
-									  <input type="checkbox"> 多选框 2
-									</label>
-									<label class="checkbox-inline">
-									  <input type="checkbox"> 多选框 1
-									</label>
-									<label class="checkbox-inline">
-									  <input type="checkbox"> 多选框 2
-									</label>
-								</div>
+								<div class="col-sm-2">
+							  		<a class="btn btn-link" onclick="delRow(this)">删除</a>
+							  	</div>
+								<div class="specValueList col-sm-12"></div>
 							</div>
 							<a class="btn btn-link new-spec" ><i class="icon icon-plus"></i>新增规格</a>
-					  	</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-1 required">商品库存</label>
-						<div class="col-md-4 col-sm-6">
+							<table class="table table-auto table-bordered">
+								<thead>
+									<tr>
+									<th>颜色</th>
+									<th>库存</th>
+									<th>价格</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<td><p class="form-control-static">黑色</p></td>
+									<td><input class="form-control"></td>
+									<td><input class="form-control"></td>
+									</tr>
+									<tr>
+									<td><p class="form-control-static">红色</p></td>
+									<td><input class="form-control"></td>
+									<td><input class="form-control"></td>
+									</tr>
+								</tbody>
+							</table>
 					  	</div>
 					</div>
 			  	</div>
@@ -163,7 +157,14 @@
 	</div>
 </body>
 <script type="text/javascript">
-function delParam(btn){
+//规格option
+var specOption = [
+	<c:forEach items="${specList}" var="spec" varStatus="status">
+	'<option value="${spec.id}">${spec.name}</option>'${status.last?"":","}
+	</c:forEach>
+	].join("");
+//删除行
+function delRow(btn){
 	$(btn).closest('.row').remove();
 }
 $(function(){
@@ -185,6 +186,7 @@ $(function(){
 	    	
 	    }
 	});
+	//新增参数
 	$('.new-param').on('click', function(){
 		$(['<div class="row">',
 			'  	<div class="col-sm-5">',
@@ -194,23 +196,56 @@ $(function(){
 			'  		<input name="params.value" class="form-control" value="${param.value}" placeholder="请输入参数值">',
 			'  	</div>',
 			'  	<div class="col-sm-2">',
-			'  		<a class="btn btn-link" onclick="delParam(this)">删除</a>',
+			'  		<a class="btn btn-link" onclick="delRow(this)">删除</a>',
 			'  	</div>',
 			'</div>'].join("")).insertBefore($(this));
 	});
+	//新增规格
 	$('.new-spec').on('click', function(){
 		$(['<div class="row">',
-			'  	<div class="col-sm-5">',
-			'  		<input name="params.name" class="form-control" value="${param.name}" placeholder="请输入参数名">',
+			'	<div class="col-sm-2">',
+			'		<select name="spec" class="form-control" onChange="changeSpecVal(this)" spec-id="">',
+			'			<option value="">请选择</option>',
+						specOption,
+			'		</select>',
+			'	</div>',
+			'	<div class="col-sm-2">',
+			'  		<a class="btn btn-link" onclick="delRow(this)">删除</a>',
 			'  	</div>',
-			'  	<div class="col-sm-5">',
-			'  		<input name="params.value" class="form-control" value="${param.value}" placeholder="请输入参数值">',
-			'  	</div>',
-			'  	<div class="col-sm-2">',
-			'  		<a class="btn btn-link" onclick="delParam(this)">删除</a>',
-			'  	</div>',
+			'	<div class="specValueList col-sm-12"></div>',
 			'</div>'].join("")).insertBefore($(this));
 	});
+	
+	$('select[name="spec"]').append(specOption);
 })
+//改变规格
+function changeSpecVal(select){
+	var _self = $(select);
+	var val = _self.find('option:selected').val();
+	
+	if(val == ""){
+		_self.attr('spec-id', '').closest('.row').find('.specValueList').empty();
+		return;		
+	}
+	if($('select[spec-id="'+val+'"]').size() > 0){
+		$.site.alert("已存在相同的规格属性");
+		_self.find('option[value="'+_self.attr('spec-id')+'"]').prop('selected', true);
+		return;
+	}
+	$.ajax({
+		url: "${ctx}/shop/product/spec_value_list",
+		data: {"id": val},
+		type: "GET",
+		success: function(data){
+			var values = '';
+			for(var i = 0, len = data.length; i < len; i++){
+				values += '<div class="checkbox col-sm-2"><label>'+
+				'<input type="checkbox" value="' + data[i].id + '"> '+ data[i].value +
+				'</label></div>';
+			}
+			_self.attr('spec-id', val).closest('.row').find('.specValueList').html(values);
+		}
+	});
+}
 </script>
 </html>

@@ -5,4 +5,6 @@ import com.ironchain.common.domain.Information;
 
 public interface InformationDao extends BaseDao<Information, Long> {
 
+	Information findByIdAndStatus(Long id, int statusShow);
+
 }

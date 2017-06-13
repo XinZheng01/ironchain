@@ -22,8 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.ShopClassDao;
 import com.ironchain.common.dao.ShopProductDao;
+import com.ironchain.common.dao.ShopProductSpecDao;
+import com.ironchain.common.dao.ShopProductSpecValueDao;
 import com.ironchain.common.domain.R;
 import com.ironchain.common.domain.ShopProduct;
+import com.ironchain.common.domain.ShopProductSpecValue.SpecValueVO;
 
 
 /**
@@ -41,6 +44,12 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 	
 	@Autowired
 	private ShopClassDao shopClassDao;
+	
+	@Autowired
+	private ShopProductSpecDao shopProductSpecDao;
+	
+	@Autowired
+	private ShopProductSpecValueDao shopProductSpecValueDao;
 	
 	/**
 	 * 列表
@@ -60,6 +69,7 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 	@GetMapping("/add")
 	public String add(@ModelAttribute ShopProduct shopProduct, Model model){
 		model.addAttribute("shopClassList", shopClassDao.findAll());
+		model.addAttribute("specList", shopProductSpecDao.findAll());
 		return "shop/shop_product_form";
 	}
 	
@@ -70,6 +80,7 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 	@GetMapping("/edit")
 	public String edit(@ModelAttribute ShopProduct shopProduct, Model model){
 		model.addAttribute("shopClassList", shopClassDao.findAll());
+		model.addAttribute("specList", shopProductSpecDao.findAll());
 		return "shop/shop_product_form";
 	}
 	
@@ -108,4 +119,9 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 		return R.ok().setMsg("操作成功");
 	}
 	
+	@GetMapping("/spec_value_list")
+	@ResponseBody
+	public List<SpecValueVO> specValueList(@RequestParam Long id){
+		return shopProductSpecValueDao.findBySpecId(id);
+	}
 }
