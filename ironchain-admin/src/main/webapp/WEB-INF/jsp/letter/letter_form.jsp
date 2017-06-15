@@ -14,7 +14,7 @@
 	<div>
 		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
-			<form:form id="saveForm" modelAttribute="letterLog" action="save" cssClass="form-horizontal">
+			<form:form id="saveForm" modelAttribute="letter" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
 			  <div class="form-group">
 			    <label for="title" class="col-sm-2 required">标题</label>
@@ -26,13 +26,13 @@
 			    <label for="type" class="col-sm-2">类型</label>
 			    <div class="col-md-4 col-sm-6">
 				  <label class="radio-inline">
-				  	<form:radiobutton path="type" value="1"/> 文本内容
+				  	<form:radiobutton path="type" value="1" id="typeText"/> 文本内容
 				  </label>
 				  <label class="radio-inline">
-				  	<form:radiobutton path="type" value="2"/> 链接
+				  	<form:radiobutton path="type" value="2" id="typeUrl"/> 链接
 				  </label>
 				  <label class="radio-inline">
-				  	<form:radiobutton path="type" value="3"/> 加工需求、设备服务 
+				  	<form:radiobutton path="type" value="3" id="typeDemand"/> 加工需求、设备服务 
 				  </label>
 			    </div>
 			  </div>
@@ -77,14 +77,19 @@
 			      <button type="button" class="btn btn-default back">返回</button>
 			    </div>
 			    <div class="col-sm-1">
-			      <button type="submit" class="btn btn-primary">保存</button>
+			      <button type="button" class="btn btn-primary send">保存并推送</button>
 			    </div>
 			  </div>
 			</form:form>
 		</div>
 	</div>
 </body>
+
 <script type="text/javascript">
+<c:if test="${not empty letter.id}">
+$('input,textarea').prop('disabled',true);
+$('.send').hide();
+</c:if>
 function changeType(){
 	var type = $('[name=type]:checked').val();
 	switch(type){
@@ -116,18 +121,32 @@ $(function(){
 	$('[name=sendType]').on('change', changeSendType);
 	
 	$('.back').on('click', function(){
-		location.href = "${ctx}/letter/log/list";
+		location.href = "${ctx}/letter/list";
 	});
 	$('#saveForm').validate({
 	    rules: {
 	    	title: "required",
 			number: "required",
 			type: "required",
-			sendType: "required"
+			sendType: "required",
+			content:{"adaptrequired" : "typeText"},
+			url:{"adaptrequired" : "typeUrl"},
+			attr:{"adaptrequired" : "typeDemand"}
 	    },
 	    message: {
 	    	
 	    }
+	});
+	
+	$('.send').on('click', function(){
+		if($('#saveForm').valid() == true){
+			$.site.confirm(
+				"是否保存并推送信息给"+($('[name=sendType]:checked').val() == '2'?"指定用户":"所有用户"),
+				function(){
+					$('#saveForm').submit();
+				}
+			);
+		}
 	});
 })
 </script>

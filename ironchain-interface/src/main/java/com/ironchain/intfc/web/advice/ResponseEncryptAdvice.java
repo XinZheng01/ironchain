@@ -79,6 +79,6 @@ public class ResponseEncryptAdvice implements ResponseBodyAdvice<Object>{
 	
 	public static void main(String[] args) {
 		System.out.println(DigestKit.aesEncrypt("{\"oldPassword\":\"<script></script>\",\"newPassword\":\"123\"}", "3AF6F179FC423C8B"));
-		System.out.println(DigestKit.aesDecrypt("RDrTS4ptQgye7JZXaV/Xu2rMgtN0hhxDvglcLUiLLDY=", "3AF6F179FC423C8B"));
+		System.out.println(DigestKit.aesDecrypt("hpnkL27nENVulG9O3YlsjqQiOXwUPjdzYKaUqvL61thG5WijOFvkjv9gV5nC4hcPaVbMBPaB+1KKcEzBR6Qm++3kxPXlNMCzkEwpBwSPprA0UkTZQ3W0svAK+GjMqiEv6h4Uj3qBwbASS4tgYtT9h2tLPePvxVRCB/kQ7pIf3FUyHVrJ943V7OclggATm8qL", "3AF6F179FC423C8B"));
 	}
 }

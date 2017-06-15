@@ -18,4 +18,10 @@ public class AdminProperties {
 	
 	/** 上传文件的URL根路径*/
 	private String uploadBaseUrl;
+	
+	/** 极光推送AppKey*/
+	private String jpushAppKey;
+	
+	/** 极光推送MasterSecret*/
+	private String jpushMasterSecret;
 }

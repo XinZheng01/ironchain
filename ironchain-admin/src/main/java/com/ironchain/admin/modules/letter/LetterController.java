@@ -6,7 +6,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.ModelController;
-import com.ironchain.common.dao.LetterLogDao;
-import com.ironchain.common.domain.LetterLog;
+import com.ironchain.common.dao.LetterDao;
+import com.ironchain.common.domain.Letter;
 import com.ironchain.common.domain.R;
 
 
@@ -31,19 +34,20 @@ import com.ironchain.common.domain.R;
  * @email 
  */
 @Controller
-@RequestMapping("/letter/log")
-public class LetterLogController extends ModelController<LetterLogDao, LetterLog> {
+@RequestMapping("/letter")
+public class LetterController extends ModelController<LetterDao, Letter> {
 	
-	//@Autowired
-	//private LetterLogService letterLogService;
+	@Autowired
+	private LetterService letterService;
 	
 	/**
 	 * 列表
 	 */
 	@GetMapping("/list")
-	public String list(Pageable pageable, HttpServletRequest request, Model model){
+	public String list(@PageableDefault(sort="createTime", direction=Direction.DESC) Pageable pageable,
+			HttpServletRequest request, Model model){
 		model.addAttribute("page", modelDao.findAll(bySearchFilter(request), pageable));
-		return "letter/letter_log_list";
+		return "letter/letter_list";
 	}
 	
 	
@@ -52,8 +56,8 @@ public class LetterLogController extends ModelController<LetterLogDao, LetterLog
 	 * @return
 	 */
 	@GetMapping("/add")
-	public String add(@ModelAttribute LetterLog letterLog, Model model){
-		return "letter/letter_log_form";
+	public String add(@ModelAttribute Letter letter, Model model){
+		return "letter/letter_form";
 	}
 	
 	/**
@@ -61,8 +65,8 @@ public class LetterLogController extends ModelController<LetterLogDao, LetterLog
 	 * @return
 	 */
 	@GetMapping("/edit")
-	public String edit(@ModelAttribute LetterLog letterLog, Model model){
-		return "letter/letter_log_form";
+	public String edit(@ModelAttribute Letter letter, Model model){
+		return "letter/letter_form";
 	}
 	
 	/**
@@ -70,12 +74,13 @@ public class LetterLogController extends ModelController<LetterLogDao, LetterLog
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute LetterLog letterLog, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid @ModelAttribute Letter letter, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
-			return "letter/letter_log_form";
+			return "letter/letter_form";
 		}
-		modelDao.save(letterLog);
+		
+		letterService.saveAndSend(letter);
 		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
@@ -89,10 +94,10 @@ public class LetterLogController extends ModelController<LetterLogDao, LetterLog
 	public R delete(@RequestParam Long[] ids){
 		if(ids == null || ids.length == 0)
 			return R.error("请选择删除数据");
-		List<LetterLog> entitys = new ArrayList<>();
-		LetterLog entity = null;
+		List<Letter> entitys = new ArrayList<>();
+		Letter entity = null;
 		for (Long id : ids) {
-			entity = new LetterLog();
+			entity = new Letter();
 			entity.setId(id);
 			entitys.add(entity);
 		}

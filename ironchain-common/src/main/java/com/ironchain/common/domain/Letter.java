@@ -1,16 +1,15 @@
 package com.ironchain.common.domain;
 
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.ironchain.common.base.BaseModel;
+import com.ironchain.common.base.DataModel;
 
 import lombok.Getter;
 import lombok.Setter;
 /**
- * 站内信
+ * 站内信日志
  * 
  * @author zheng xin
  * @email 
@@ -19,29 +18,48 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name="letter")
-public class Letter extends BaseModel {
+public class Letter extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	/** 用户*/
-	@Column(name="user_id")
-	private Long userId;
+	public static final int TYPE_LETTER = 0;//站内信
+	public static final int TYPE_TEXT = 1;//文本内容
+	public static final int TYPE_URL = 2;//链接
+	public static final int TYPE_DEMAND = 3;//需求
+	
+	public static final int SEND_TYPE_ALL = 1;//所有用户
+	public static final int SEND_TYPE_APPOINT = 2;//指定用户
+	
+	public static final int IS_SYSTEM_YES = 1;//系统发送
+	public static final int IS_SYSTEM_NO = 0;//非系统发送
 	
 	/** 标题*/
 	@Column(name="title")
 	private String title;
 	
-	/** 创建时间*/
-	@Column(name="create_time")
-	private Date createTime;
+	/** 内容*/
+	@Column(name="content")
+	private String content;
 	
-	/** 状态*/
-	@Column(name="status")
-	private Integer status;
+	/** 接收人数*/
+	@Column(name="number")
+	private long number;
+	
+	/** 指定发送的用户*/
+	@Column(name="members")
+	private String members;
 	
 	/** 类型*/
 	@Column(name="type")
-	private Integer type;
+	private int type = TYPE_TEXT;
+	
+	/** 发送类型*/
+	@Column(name="send_type")
+	private int sendType = SEND_TYPE_ALL;
+	
+	/** 发送类型*/
+	@Column(name="is_system")
+	private int is_system = IS_SYSTEM_NO;
 	
 	/** 链接*/
 	@Column(name="url")
@@ -51,8 +69,27 @@ public class Letter extends BaseModel {
 	@Column(name="attr")
 	private String attr;
 	
-	/** 内容*/
-	@Column(name="content")
-	private String content;
+	public String getTypeStr(){
+		switch (type) {
+		case TYPE_TEXT:
+			return "文本内容";
+		case TYPE_URL:
+			return "链接";
+		case TYPE_DEMAND:
+			return "加工需求、设备服务 ";
+		default:
+			return null;
+		}
+	}
 	
+	public String getSendTypeStr(){
+		switch (sendType) {
+		case SEND_TYPE_ALL:
+			return "所有用户";
+		case SEND_TYPE_APPOINT:
+			return "指定用户";
+		default:
+			return null;
+		}
+	}
 }

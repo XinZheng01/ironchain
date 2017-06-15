@@ -24,6 +24,14 @@ public interface MemberDao extends BaseDao<Member, Long>{
 	Long findIdByMobilephone(String mobilephone);
 	
 	/**
+	 * 根据手机号码数组查询id
+	 * @param mobilephone
+	 * @return
+	 */
+	@Query("select m.id from Member m where m.mobilephone in (?1)")
+	Long[] findIdByMobilephones(String[] mobilephones);
+	
+	/**
 	 * 根据用户id查询类型
 	 * @param id
 	 * @return

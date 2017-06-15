@@ -3,15 +3,22 @@ $.validator.setDefaults({
     errorElement: "span",
     errorClass: "help-block help-block-error",
     highlight: function (element, errorClass, validClass) {
+    	console.log('highlight');
+    	console.log(element);
         $(element).closest('.form-group').addClass('has-error');
     },
     unhighlight: function (element, errorClass, validClass) {
+    	console.log('unhighlight');
+    	console.log(element);
         $(element).closest('.form-group').removeClass('has-error');
     },
     success: function (label) {
         label.closest('.form-group').removeClass('has-error');
     },
     errorPlacement: function (error, element) {
+    	console.log('errorPlacement');
+    	console.log(element);
+    	console.log(error);
         if (element.parent('.input-group').length || element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
             error.insertAfter(element.parent());
         } else {
@@ -23,6 +30,27 @@ $.validator.setDefaults({
 $.validator.addMethod( "ipv4", function( value, element ) {
 	return this.optional( element ) || /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/i.test( value );
 }, "请输入正确的IPV4地址" );
+
+$.validator.addMethod( "adaptrequired", function(value, element, param) {
+	var result = true;
+	if($('#'+param).prop('checked')){
+		switch( element.nodeName.toLowerCase() ) {
+		case 'select':
+			if($(element).attr('multiple')){
+				return $(element).children('option').length > 0
+			}else{
+				var val = $(element).val();
+				return val && val.length > 0;
+			}
+		case 'input':
+			if ( this.checkable(element) )
+				return this.getLength(value, element) > 0;
+		default:
+			return $.trim(value).length > 0;
+		}
+	}
+	return result;
+}, "不能为空" );
 
 $.validator.addMethod( "method", function(value, element) {
 	return eval($(element).attr('validate'));

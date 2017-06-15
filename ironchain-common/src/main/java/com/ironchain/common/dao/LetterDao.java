@@ -4,7 +4,7 @@ import com.ironchain.common.base.BaseDao;
 import com.ironchain.common.domain.Letter;
 
 /**
- * 站内信
+ * 站内信日志
  * 
  * @author zheng xin
  * @email 

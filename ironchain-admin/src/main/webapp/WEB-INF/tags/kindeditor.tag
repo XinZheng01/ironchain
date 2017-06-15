@@ -32,7 +32,8 @@ KindEditor.ready(function(K) {
 		uploadJson : '/editor/upload',
 		filterMode : false,//过滤html
 		formatUploadUrl : false,
-		extraFileUploadParams: _csrf
+		extraFileUploadParams: _csrf,
+		afterBlur: function(){this.sync();}
 	});
 });
 </script>

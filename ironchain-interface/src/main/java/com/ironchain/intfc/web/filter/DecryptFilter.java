@@ -13,6 +13,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +31,9 @@ import com.ironchain.intfc.web.advice.ApiAnnotationHandler;
  */
 @Component
 public class DecryptFilter implements Filter {
-
+	
+	private Logger LOGGER = LoggerFactory.getLogger(DecryptFilter.class);
+	
 	@Autowired
 	private ApiAnnotationHandler apiAnnotationHandler;
 	
@@ -46,7 +50,8 @@ public class DecryptFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		String digesBody = request.getParameter("digesBody");
 		Map<String, Object> map = Collections.emptyMap();
-		
+		LOGGER.info(digesBody);
+		LOGGER.info(aesKey);
 		if(digesBody != null){
 			//判断此url是否需要加密
 			IgnoreApiSecurity ignoreSecurity = apiAnnotationHandler.getMethodAnnotation(((HttpServletRequest)request).getRequestURI());

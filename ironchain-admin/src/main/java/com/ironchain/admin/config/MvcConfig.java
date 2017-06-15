@@ -2,6 +2,7 @@ package com.ironchain.admin.config;
 
 import javax.servlet.ServletContext;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,9 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 import com.ironchain.common.upload.FileSystemUploadService;
 import com.ironchain.common.upload.UploadService;
+
+import cn.jiguang.common.ClientConfig;
+import cn.jpush.api.JPushClient;
 
 /**
  * Mvc 配置
@@ -58,5 +62,17 @@ public class MvcConfig extends SpringDataWebConfiguration {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 //		registry.addMapping("/api/**").allowedHeaders("*").allowedMethods("*").allowedOrigins("*");
+	}
+	
+	@Bean
+	public JPushClient getJPushClient(AdminProperties adminProperties, @Value("spring.profiles.active") String active){
+		ClientConfig config = ClientConfig.getInstance();
+		config.setMaxRetryTimes(5);//最大重试次数
+		config.setConnectionTimeout(10 * 1000);//连接超时时间
+		config.setApnsProduction("product".equals(active));//环境
+		
+		return new JPushClient(adminProperties.getJpushMasterSecret(),
+				adminProperties.getJpushAppKey(),
+				null, config);
 	}
 }

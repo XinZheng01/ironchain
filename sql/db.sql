@@ -303,22 +303,19 @@ CREATE TABLE `shop_order_product` (
   PRIMARY KEY (id)
 )ENGINE=INNODB COMMENT='订单商品表';
 
-CREATE TABLE `letter` (
+CREATE TABLE `letter_record` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL COMMENT '用户',
-  `title` varchar(255) NOT NULL COMMENT '标题',
-  `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+  `letter_id` bigint(20) NULL COMMENT '站内信id',
   `status`  TINYINT(2) NOT NULL DEFAULT 0 COMMENT '状态',
-  `type`  TINYINT(2) NOT NULL COMMENT '类型',
-  `url`  varchar(255) NULL COMMENT '链接',
-  `attr`  varchar(255) NULL COMMENT '属性',
-  `content` varchar(2000) NULL COMMENT '内容',
-  PRIMARY KEY (id)
-)ENGINE=INNODB COMMENT='站内信';
+  PRIMARY KEY (id),
+  INDEX `idx_letter_id` (`letter_id`) USING BTREE ,
+  INDEX `idx_user_id` (`user_id`) USING BTREE 
+)ENGINE=INNODB COMMENT='站内信记录';
 ##status 0 未读 1已读
 ##type 1内容 2链接 3需求
 
-CREATE TABLE `letter_log` (
+CREATE TABLE `letter` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL COMMENT '标题',
   `content` varchar(2000) NULL COMMENT '内容',
@@ -326,6 +323,7 @@ CREATE TABLE `letter_log` (
   `members` text COMMENT '指定发送的用户',
   `type` TINYINT(2) NOT NULL COMMENT '类型',
   `send_type` TINYINT(2) NOT NULL COMMENT '发送类型',
+  `is_system` TINYINT(2) NOT NULL COMMENT '系统自动发送',
   `url`  varchar(255) NULL COMMENT '链接',
   `attr`  varchar(255) NULL COMMENT '属性',
   `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
@@ -333,6 +331,6 @@ CREATE TABLE `letter_log` (
   `create_by`  bigint(20) NULL DEFAULT NULL ,
   `update_by`  bigint(20) NULL DEFAULT NULL ,
   PRIMARY KEY (id)
-)ENGINE=INNODB COMMENT='站内信日志';
+)ENGINE=INNODB COMMENT='站内信';
 ##type 1内容 2链接 3需求
 ##send_type 1群发 2指定用户发送
