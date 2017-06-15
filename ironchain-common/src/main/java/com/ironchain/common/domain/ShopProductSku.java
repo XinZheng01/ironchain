@@ -29,8 +29,8 @@ public class ShopProductSku extends DataModel {
 	private Long productId;
 	
 	/** 商品规格值*/
-	@Column(name="spec_value_id")
-	private Long specValueId;
+	@Column(name="spec_items")
+	private String specItems;
 	
 	/** 商品编号*/
 	@Column(name="code")

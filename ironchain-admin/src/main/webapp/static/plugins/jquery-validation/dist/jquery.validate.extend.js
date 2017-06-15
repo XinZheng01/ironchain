@@ -3,24 +3,17 @@ $.validator.setDefaults({
     errorElement: "span",
     errorClass: "help-block help-block-error",
     highlight: function (element, errorClass, validClass) {
-    	console.log('highlight');
-    	console.log(element);
         $(element).closest('.form-group').addClass('has-error');
     },
     unhighlight: function (element, errorClass, validClass) {
-    	console.log('unhighlight');
-    	console.log(element);
         $(element).closest('.form-group').removeClass('has-error');
     },
     success: function (label) {
         label.closest('.form-group').removeClass('has-error');
     },
     errorPlacement: function (error, element) {
-    	console.log('errorPlacement');
-    	console.log(element);
-    	console.log(error);
         if (element.parent('.input-group').length || element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-            error.insertAfter(element.parent());
+            error.insertAfter(element.parent().parent());//zui结构<label><radio></radio></label>
         } else {
             error.insertAfter(element);
         }

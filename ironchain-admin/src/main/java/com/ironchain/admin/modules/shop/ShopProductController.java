@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,10 +23,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.ShopClassDao;
 import com.ironchain.common.dao.ShopProductDao;
+import com.ironchain.common.dao.ShopProductSkuDao;
 import com.ironchain.common.dao.ShopProductSpecDao;
 import com.ironchain.common.dao.ShopProductSpecValueDao;
 import com.ironchain.common.domain.R;
 import com.ironchain.common.domain.ShopProduct;
+import com.ironchain.common.domain.ShopProductSku;
+import com.ironchain.common.domain.ShopProductSpec;
 import com.ironchain.common.domain.ShopProductSpecValue.SpecValueVO;
 
 
@@ -50,6 +54,9 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 	
 	@Autowired
 	private ShopProductSpecValueDao shopProductSpecValueDao;
+	
+	@Autowired
+	private ShopProductSkuDao shopProductSkuDao;
 	
 	/**
 	 * 列表
@@ -81,6 +88,21 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 	public String edit(@ModelAttribute ShopProduct shopProduct, Model model){
 		model.addAttribute("shopClassList", shopClassDao.findAll());
 		model.addAttribute("specList", shopProductSpecDao.findAll());
+		//产品sku
+		List<ShopProductSku> productSku = shopProductSkuDao.findByProductId(shopProduct.getId());
+		String specItemsStr = null;
+		if((specItemsStr = productSku.get(0).getSpecItems()) != null){
+			String[] specItems = StringUtils.split(specItemsStr, ";");
+			int itemsLen = specItems.length;
+			//获取所有规格属性id
+			if(specItems != null && itemsLen > 0){
+				Long[] specKeys = new Long[itemsLen];
+				for (int i = 0; i < itemsLen; i++) {
+					specKeys[i] = Long.valueOf(StringUtils.split(specItems[i], ":")[0]);
+				}
+				List<ShopProductSpec> specs = shopProductSpecDao.findByIdIn(specKeys);
+			}
+		}
 		return "shop/shop_product_form";
 	}
 	

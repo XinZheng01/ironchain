@@ -248,7 +248,7 @@ PRIMARY KEY (`id`)
 CREATE TABLE `shop_product_sku` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
 `product_id`  bigint(20) NOT NULL COMMENT '商品' ,
-`spec_value_ids` varchar(2000) NOT NULL COMMENT '商品规格值ID' ,
+`spec_items` varchar(2000) NOT NULL COMMENT '商品规格值' ,
 `code` varchar(255) NOT NULL COMMENT '商品编号',
 `price` decimal(13,2) NOT NULL COMMENT '商品价格',
 `stock` INT(11) NOT NULL DEFAULT 0 COMMENT '商品库存',

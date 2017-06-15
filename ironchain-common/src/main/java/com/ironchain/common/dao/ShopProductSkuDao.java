@@ -1,5 +1,7 @@
 package com.ironchain.common.dao;
 
+import java.util.List;
+
 import com.ironchain.common.base.BaseDao;
 import com.ironchain.common.domain.ShopProductSku;
 
@@ -10,5 +12,7 @@ import com.ironchain.common.domain.ShopProductSku;
  * @email 
  */
 public interface ShopProductSkuDao extends BaseDao<ShopProductSku, Long> {
+
+	List<ShopProductSku> findByProductId(Long id);
 	
 }
