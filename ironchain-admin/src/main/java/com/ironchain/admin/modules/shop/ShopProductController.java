@@ -1,7 +1,9 @@
 package com.ironchain.admin.modules.shop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -90,6 +92,8 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 		model.addAttribute("specList", shopProductSpecDao.findAll());
 		//产品sku
 		List<ShopProductSku> productSku = shopProductSkuDao.findByProductId(shopProduct.getId());
+		model.addAttribute("skuList", productSku);
+		
 		String specItemsStr = null;
 		if((specItemsStr = productSku.get(0).getSpecItems()) != null){
 			String[] specItems = StringUtils.split(specItemsStr, ";");
@@ -100,10 +104,56 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 				for (int i = 0; i < itemsLen; i++) {
 					specKeys[i] = Long.valueOf(StringUtils.split(specItems[i], ":")[0]);
 				}
-				List<ShopProductSpec> specs = shopProductSpecDao.findByIdIn(specKeys);
+				List<ShopProductSpec> productSpecs = shopProductSpecDao.findByIdIn(specKeys);
+				model.addAttribute("productSpecList", productSpecs);
 			}
 		}
 		return "shop/shop_product_form";
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("/attrbute")
+	public Map<String, Object> attrbute(Long id){
+		Map<String, Object> result = new HashMap<>();
+		//产品sku
+		List<ShopProductSku> productSkus = shopProductSkuDao.findByProductId(id);
+		result.put("skus", productSkus);
+		
+		String specItemsStr = null;
+		if((specItemsStr = productSkus.get(0).getSpecItems()) != null){
+			String[] specItems = StringUtils.split(specItemsStr, ";");
+			int itemsLen = specItems.length;
+			//获取所有规格属性id
+			if(specItems != null && itemsLen > 0){
+				Long[] specKeys = new Long[itemsLen];
+				for (int i = 0; i < itemsLen; i++) {
+					specKeys[i] = Long.valueOf(StringUtils.split(specItems[i], ":")[0]);
+				}
+				List<ShopProductSpec> productSpecs = shopProductSpecDao.findByIdIn(specKeys);
+				//商品规格和对应的规格值
+				result.put("specs", productSpecs);
+			}
+			//商品已选择的属性值列表
+			for (ShopProductSku sku : productSkus) {
+				specItems = StringUtils.split(sku.getSpecItems(), ";");
+				itemsLen = specItems.length;
+				List<Long> specValues = new ArrayList<>();
+				if(specItems != null && itemsLen > 0){
+					for (int i = 0; i < itemsLen; i++) {
+						specValues.add(Long.valueOf(StringUtils.split(specItems[i], ":")[1]));
+					}
+				}
+				result.put("specVals", specValues);
+			}
+			
+		}
+		//商品图片
+		
+		return result;
 	}
 	
 	/**

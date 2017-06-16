@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
 
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class ShopProductSpecValue extends DataModel {
 	private static final long serialVersionUID = 1L;
 	
 	/** 商品规格*/
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="spec_id")
 	private ShopProductSpec spec;

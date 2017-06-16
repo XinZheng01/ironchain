@@ -15,6 +15,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.domain.SystemUser;
 
 /**
@@ -33,6 +34,7 @@ public class DataModel extends BaseModel {
     protected Date createTime;
     
     /** 创建者 */
+    @JsonIgnore
     @CreatedBy
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "create_by")
@@ -44,6 +46,7 @@ public class DataModel extends BaseModel {
     protected Date updateTime;
     
     /** 更新者 */
+    @JsonIgnore
     @LastModifiedBy
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "update_by")
