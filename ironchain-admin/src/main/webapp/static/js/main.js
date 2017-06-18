@@ -63,8 +63,19 @@ $(function(){
 			dataType: 'json',
 			success: function (data, status) {
 				if (data.sc == 200) {
-					$('#' + $upload.attr('data-upload-img')).attr('src', data.data[0]);
-					$('#' + $upload.attr('data-upload-input')).val(data.data[0]);
+					if($upload.prop('multiple')){
+						var imgs = data.data;
+						var imgDiv = '', width = $upload.attr('data-img-width'), height = $upload.attr('data-img-height');
+						for(var i=0, len=imgs.length; i < len; i++){
+							imgDiv += '<div class="col-sm-2"><img src="'+imgs[i]+'" width="'+width+'" height="'+height+'"></div>';
+						}
+						var fn = window['callback'];
+						fn(imgDiv);
+						//$('#' + $upload.attr('data-upload-img')).append(imgDiv);
+					}else{
+						$('#' + $upload.attr('data-upload-img')).attr('src', data.data[0]);
+						$('#' + $upload.attr('data-upload-input')).val(data.data[0]);
+					}
 				}else
 					$.site.error(data.msg);
 			},
@@ -96,6 +107,10 @@ $(function(){
 		}
 		del(ids.join(','));
     });
+    //拖拽排序
+    //this.$body.on('load', '[data-sortable]', function () {
+    	//$(this).sortable();
+    //});
     //面包屑导航
     if($('.admin-breadcrumb').length > 0){
     	var _crumb_li = '<li><a href="javascript:;"><i class="icon icon-home"></i> 首页</a></li>';

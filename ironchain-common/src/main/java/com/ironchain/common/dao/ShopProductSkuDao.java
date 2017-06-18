@@ -14,5 +14,7 @@ import com.ironchain.common.domain.ShopProductSku;
 public interface ShopProductSkuDao extends BaseDao<ShopProductSku, Long> {
 
 	List<ShopProductSku> findByProductId(Long id);
+
+	Long deleteByProductId(Long id);
 	
 }

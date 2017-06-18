@@ -2,8 +2,10 @@ package com.ironchain.admin.modules.shop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.HtmlUtils;
 
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.ShopClassDao;
@@ -30,9 +33,11 @@ import com.ironchain.common.dao.ShopProductSpecDao;
 import com.ironchain.common.dao.ShopProductSpecValueDao;
 import com.ironchain.common.domain.R;
 import com.ironchain.common.domain.ShopProduct;
+import com.ironchain.common.domain.ShopProductParam;
 import com.ironchain.common.domain.ShopProductSku;
 import com.ironchain.common.domain.ShopProductSpec;
 import com.ironchain.common.domain.ShopProductSpecValue.SpecValueVO;
+import com.ironchain.common.kits.JsonKit;
 
 
 /**
@@ -45,8 +50,8 @@ import com.ironchain.common.domain.ShopProductSpecValue.SpecValueVO;
 @RequestMapping("/shop/product")
 public class ShopProductController extends ModelController<ShopProductDao, ShopProduct> {
 	
-	//@Autowired
-	//private ShopProductService shopProductService;
+	@Autowired
+	private ShopProductService shopProductService;
 	
 	@Autowired
 	private ShopClassDao shopClassDao;
@@ -90,24 +95,6 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 	public String edit(@ModelAttribute ShopProduct shopProduct, Model model){
 		model.addAttribute("shopClassList", shopClassDao.findAll());
 		model.addAttribute("specList", shopProductSpecDao.findAll());
-		//产品sku
-		List<ShopProductSku> productSku = shopProductSkuDao.findByProductId(shopProduct.getId());
-		model.addAttribute("skuList", productSku);
-		
-		String specItemsStr = null;
-		if((specItemsStr = productSku.get(0).getSpecItems()) != null){
-			String[] specItems = StringUtils.split(specItemsStr, ";");
-			int itemsLen = specItems.length;
-			//获取所有规格属性id
-			if(specItems != null && itemsLen > 0){
-				Long[] specKeys = new Long[itemsLen];
-				for (int i = 0; i < itemsLen; i++) {
-					specKeys[i] = Long.valueOf(StringUtils.split(specItems[i], ":")[0]);
-				}
-				List<ShopProductSpec> productSpecs = shopProductSpecDao.findByIdIn(specKeys);
-				model.addAttribute("productSpecList", productSpecs);
-			}
-		}
 		return "shop/shop_product_form";
 	}
 	
@@ -124,31 +111,31 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 		result.put("skus", productSkus);
 		
 		String specItemsStr = null;
-		if((specItemsStr = productSkus.get(0).getSpecItems()) != null){
-			String[] specItems = StringUtils.split(specItemsStr, ";");
+		if(productSkus.size() > 0 && (specItemsStr = productSkus.get(0).getSpecItems()) != null){
+			String[] specItems = StringUtils.delimitedListToStringArray(specItemsStr, ",");
 			int itemsLen = specItems.length;
 			//获取所有规格属性id
 			if(specItems != null && itemsLen > 0){
-				Long[] specKeys = new Long[itemsLen];
+				List<Long> specKeys = new ArrayList<>();
 				for (int i = 0; i < itemsLen; i++) {
-					specKeys[i] = Long.valueOf(StringUtils.split(specItems[i], ":")[0]);
+					specKeys.add(Long.valueOf(StringUtils.delimitedListToStringArray(specItems[i], ":")[0]));
 				}
 				List<ShopProductSpec> productSpecs = shopProductSpecDao.findByIdIn(specKeys);
 				//商品规格和对应的规格值
 				result.put("specs", productSpecs);
 			}
 			//商品已选择的属性值列表
+			Set<Long> specValues = new HashSet<>();
 			for (ShopProductSku sku : productSkus) {
-				specItems = StringUtils.split(sku.getSpecItems(), ";");
+				specItems = StringUtils.delimitedListToStringArray(sku.getSpecItems(), ",");
 				itemsLen = specItems.length;
-				List<Long> specValues = new ArrayList<>();
 				if(specItems != null && itemsLen > 0){
 					for (int i = 0; i < itemsLen; i++) {
-						specValues.add(Long.valueOf(StringUtils.split(specItems[i], ":")[1]));
+						specValues.add(Long.valueOf(StringUtils.delimitedListToStringArray(specItems[i], ":")[1]));
 					}
 				}
-				result.put("specVals", specValues);
 			}
+			result.put("specVals", specValues);
 			
 		}
 		//商品图片
@@ -161,12 +148,18 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute ShopProduct shopProduct, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid @ModelAttribute ShopProduct shopProduct,
+			@RequestParam String paramsJson, @RequestParam String skusJson, 
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
 			return "shop/shop_product_form";
 		}
-		modelDao.save(shopProduct);
+		List<ShopProductParam> params = JsonKit.nonDefault().fromJson(HtmlUtils.htmlUnescape(paramsJson), 
+				JsonKit.nonDefault().contructCollectionType(ArrayList.class, ShopProductParam.class));
+		List<ShopProductSku> skus = JsonKit.nonDefault().fromJson(HtmlUtils.htmlUnescape(skusJson), 
+				JsonKit.nonDefault().contructCollectionType(ArrayList.class, ShopProductSku.class));
+		shopProductService.save(shopProduct, params, skus);
 		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}

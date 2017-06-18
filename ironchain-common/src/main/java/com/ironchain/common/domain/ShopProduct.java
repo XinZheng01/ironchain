@@ -1,9 +1,9 @@
 package com.ironchain.common.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -78,6 +78,9 @@ public class ShopProduct extends DataModel {
 	private Date saleDate;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="product")
-	private Set<ShopProductParam> params = new HashSet<>(0);
+	private List<ShopProductParam> params = new ArrayList<>(0);
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="product")
+	private List<ShopProductSku> skus = new ArrayList<>(0);
 	
 }

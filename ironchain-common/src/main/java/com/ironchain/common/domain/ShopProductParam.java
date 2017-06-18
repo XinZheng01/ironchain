@@ -41,5 +41,11 @@ public class ShopProductParam extends DataModel {
 	/** 排序值*/
 	@Column(name="sort_id")
 	private Integer sortId;
+
+	@Override
+	public String toString() {
+		return "ShopProductParam [name=" + name + ", value=" + value + ", sortId=" + sortId
+				+ "]";
+	}
 	
 }

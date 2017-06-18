@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.ironchain.common.base.DataModel;
@@ -32,5 +33,6 @@ public class ShopProductSpec extends DataModel {
 	private String name;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="spec")
+	@OrderBy("id asc")
 	private Set<ShopProductSpecValue> specValues = new HashSet<>(0);
 }

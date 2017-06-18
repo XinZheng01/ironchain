@@ -6,9 +6,9 @@
 <%@ attribute name="height" type="java.lang.Integer" required="false" description="图片高度"%>
 <%@ attribute name="defaultValue" type="java.lang.String" required="false" description="默认显示的图片"%>
 <%@ attribute name="allowType" type="java.lang.String" required="false" description="文件格式"%>
+<%@ attribute name="multiple" type="java.lang.Boolean" required="false" description="是否多文件上传"%>
+<%@ attribute name="isLoadScript" type="java.lang.Boolean" description="是否需要加载script"%>
 <%
-if(help == null)
-	help = "支持上传bmp/png/jpeg/jpg/gif格式";
 if(width == null)
 	width = Integer.valueOf(100);
 if(height == null)
@@ -20,9 +20,22 @@ if(StringUtils.isBlank(defaultValue))
 	defaultValue = "";
 else
 	imgSrc = defaultValue;
+if(multiple == null)
+	multiple = false;
+if(multiple && help == null)
+	help = "上传的图片可以任意拖拽";
+else if(help == null)
+	help = "支持上传bmp/png/jpeg/jpg/gif格式";
 %>
+<%if(!multiple){ %>
 <input type="text" class="form-control" id="<%=id%>" name="<%=id%>" value="<%=defaultValue%>" onchange="$('#<%=id%>Img').attr('src', this.value);" placeholder="请输入图片地址">
 <div class="help-block"><%=help%></div>
 <img id="<%=id%>Img" width="<%=width%>" height="<%=height%>" src="<%=imgSrc%>" data-tips-image>
 <a class="btn btn-link" data-click-other="<%=id%>File"><i class="icon icon-cloud-upload"></i>上传图片</a>
 <input type="file" name="file" id="<%=id%>File" data-upload-input="<%=id%>" data-upload-img="<%=id%>Img" data-allow-type="<%=allowType%>" style="display: none;" accept="image/gif,image/jpeg,image/jpg,image/png">
+<%}else {%>
+<div id="<%=id%>" class="row"></div>
+<div class="help-block"><%=help%></div>
+<a class="btn btn-link" data-click-other="<%=id%>File"><i class="icon icon-cloud-upload"></i>上传图片</a>
+<input type="file" name="file" id="<%=id%>File" multiple data-upload-img="<%=id%>" data-img-width="<%=width%>" data-img-height="<%=height%>" data-allow-type="<%=allowType%>" style="display: none;" accept="image/gif,image/jpeg,image/jpg,image/png">
+<%}%>

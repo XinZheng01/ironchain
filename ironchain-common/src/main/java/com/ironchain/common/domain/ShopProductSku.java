@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
 
 import lombok.Getter;
@@ -25,8 +28,10 @@ public class ShopProductSku extends DataModel {
 	private static final long serialVersionUID = 1L;
 	
 	/** 商品*/
-	@Column(name="product_id")
-	private Long productId;
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="product_id")
+	private ShopProduct product;
 	
 	/** 商品规格值*/
 	@Column(name="spec_items")
@@ -43,5 +48,11 @@ public class ShopProductSku extends DataModel {
 	/** 商品库存*/
 	@Column(name="stock")
 	private Integer stock;
+
+	@Override
+	public String toString() {
+		return "ShopProductSku [specItems=" + specItems + ", code=" + code + ", price=" + price + ", stock=" + stock
+				+ "]";
+	}
 	
 }

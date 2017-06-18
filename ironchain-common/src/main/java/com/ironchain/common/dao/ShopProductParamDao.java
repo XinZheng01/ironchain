@@ -10,5 +10,7 @@ import com.ironchain.common.domain.ShopProductParam;
  * @email 
  */
 public interface ShopProductParamDao extends BaseDao<ShopProductParam, Long> {
+
+	Long deleteByProductId(Long id);
 	
 }
