@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.ironchain.common.base.BaseService;
 import com.ironchain.common.dao.MemberDao;
+import com.ironchain.common.domain.Constants.CacheConstants;
 import com.ironchain.common.domain.Member;
 import com.ironchain.common.domain.R;
-import com.ironchain.common.domain.Constants.CacheConstants;
 import com.ironchain.common.exception.ServiceException;
 import com.ironchain.common.kits.DigestKit;
 import com.ironchain.common.kits.EncodeKit;
@@ -113,5 +113,19 @@ public class MemberService extends BaseService{
 				.get(CacheConstants.LOGIN_TOKEN.getKey(userId.toString()))))
 			return false;
 		return true;
+	}
+	
+	/**
+	 * 创建用户
+	 * @param member
+	 * @return
+	 */
+	public Member create(Member member) {
+		member.setPassword(disgestPassword(member.getPassword()));
+		member = memberDao.save(member);
+		return member;
+	}
+	public static void main(String[] args) {
+		System.out.println(disgestPassword("123456"));
 	}
 }

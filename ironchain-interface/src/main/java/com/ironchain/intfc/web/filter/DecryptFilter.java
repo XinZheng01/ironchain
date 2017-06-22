@@ -51,13 +51,13 @@ public class DecryptFilter implements Filter {
 		String digesBody = request.getParameter("digesBody");
 		Map<String, Object> map = Collections.emptyMap();
 		LOGGER.info(digesBody);
-		LOGGER.info(aesKey);
 		if(digesBody != null){
 			//判断此url是否需要加密
 			IgnoreApiSecurity ignoreSecurity = apiAnnotationHandler.getMethodAnnotation(((HttpServletRequest)request).getRequestURI());
-			if(apiDigest && (ignoreSecurity == null || !ignoreSecurity.ignoreRequest()))
-				digesBody = DigestKit.aesDecrypt(digesBody, aesKey);	
-			
+			if(apiDigest && (ignoreSecurity == null || !ignoreSecurity.ignoreRequest())){
+				digesBody = DigestKit.aesDecrypt(digesBody, aesKey);
+				LOGGER.info(digesBody);
+			}
 			map = JsonKit.normal().fromJson(digesBody, HashMap.class);
 		}
 		HttpRequestWrapper requestWrapper = new HttpRequestWrapper((HttpServletRequest)request, map);

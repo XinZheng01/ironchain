@@ -58,8 +58,8 @@ public class MemberController extends ApiBaseController {
 		LOGGER.debug("请求会员注册接口 member：{} verifyCode：{}", member, verifyCode);
 		if (verifyCode == null || verifyCode.length() != 6)
 			throw new IllegalArgumentException("非法验证码");
-		if (!cacheService.check(CacheConstants.VERIFYCODE, member.getMobilephone(), verifyCode))
-			throw new IllegalArgumentException("验证码不正确或已过期");
+//		if (!cacheService.check(CacheConstants.VERIFYCODE, member.getMobilephone(), verifyCode))
+//			throw new IllegalArgumentException("验证码不正确或已过期");
 		if (memberService.mobilephoneExists(member.getMobilephone()))
 			throw new IllegalArgumentException("该手机号码已存在");
 		if (member.getPassword().length() < 6 || member.getPassword().length() > 20)
@@ -80,7 +80,7 @@ public class MemberController extends ApiBaseController {
 		}else
 			throw new IllegalArgumentException("非法用户类型");
 		
-		member = memberDao.save(member);
+		member = memberService.create(member);
 		Long uid = member.getId();
 		String mobile = member.getMobilephone();
 		String token = memberService.getToken(uid, mobile);
