@@ -9,6 +9,14 @@
 <title>会员</title>
 <%@include file="/WEB-INF/include/base-style.jsp" %>
 <%@include file="/WEB-INF/include/base-script.jsp" %>
+<style type="text/css">
+.head-img{
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+</style>
 </head>
 <body>
 	<div>
@@ -17,75 +25,72 @@
 			<div class="panel">
 				<form id="searchForm" action="${ctx}/member/list" method="get" class="search-form form-inline">
 				<div class="panel-body">
-					<%--
 					  <div class="form-group">
 					    <input type="text" name="srch_LIKE_name" class="form-control" value="${srch_LIKE_name}" placeholder="名称">
+					  </div>
+					  <div class="form-group">
+					    <input type="text" name="srch_LIKE_mobilephone" class="form-control" value="${srch_LIKE_mobilephone}" placeholder="手机号码">
+					  </div>
+					  <div class="form-group">
+					    <input type="text" name="srch_LIKE_idcard" class="form-control" value="${srch_LIKE_idcard}" placeholder="身份证">
 					  </div>
 					  <div class="form-group">
 					  	<button type="submit" class="btn btn-primary">查询</button>
 					  	<button type="reset" class="btn" >重置</button>
 					  </div>
-					 --%>
 				</div>
 			 	<div class="panel-toolbar">
 			 	<sec:authorize url="/member/add">
 			 		<button class="btn btn-primary" type="button" onclick="javascript:location.href='${ctx}/member/add';"><i class="icon icon-plus"></i>新增</button>
 			 	</sec:authorize>
-			 	<sec:authorize url="/member/delete">
-					<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
-				</sec:authorize> 
 			 	</div>
 				<table class="row-border table-hover dataTable">
 	                <thead>
 						<tr>
-	                	<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
+	                		<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
 							<th data-sort-column="name">用户名</th>
-							<th data-sort-column="headImg">用户头像</th>
 							<th data-sort-column="type">类型</th>
 							<th data-sort-column="mobilephone">手机号码</th>
 							<th data-sort-column="email">邮箱</th>
-							<th data-sort-column="password">密码</th>
 							<th data-sort-column="idcard">身份证</th>
-							<th data-sort-column="companyName">企业名称</th>
-							<th data-sort-column="companyLegal">企业法人</th>
-							<th data-sort-column="companyLegalPhone">企业法人电话</th>
-							<th data-sort-column="companyIdcard">企业法人身份证</th>
-							<th data-sort-column="companyTel">企业固定电话</th>
-							<th data-sort-column="companyLicenseImg">企业营业执照</th>
-							<th data-sort-column="companyAddress">企业地址</th>
+							<th data-sort-column="level.name">用户等级</th>
 							<th data-sort-column="status">状态</th>
 							<th data-sort-column="lastLoginTime">最后登录时间</th>
 							<th data-sort-column="createTime">创建时间</th>
-							<th width="120">操作</th>
+							<th width="200">操作</th>
 						</tr>
 					</thead>
 	                <tbody>
 						<c:forEach items="${page.content}" var="item">
 							<tr>
 								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
-								<td>${item.name}</td>
-								<td>${item.headImg}</td>
-								<td>${item.type}</td>
+								<td>
+									<c:choose>
+									<c:when test="${not empty item.headImg}">
+									<img class="head-img" src="${item.headImg}">
+									</c:when>
+									<c:otherwise>
+									<img class="head-img" src="${staticUrl}/images/default_head.png">
+									</c:otherwise>
+									</c:choose>
+									${item.name}
+								</td>
+								<td>${item.typeStr}</td>
 								<td>${item.mobilephone}</td>
 								<td>${item.email}</td>
-								<td>${item.password}</td>
 								<td>${item.idcard}</td>
-								<td>${item.companyName}</td>
-								<td>${item.companyLegal}</td>
-								<td>${item.companyLegalPhone}</td>
-								<td>${item.companyIdcard}</td>
-								<td>${item.companyTel}</td>
-								<td>${item.companyLicenseImg}</td>
-								<td>${item.companyAddress}</td>
-								<td>${item.status}</td>
+								<td>${item.level.name}</td>
+								<td>${item.statusStr}</td>
 								<td>${item.lastLoginTime}</td>
-								<td>${item.createTime}</td>
+								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
 								<sec:authorize url="/member/edit">
-									<a href="${ctx}/member/edit?id=${item.id}">编辑</a> |
+									<a href="${ctx}/member/edit?id=${item.id}">编辑</a>
 								</sec:authorize>
+								 | <a href="javascript:;" onclick="del('${item.id}')" class="">修改等级</a>
+								 | <a href="javascript:;" onclick="del('${item.id}')" class="">设置位置</a> |
 								<sec:authorize url="/member/delete"> 
-									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">删除</a>
+									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">锁定</a>
 								</sec:authorize>
 								</td>
 							</tr>

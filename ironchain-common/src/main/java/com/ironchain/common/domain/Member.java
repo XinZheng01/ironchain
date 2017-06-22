@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -56,6 +57,10 @@ public class Member extends DataModel{
 	/** 类型*/
 	@Column(name="type")
 	private int type = TYPE_PERSON;
+	
+	/** 业务类型*/
+	@Column(name="service_type")
+	private Integer serviceType;
 	
 	/** 邮箱*/
 	@Column(name="email")
@@ -125,12 +130,34 @@ public class Member extends DataModel{
 	@Column(name="status")
 	private int status = STATUS_SUCCESS;
 	
+	/** 工厂位置*/
+	@Column(name="location")
+	private String location;
+	
+	/** 会员等级*/
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="level_id")
+	private MemberLevel level;
+	
 	public String getTypeStr(){
 		switch (this.type) {
-		case 1:
+		case TYPE_PERSON:
 			return "个人";
-		case 2:
+		case TYPE_COMPANY:
 			return "企业";
+		default:
+			return null;
+		}
+	}
+	
+	public String getStatusStr(){
+		switch (this.status) {
+		case STATUS_SUCCESS:
+			return "正常";
+		case STATUS_AUDIT:
+			return "审核中";
+		case STATUS_LOCK:
+			return "锁定";
 		default:
 			return null;
 		}

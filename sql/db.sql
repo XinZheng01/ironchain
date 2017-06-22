@@ -53,6 +53,7 @@ CREATE TABLE `member` (
 `name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
 `head_img`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户头像',
 `type`  tinyint(2) NULL DEFAULT NULL COMMENT '类型',
+`service_type`  tinyint(2) NULL DEFAULT NULL COMMENT '业务类型',
 `mobilephone`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号码',
 `email`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
 `password`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
@@ -65,6 +66,8 @@ CREATE TABLE `member` (
 `company_license_img`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业营业执照',
 `company_address`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业地址',
 `status`  tinyint(2) COMMENT '状态',
+`level_id`  bigint(20) NULL COMMENT '会员等级',
+`location`  varchar(255) NULL COMMENT '工厂位置',
 `last_login_time`  datetime NULL DEFAULT NULL COMMENT '最后登录时间',
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间',
 `update_time`  datetime NULL DEFAULT NULL ,
@@ -334,3 +337,15 @@ CREATE TABLE `letter` (
 )ENGINE=INNODB COMMENT='站内信';
 ##type 1内容 2链接 3需求
 ##send_type 1群发 2指定用户发送
+
+CREATE TABLE `member_level` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT '名称',
+  `price` decimal(13,2) NOT NULL COMMENT '价格',
+  `description`  varchar(255) NULL DEFAULT NULL COMMENT '描述',
+  `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+  `update_time`  datetime NULL DEFAULT NULL ,
+  `create_by`  bigint(20) NULL DEFAULT NULL ,
+  `update_by`  bigint(20) NULL DEFAULT NULL ,
+  PRIMARY KEY (id)
+)ENGINE=INNODB COMMENT='会员等级管理';

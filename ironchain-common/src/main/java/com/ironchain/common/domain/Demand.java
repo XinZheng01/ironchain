@@ -54,6 +54,8 @@ public class Demand extends BaseModel {
 	public static final int TYPE_MACHINED = 1;
 	/** 设备服务*/
 	public static final int TYPE_EQUIPMENT = 2;
+	/** 塑胶*/
+	public static final int TYPE_PLASTIC = 3;
 	
 	/** 标题*/
 	@NotBlank(message="标题不能为空")
