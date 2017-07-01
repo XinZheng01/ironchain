@@ -342,6 +342,7 @@ CREATE TABLE `member_level` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '名称',
   `price` decimal(13,2) NOT NULL COMMENT '价格',
+  `status` TINYINT(2) NOT NULL COMMENT '状态',
   `description`  varchar(255) NULL DEFAULT NULL COMMENT '描述',
   `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
   `update_time`  datetime NULL DEFAULT NULL ,
@@ -349,3 +350,17 @@ CREATE TABLE `member_level` (
   `update_by`  bigint(20) NULL DEFAULT NULL ,
   PRIMARY KEY (id)
 )ENGINE=INNODB COMMENT='会员等级管理';
+
+CREATE TABLE `member_levelup` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `member_id` bigint(20) NOT NULL COMMENT '会员',
+  `member_level_id` decimal(13,2) NOT NULL COMMENT '会员等级',	
+  `start_date`  datetime NOT NULL COMMENT '会员开始时间' ,
+  `end_date`  datetime NOT NULL COMMENT '会员结束时间' ,
+  `income`   decimal(13,2) NOT NULL COMMENT '支付金额',
+  `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+  `update_time`  datetime NULL DEFAULT NULL ,
+  `create_by`  bigint(20) NULL DEFAULT NULL ,
+  `update_by`  bigint(20) NULL DEFAULT NULL ,
+  PRIMARY KEY (id)
+)ENGINE=INNODB COMMENT='会员开通记录';

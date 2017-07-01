@@ -19,23 +19,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ironchain.common.base.ModelController;
-import com.ironchain.common.dao.MemberDao;
-import com.ironchain.common.domain.Member;
+import com.ironchain.common.dao.MemberLevelupDao;
+import com.ironchain.common.domain.MemberLevelup;
 import com.ironchain.common.domain.R;
 
 
 /**
- * 会员
+ * 会员开通记录
  * 
  * @author zheng xin
  * @email 
  */
 @Controller
-@RequestMapping("/member")
-public class MemberController extends ModelController<MemberDao, Member> {
+@RequestMapping("/member/levelup")
+public class MemberLevelupController extends ModelController<MemberLevelupDao, MemberLevelup> {
 	
 	//@Autowired
-	//private MemberService memberService;
+	//private MemberLevelupService memberLevelupService;
 	
 	/**
 	 * 列表
@@ -43,7 +43,7 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	@GetMapping("/list")
 	public String list(Pageable pageable, HttpServletRequest request, Model model){
 		model.addAttribute("page", modelDao.findAll(bySearchFilter(request), pageable));
-		return "member/member_list";
+		return "member/member_levelup_list";
 	}
 	
 	
@@ -52,8 +52,8 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	 * @return
 	 */
 	@GetMapping("/add")
-	public String add(@ModelAttribute Member member, Model model){
-		return "member/member_form";
+	public String add(@ModelAttribute MemberLevelup memberLevelup, Model model){
+		return "member/member_levelup_form";
 	}
 	
 	/**
@@ -61,8 +61,8 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	 * @return
 	 */
 	@GetMapping("/edit")
-	public String edit(@ModelAttribute Member member, Model model){
-		return "member/member_form";
+	public String edit(@ModelAttribute MemberLevelup memberLevelup, Model model){
+		return "member/member_levelup_form";
 	}
 	
 	/**
@@ -70,12 +70,12 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute Member member, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid @ModelAttribute MemberLevelup memberLevelup, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
-			return "member/member_form";
+			return "member/member_levelup_form";
 		}
-		modelDao.save(member);
+		modelDao.save(memberLevelup);
 		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
 		return "redirect:list";
 	}
@@ -89,10 +89,10 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	public R delete(@RequestParam Long[] ids){
 		if(ids == null || ids.length == 0)
 			return R.error("请选择删除数据");
-		List<Member> entitys = new ArrayList<>();
-		Member entity = null;
+		List<MemberLevelup> entitys = new ArrayList<>();
+		MemberLevelup entity = null;
 		for (Long id : ids) {
-			entity = new Member();
+			entity = new MemberLevelup();
 			entity.setId(id);
 			entitys.add(entity);
 		}
@@ -100,29 +100,4 @@ public class MemberController extends ModelController<MemberDao, Member> {
 		return R.ok().setMsg("操作成功");
 	}
 	
-	/**
-	 * 锁定
-	 * @return
-	 */
-	@PostMapping("/lock")
-	@ResponseBody
-	public R lock(@RequestParam Long id){
-		Member member = modelDao.findOne(id);
-		member.setStatus(Member.STATUS_LOCK);
-		modelDao.save(member);
-		return R.ok().setMsg("操作成功");
-	}
-	
-	/**
-	 * 解锁
-	 * @return
-	 */
-	@PostMapping("/un_lock")
-	@ResponseBody
-	public R unLock(@RequestParam Long id){
-		Member member = modelDao.findOne(id);
-		member.setStatus(Member.STATUS_SUCCESS);
-		modelDao.save(member);
-		return R.ok().setMsg("操作成功");
-	}
 }

@@ -53,7 +53,7 @@
 							<th data-sort-column="mobilephone">手机号码</th>
 							<th data-sort-column="email">邮箱</th>
 							<th data-sort-column="idcard">身份证</th>
-							<th data-sort-column="level.name">用户等级</th>
+							<th data-sort-column="level.name">会员等级</th>
 							<th data-sort-column="status">状态</th>
 							<th data-sort-column="lastLoginTime">最后登录时间</th>
 							<th data-sort-column="createTime">创建时间</th>
@@ -89,9 +89,18 @@
 								</sec:authorize>
 								 | <a href="javascript:;" onclick="del('${item.id}')" class="">修改等级</a>
 								 | <a href="javascript:;" onclick="del('${item.id}')" class="">设置位置</a> |
-								<sec:authorize url="/member/delete"> 
-									<a href="javascript:;" onclick="del('${item.id}')" class="text-danger">锁定</a>
+								<c:choose>
+								<c:when test="${item.status == 1}">
+								<sec:authorize url="/member/lock"> 
+									<a href="javascript:;" onclick="lock('${item.id}','${item.name}')" class="text-danger">锁定</a>
 								</sec:authorize>
+								</c:when>
+								<c:otherwise>
+								<sec:authorize url="/member/un_lock"> 
+									<a href="javascript:;" onclick="unLock('${item.id}','${item.name}')" class="text-danger">解锁</a>
+								</sec:authorize>
+								</c:otherwise>
+								</c:choose>
 								</td>
 							</tr>
 						</c:forEach>
@@ -110,6 +119,50 @@ function del(id){
 		$.ajax({
 			url: "${ctx}/member/delete",
 			data: {"ids": id},
+			type: "POST",
+			success: function(data){
+				$.site.close();
+				if(data.sc == 200){
+					location.reload();
+					$.site.success(data.msg);
+				}else{
+					$.site.error(data.msg);
+				}
+			},
+			error: function(){
+				$.site.error("操作失败");
+			}
+		});
+	})
+}
+function lock(id, name){
+	$.site.confirm("确定要锁定用户"+name+"？<br>锁定的用户将无法登陆", function(){
+		$.site.loading();
+		$.ajax({
+			url: "${ctx}/member/lock",
+			data: {"id": id},
+			type: "POST",
+			success: function(data){
+				$.site.close();
+				if(data.sc == 200){
+					location.reload();
+					$.site.success(data.msg);
+				}else{
+					$.site.error(data.msg);
+				}
+			},
+			error: function(){
+				$.site.error("操作失败");
+			}
+		});
+	})
+}
+function unLock(id, name){
+	$.site.confirm("确定要解除锁定用户"+name+"？", function(){
+		$.site.loading();
+		$.ajax({
+			url: "${ctx}/member/un_lock",
+			data: {"id": id},
 			type: "POST",
 			success: function(data){
 				$.site.close();

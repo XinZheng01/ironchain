@@ -14,33 +14,36 @@
 	<div>
 		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
-			<form:form id="saveForm" modelAttribute="memberLevel" action="save" cssClass="form-horizontal">
+			<form:form id="saveForm" modelAttribute="memberLevelup" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
 			  <div class="form-group">
-			    <label for="name" class="col-sm-1 required">名称</label>
+			    <label for="memberId" class="col-sm-1 required">会员</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="name" cssClass="form-control" id="name" placeholder="请输入名称"/>
+				  <form:input path="memberId" cssClass="form-control" id="memberId" placeholder="请输入会员"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="price" class="col-sm-1 required">价格</label>
+			    <label for="memberLevelId" class="col-sm-1 required">会员等级</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="price" cssClass="form-control" id="price" placeholder="请输入价格"/>
+				  <form:input path="memberLevelId" cssClass="form-control" id="memberLevelId" placeholder="请输入会员等级"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="status" class="col-sm-1">状态</label>
+			    <label for="startDate" class="col-sm-1 required">会员开始时间</label>
 			    <div class="col-md-4 col-sm-6">
-			      <form:select path="status" cssClass="form-control" id="status">
-			      	<form:option value="1">启用</form:option>
-			      	<form:option value="0">停用</form:option>
-			      </form:select>
+				  <form:input path="startDate" cssClass="form-control" id="startDate" placeholder="请输入会员开始时间"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="description" class="col-sm-1">描述</label>
+			    <label for="endDate" class="col-sm-1 required">会员结束时间</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:textarea path="description" cssClass="form-control" id="description" placeholder="请输入描述" rows="5"/>
+				  <form:input path="endDate" cssClass="form-control" id="endDate" placeholder="请输入会员结束时间"/>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="income" class="col-sm-1 required">支付金额</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:input path="income" cssClass="form-control" id="income" placeholder="请输入支付金额"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -58,12 +61,15 @@
 <script type="text/javascript">
 $(function(){
 	$('.back').on('click', function(){
-		location.href = "${ctx}/member/level/list";
+		location.href = "${ctx}/member/levelup/list";
 	});
 	$('#saveForm').validate({
 	    rules: {
-	    	name: "required",
-price: "required",
+	    	memberId: "required",
+memberLevelId: "required",
+startDate: "required",
+endDate: "required",
+income: "required",
 	    },
 	    message: {
 	    	

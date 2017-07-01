@@ -250,16 +250,19 @@ $(function(){
 	$('.skuTable').on('change', '.skuStock,.skuPrice', function(){
 		var stock = 0;
 		$('.skuStock').each(function(){
-			var v = $(this).val();		
-			stock += parseInt(v);
+			var v = $(this).val();
+			if(v != undefined && v != '')
+				stock += parseInt(v);
 		});
 		var price = 0;
 		$('.skuPrice').each(function(i){
 			var v = $(this).val();
-			if(i == 0)
-				price = parseFloat(v);
-			else				
-				price = Math.min(price, parseFloat(v));
+			if(v != undefined && v != ''){
+				if(i == 0)
+					price = parseFloat(v);
+				else				
+					price = Math.min(price, parseFloat(v));
+			}
 		});
 		
 		$('#price').val(price);
@@ -349,7 +352,7 @@ function getSpecValueChecbox(valId, valName, specId, specName, selectIds){
 	'" spec-item="',specId,':',valId,
 	'" spec-value-name="',valName,
 	'" spec-name="',specName,
-	'" ', ((selectIds != undefined && $.inArray(valId, selectIds)) > -1?'checked':''),'> ',
+	'" ', ((selectIds != undefined && ($.inArray(valId, selectIds)) > -1)?'checked':''),'> ',
 	valName,'</label></div>'].join(""));
 }
 
@@ -443,10 +446,10 @@ function createSkuTable(selectSku){
 			for(var j=0, l2=v.length; j < l2; j++){
 				tr += '<td><p class="form-control-static">'+v[j]+'</p></td>';	
 			}
-			if(skuTr['stock'] != undefined)
+			if(skuTr['stock'] != undefined && skuTr['stock'] != '')
 				stock += parseInt(skuTr['stock']);
 			
-			if(skuTr['price'] != undefined){
+			if(skuTr['price'] != undefined && skuTr['price'] != ''){
 				if(i == 0)
 					price = parseFloat(skuTr['price']);
 				else

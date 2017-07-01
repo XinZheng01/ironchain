@@ -33,7 +33,7 @@ public class Information extends DataModel {
 	
 	/** 类型 1 文章 2广告*/
 	@Column(name="type")
-	private int type = 1;
+	private int type = TYPE_ARTICLE;
 	
 	/** 标题*/
 	@Column(name="title")

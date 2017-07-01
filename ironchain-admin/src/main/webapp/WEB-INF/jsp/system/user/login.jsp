@@ -56,6 +56,7 @@
                 <li class="animate2 bounceIn">
                     <input class="pass" type="password" name="password" id="password" placeholder="密码" autocomplete="off"/>
                 </li>
+                <!-- 
                 <li class="animate3 bounceIn">
                     <input class="code" type="text" name="captcha" id="captcha" placeholder="验证码" autocomplete="off"/>
                     <span class="code-mod">
@@ -63,6 +64,7 @@
                         <a href="javascript:void(0);" class="code-change" title="刷新" onclick="changeCaptcha()"></a>
                     </span>
                 </li>
+                 -->
                 <li class="animate4 bounceIn">
                 <label id="submitBtn" class = "button">登录</label>
                 <!-- 

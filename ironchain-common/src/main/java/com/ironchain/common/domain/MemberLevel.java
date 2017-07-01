@@ -24,6 +24,9 @@ public class MemberLevel extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 	
+	public static final int STATUS_SHOW = 1;
+	public static final int STATUS_UNSHOW = 0;
+	
 	/** 名称*/
 	@Column(name="name")
 	private String name;
@@ -32,8 +35,22 @@ public class MemberLevel extends DataModel {
 	@Column(name="price")
 	private BigDecimal price;
 	
+	/** 状态*/
+	@Column(name="status")
+	private int status = STATUS_SHOW;
+	
 	/** 描述*/
 	@Column(name="description")
 	private String description;
 	
+	public String getStatusStr(){
+		switch (this.status) {
+		case STATUS_SHOW:
+			return "启用";
+		case STATUS_UNSHOW:
+			return "停用";
+		default:
+			return null;
+		}
+	}
 }
