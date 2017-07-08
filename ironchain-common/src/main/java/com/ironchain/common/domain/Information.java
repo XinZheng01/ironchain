@@ -1,11 +1,15 @@
 package com.ironchain.common.domain;
 
+import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.ironchain.common.base.DataModel;
 
@@ -62,6 +66,16 @@ public class Information extends DataModel {
 	/** SEO描述*/
 	@Column(name="description")
 	private String description;
+	
+	/** 上架时间*/
+	@Column(name="show_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date showTime;
+	
+	/** 下架时间*/
+	@Column(name="un_show_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date unShowTime;
 	
 	/** 内容*/
 	@Lob @Basic(fetch=FetchType.LAZY)

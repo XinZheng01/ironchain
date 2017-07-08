@@ -4,7 +4,7 @@
 <html lang="zh-cn">
 <head>
     <meta charset="utf-8">
-    <title>Page Not Found</title>
+    <title>404 - 找不到页面</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
 
@@ -55,7 +55,7 @@
     </style>
 </head>
 <body>
-    <h1>Page Not Found</h1>
-    <p>Sorry, but the page you were trying to view does not exist.</p>
+    <h1>找不到页面</h1>
+    <p>页面不存在</p>
 </body>
 </html>

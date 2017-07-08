@@ -47,6 +47,9 @@ public class SpecificationKit {
 						case EQ:
 							predicates.add(builder.equal(expression, filter.value));
 							break;
+						case NEQ:
+							predicates.add(builder.notEqual(expression, filter.value));
+							break;
 						case LIKE:
 							predicates.add(builder.like(expression, "%" + filter.value + "%"));
 							break;
@@ -109,12 +112,25 @@ public class SpecificationKit {
 			return addCondition(true, fieldName, operator, value);
 		}
 		
+		public Builder addConditions(Map<String, Object> searchParams){
+			this.filters.addAll(SearchFilter.parse(searchParams).values());
+			return this;
+		}
+		
 		public Builder eq(String fieldName, Object value){
 			return addCondition(true, fieldName, Operator.EQ, value);
 		}
 		
 		public Builder eq(boolean append, String fieldName, Object value){
 			return addCondition(append, fieldName, Operator.EQ, value);
+		}
+		
+		public Builder neq(String fieldName, Object value){
+			return addCondition(true, fieldName, Operator.NEQ, value);
+		}
+		
+		public Builder neq(boolean append, String fieldName, Object value){
+			return addCondition(append, fieldName, Operator.NEQ, value);
 		}
 		
 		public Builder like(String fieldName, Object value){

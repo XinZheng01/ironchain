@@ -71,6 +71,18 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
+			    <label for="showTime" class="col-sm-1">上架时间</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:input path="showTime" cssClass="form-control form-datetime" id="showTime" placeholder="请输入上架时间" readonly="true"/>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="unShowTime" class="col-sm-1">下架时间</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:input path="unShowTime" cssClass="form-control form-datetime" id="unShowTime" placeholder="请输入下架时间" readonly="true" />
+			    </div>
+			  </div>
+			  <div class="form-group">
 			    <label for="content" class="col-sm-1 required">内容</label>
 			    <div class="col-md-9 col-sm-9">
 				  <my:kindeditor path="content"></my:kindeditor>

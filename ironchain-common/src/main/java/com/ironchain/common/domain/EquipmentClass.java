@@ -3,6 +3,7 @@ package com.ironchain.common.domain;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -24,6 +25,12 @@ public class EquipmentClass extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 	
+	/** 设备类型*/
+	@Column(name="type")
+	private int type;
+	
+	/** 设备名称*/
+	@Column(name="name")
 	private String name;
 	
 	public Map<String, Object> toMap(){

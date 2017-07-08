@@ -25,7 +25,7 @@
     </style>
  </head>
  <body>
-  <div class=".bs-glyphicons">
+  <div class="bs-glyphicons">
    <ul class="bs-glyphicons-list">
     <li><a href="#search/icon-resize"><i class="icon-resize"></i> resize</a></li>
     <li><a href="#search/icon-expand-full"><i class="icon-expand-full"></i> expand-full</a></li>

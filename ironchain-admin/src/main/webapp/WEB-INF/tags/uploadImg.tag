@@ -15,7 +15,7 @@ if(height == null)
 	height = Integer.valueOf(100);
 if(allowType == null)
 	allowType = "";
-String imgSrc = "/static/images/image_blank.png";
+String imgSrc = request.getContextPath() + "/static/images/image_blank.png";
 if(StringUtils.isBlank(defaultValue))
 	defaultValue = "";
 else

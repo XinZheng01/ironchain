@@ -52,6 +52,8 @@
 							<th>网页关键字</th>
 							<th>网页描述</th>
 							<th>状态</th>
+							<th data-sort-column="showTime">上架时间</th>
+							<th data-sort-column="unShowTime">下架时间</th>
 							<th>创建时间</th>
 							<th width="120">操作</th>
 						</tr>
@@ -82,6 +84,8 @@
 								<c:when test="${item.status == 1}"><span class="text-success">${item.statusStr}</span></c:when>
 								</c:choose>
 								</td>
+								<td><fmt:formatDate value="${item.showTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+								<td><fmt:formatDate value="${item.unShowTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
 									<sec:authorize url="/information/edit">

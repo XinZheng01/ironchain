@@ -40,7 +40,7 @@ $(function(){
 	/*! 注册 data-icon 事件行为 */
     this.$body.on('click', '[data-icon]', function () {
         var field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
-        var url = '/icon?field=' + field;
+        var url = ctx + '/icon?field=' + field;
         $.site.iframe(url, '选择图标');
     });
     /*! 注册 data-open 事件行为 */
@@ -106,6 +106,10 @@ $(function(){
 			return $.site.alert("请选择一条记录");
 		}
 		del(ids.join(','));
+    });
+    /*! 注册 data-gdarea 高德地图 */
+    this.$body.on('click', '[data-gdarea]', function () {
+    	$.site.iframe(ctx + '/gdarea','拾取坐标位置');
     });
     //拖拽排序
     //this.$body.on('load', '[data-sortable]', function () {

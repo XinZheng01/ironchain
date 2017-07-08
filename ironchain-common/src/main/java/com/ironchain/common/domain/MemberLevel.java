@@ -39,6 +39,10 @@ public class MemberLevel extends DataModel {
 	@Column(name="status")
 	private int status = STATUS_SHOW;
 	
+	/** 需求重置次数*/
+	@Column(name="reset_count")
+	private int resetCount = 0;
+	
 	/** 描述*/
 	@Column(name="description")
 	private String description;

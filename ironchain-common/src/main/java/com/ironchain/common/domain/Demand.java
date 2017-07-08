@@ -56,6 +56,8 @@ public class Demand extends BaseModel {
 	public static final int TYPE_EQUIPMENT = 2;
 	/** 塑胶*/
 	public static final int TYPE_PLASTIC = 3;
+	/** 电子*/
+	public static final int TYPE_ELECTRONIC = 4;
 	
 	/** 标题*/
 	@NotBlank(message="标题不能为空")
@@ -73,7 +75,7 @@ public class Demand extends BaseModel {
 	
 	/** 类型*/
 	@Min(value=TYPE_MACHINED, message="错误的需求类型")
-	@Max(value=TYPE_EQUIPMENT, message="错误的需求类型")
+	@Max(value=TYPE_ELECTRONIC, message="错误的需求类型")
 	@Column(name="type")
 	private int type = TYPE_MACHINED;
 	
@@ -192,9 +194,13 @@ public class Demand extends BaseModel {
 	public static String parseType(int type){
 		switch (type) {
 		case TYPE_MACHINED:
-			return "加工需求";
+			return "五金";
 		case TYPE_EQUIPMENT:
 			return "设备服务";
+		case TYPE_PLASTIC:
+			return "塑胶";
+		case TYPE_ELECTRONIC:
+			return "电子";
 		default:
 			return null;
 		}

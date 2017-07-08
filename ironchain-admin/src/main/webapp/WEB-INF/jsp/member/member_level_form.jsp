@@ -17,19 +17,25 @@
 			<form:form id="saveForm" modelAttribute="memberLevel" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
 			  <div class="form-group">
-			    <label for="name" class="col-sm-1 required">名称</label>
+			    <label for="name" class="col-sm-2 required">名称</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="name" cssClass="form-control" id="name" placeholder="请输入名称"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="price" class="col-sm-1 required">价格</label>
+			    <label for="price" class="col-sm-2 required">价格</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="price" cssClass="form-control" id="price" placeholder="请输入价格"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="status" class="col-sm-1">状态</label>
+			    <label for="resetCount" class="col-sm-2 required">需求重置次数</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:input path="resetCount" cssClass="form-control" id="resetCount" placeholder="请输入需求重置次数"/>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="status" class="col-sm-2">状态</label>
 			    <div class="col-md-4 col-sm-6">
 			      <form:select path="status" cssClass="form-control" id="status">
 			      	<form:option value="1">启用</form:option>
@@ -38,13 +44,13 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="description" class="col-sm-1">描述</label>
+			    <label for="description" class="col-sm-2">描述</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:textarea path="description" cssClass="form-control" id="description" placeholder="请输入描述" rows="5"/>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <div class="col-sm-offset-1 col-sm-1">
+			    <div class="col-sm-offset-2 col-sm-1">
 			      <button type="button" class="btn btn-default back">返回</button>
 			    </div>
 			    <div class="col-sm-1">
@@ -63,7 +69,14 @@ $(function(){
 	$('#saveForm').validate({
 	    rules: {
 	    	name: "required",
-price: "required",
+			price: {
+				required: true,
+				number: true
+			},
+			resetCount: {
+				required: true,
+				digits: true
+			}
 	    },
 	    message: {
 	    	

@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 public class SearchFilter {
 
 	public enum Operator {
-		EQ, LIKE, NOTLIKE, GT, LT, GTE, LTE, NULL, NOTNULL, IN, NOTIN
+		EQ, NEQ, LIKE, NOTLIKE, GT, LT, GTE, LTE, NULL, NOTNULL, IN, NOTIN
 	}
 
 	public String fieldName;

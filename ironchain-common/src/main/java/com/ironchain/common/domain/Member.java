@@ -1,6 +1,7 @@
 package com.ironchain.common.domain;
 
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Set;
 
@@ -20,6 +21,8 @@ import javax.validation.constraints.Pattern;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.DataModel;
 import com.ironchain.common.domain.Constants.RegexConstants;
+import com.ironchain.common.kits.DigestKit;
+import com.ironchain.common.kits.EncodeKit;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +44,8 @@ public class Member extends DataModel{
 	public final static int TYPE_PERSON = 1;
 	/** 企业*/
 	public final static int TYPE_COMPANY = 2;
+	/** 子账户*/
+	public final static int TYPE_CHILD = 3;
 	
 	public final static int STATUS_SUCCESS = 1;
 	public final static int STATUS_AUDIT = 2;
@@ -73,7 +78,6 @@ public class Member extends DataModel{
 	private String mobilephone;
 	
 	/** 密码*/
-	@NotNull(message="密码不能为空")
 	@Column(name="password")
 	private String password;
 	
@@ -130,14 +134,15 @@ public class Member extends DataModel{
 	@Column(name="status")
 	private int status = STATUS_SUCCESS;
 	
-	/** 工厂位置*/
-	@Column(name="location")
-	private String location;
-	
 	/** 会员等级*/
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="level_id")
 	private MemberLevel level;
+	
+	/** 父账号*/
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="parent_id")
+	private Member parent;
 	
 	public String getTypeStr(){
 		switch (this.type) {
@@ -145,6 +150,8 @@ public class Member extends DataModel{
 			return "个人";
 		case TYPE_COMPANY:
 			return "企业";
+		case TYPE_CHILD:
+			return "子账户";
 		default:
 			return null;
 		}
@@ -161,5 +168,21 @@ public class Member extends DataModel{
 		default:
 			return null;
 		}
+	}
+	
+	/**
+	 * sha-256 1024加密
+	 * @param password
+	 * @return
+	 */
+	public static String disgestPassword(String password){
+		byte[] passwordB = password.getBytes(Charset.forName("UTF-8"));
+		byte[] salt = new byte[8];
+		for (int i = 0, j = 0, len = passwordB.length; i < 8; i++, j++) {
+			if(j >= len) j = 0;
+			salt[i] = passwordB[j];
+		}
+		return EncodeKit.encodeHex2String(DigestKit.sha256(
+				passwordB, salt, 1024));
 	}
 }

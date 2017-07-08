@@ -1,5 +1,7 @@
 package com.ironchain.common.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 
 import com.ironchain.common.base.BaseDao;
@@ -38,5 +40,13 @@ public interface MemberDao extends BaseDao<Member, Long>{
 	 */
 	@Query(value="select type from member where id=?1", nativeQuery=true)
 	int findTypeById(Long id);
+
+	/**
+	 * 根据父id查找子账户列表
+	 * @param id
+	 * @param typeChild
+	 * @return
+	 */
+	List<Member> findByParentIdAndType(Long id, int typeChild);
 
 }

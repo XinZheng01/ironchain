@@ -15,7 +15,6 @@
 	<div>
 		<ol class="breadcrumb admin-breadcrumb"></ol>
 		<div class="page">
-			<my:error model="systemPermission"/>
 			<form:form id="saveForm" modelAttribute="systemPermission" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
 			  <div class="form-group">

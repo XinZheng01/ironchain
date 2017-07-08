@@ -77,6 +77,7 @@ public class LetterController extends ModelController<LetterDao, Letter> {
 	public String save(@Valid @ModelAttribute Letter letter, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
+			setBindingErrorMsg(model, bindingResult);
 			return "letter/letter_form";
 		}
 		

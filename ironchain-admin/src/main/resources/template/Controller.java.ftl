@@ -75,10 +75,11 @@ public class ${className}Controller extends ModelController<${className}Dao, ${c
 	public String save(@Valid @ModelAttribute ${className} ${modelName}, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
+			setBindingErrorMsg(model, bindingResult);
 			return "${pathName}/${tableNameLower}_form";
 		}
 		modelDao.save(${modelName});
-		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
+		setSuccessMsg(redirectAttributes, "操作成功");
 		return "redirect:list";
 	}
 	

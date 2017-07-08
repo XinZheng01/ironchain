@@ -8,7 +8,8 @@ if(height == null)
 	height = "height:450px;";
 else
 	height = "height:"+height+"px;";
-String staticUrl = request.getContextPath() + "/static";
+String ctx = request.getContextPath();
+String staticUrl = ctx + "/static";
 %>
 <form:textarea path="<%=path %>" cssClass="form-control kindeditor" id="content" cssStyle="<%=height %>"/>
 <%if(isLoadScript == null || isLoadScript){%>
@@ -29,7 +30,7 @@ KindEditor.ready(function(K) {
 		    'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
 			'anchor', 'link', 'unlink', '|', 'fullscreen'
 		],
-		uploadJson : '/editor/upload',
+		uploadJson : '<%=ctx %>/editor/upload',
 		filterMode : false,//过滤html
 		formatUploadUrl : false,
 		extraFileUploadParams: _csrf,

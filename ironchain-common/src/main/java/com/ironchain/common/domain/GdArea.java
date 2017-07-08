@@ -42,6 +42,14 @@ public class GdArea implements Serializable{
 	@Column(name="name")
 	private String name;
 	
+	/** 省名称*/
+	@Column(name="provname")
+	private String provname;
+	
+	/** 市名称*/
+	@Column(name="cityname")
+	private String cityname;
+	
 	/** 中心区位置*/
 	@Column(name="center")
 	private String center;

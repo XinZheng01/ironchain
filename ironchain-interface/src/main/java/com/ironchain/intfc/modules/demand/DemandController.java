@@ -55,7 +55,7 @@ public class DemandController extends ApiBaseController{
 	
 	/**
 	 * 获取需求列表
-	 * @param type 类型 1加工需求 2设备服务
+	 * @param type 类型 1加工需求 2设备服务3塑胶4电子
 	 * @param classId 需求分类id
 	 * @param progress 进度
 	 * @param adcode 区域

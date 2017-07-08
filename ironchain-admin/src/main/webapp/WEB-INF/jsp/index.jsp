@@ -60,7 +60,7 @@
     		<dl class="layui-nav-child">
     		<c:forEach items="${sessionScope.userMenu}" var="c_menu">
     			<c:if test="${c_menu.parent.id == p_menu.id}">
-			      <dd><a href="${not empty c_menu.url?c_menu.url:"javascript:;"}" target="rightIframe"><i class="icon ${c_menu.icon}"></i><cite>${c_menu.name}</cite></a></dd>
+    			<dd><a href="<c:choose><c:when test="${not empty c_menu.url}">${ctx}${c_menu.url}</c:when><c:otherwise>javascript:;</c:otherwise></c:choose>" target="rightIframe"><i class="icon ${c_menu.icon}"></i><cite>${c_menu.name}</cite></a></dd>
     			</c:if>
     		</c:forEach>
 		    </dl>

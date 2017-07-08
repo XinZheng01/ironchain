@@ -12,7 +12,7 @@ CREATE TABLE `banner` (
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
 `update_time`  datetime NULL DEFAULT NULL COMMENT '更新时间' ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='首页轮播图';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='首页轮播图';
 
 CREATE TABLE `shop_banner` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -28,7 +28,7 @@ CREATE TABLE `shop_banner` (
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
 `update_time`  datetime NULL DEFAULT NULL COMMENT '更新时间' ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='商城轮播图';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商城轮播图';
 
 CREATE TABLE `information` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -40,13 +40,15 @@ CREATE TABLE `information` (
 `description`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '网页描述' ,
 `type`  int(11) NULL DEFAULT NULL COMMENT '类型' ,
 `status`  int(11) NULL DEFAULT NULL ,
+`show_time`  datetime NULL DEFAULT NULL COMMENT '上架时间' ,
+`un_show_time`  datetime NULL DEFAULT NULL COMMENT '下架时间' ,
 `content`  longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容' ,
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
 `update_time`  datetime NULL DEFAULT NULL COMMENT '更新时间' ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='资讯';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资讯';
 
 CREATE TABLE `member` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -67,14 +69,23 @@ CREATE TABLE `member` (
 `company_address`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业地址',
 `status`  tinyint(2) COMMENT '状态',
 `level_id`  bigint(20) NULL COMMENT '会员等级',
-`location`  varchar(255) NULL COMMENT '工厂位置',
+`parent_id`  bigint(20) NULL COMMENT '父账号',
 `last_login_time`  datetime NULL DEFAULT NULL COMMENT '最后登录时间',
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间',
 `update_time`  datetime NULL DEFAULT NULL ,
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='会员';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员';
+
+CREATE TABLE `factory_location` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`member_id` bigint(20) NOT NULL COMMENT '企业',
+`area_id` bigint(20) NOT NULL COMMENT '区域',
+`address` varchar(500) NOT NULL COMMENT '详细地址',
+`location` varchar(50) NOT NULL COMMENT '坐标',
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工厂位置';
 
 CREATE TABLE `friendcircle` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -82,7 +93,7 @@ CREATE TABLE `friendcircle` (
 `member_id` bigint(20) NOT NULL COMMENT '发送人',
 `send_time`  datetime NULL DEFAULT NULL COMMENT '发送时间' ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='朋友圈';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='朋友圈';
 
 CREATE TABLE `friendcircle_img` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -90,37 +101,41 @@ CREATE TABLE `friendcircle_img` (
 `img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图片',
 `thumbnail` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '缩略图',
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='朋友圈图片';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='朋友圈图片';
 
 CREATE TABLE `gd_area` (
-`adcode`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '区域编码',
-`provcode`  varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '所属省编码',
-`citycode`  varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所属市编码',
-`name`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
-`center`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '中心区位置',
-`level`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '级别 country province city district',
-PRIMARY KEY (`adcode`)
-)ENGINE=InnoDB COMMENT='高德省市区';
+  `adcode` varchar(10) NOT NULL COMMENT '区域编码',
+  `provcode` varchar(10) DEFAULT NULL COMMENT '所属省编码',
+  `citycode` varchar(10) DEFAULT NULL COMMENT '所属市编码',
+  `name` varchar(50) DEFAULT NULL COMMENT '名称',
+  `provname` varchar(50) DEFAULT NULL COMMENT '省名称',
+  `cityname` varchar(50) DEFAULT NULL COMMENT '市名称',
+  `center` varchar(50) DEFAULT NULL COMMENT '中心区位置',
+  `level` varchar(50) DEFAULT NULL COMMENT '级别 country province city district',
+  PRIMARY KEY (`adcode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='高德省市区';
 
 CREATE TABLE `demand_class` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`type` TINYINT(2) COMMENT '类型',
 `name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分类名称',
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间',
 `update_time`  datetime NULL DEFAULT NULL ,
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='需求分类';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='需求分类';
 
 CREATE TABLE `equipment_class` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`type` TINYINT(2) COMMENT '类型',
 `name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分类名称',
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间',
 `update_time`  datetime NULL DEFAULT NULL ,
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='设备分类';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='设备分类';
 
 CREATE TABLE `demand_file` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -129,7 +144,7 @@ CREATE TABLE `demand_file` (
 `path`  varchar(255) NOT NULL COMMENT '文件路径',
 PRIMARY KEY (`id`),
 INDEX `idx_demand_id` (`demand_id`) USING BTREE
-)ENGINE=InnoDB COMMENT='需求文档';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='需求文档';
 
 CREATE TABLE `demand_offer` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -144,7 +159,7 @@ CREATE TABLE `demand_offer` (
 PRIMARY KEY (`id`),
 INDEX `idx_demand_id` (`demand_id`) USING BTREE ,
 INDEX `idx_member_id` (`member_id`) USING BTREE 
-)ENGINE=InnoDB COMMENT='需求报价';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='需求报价';
 
 CREATE TABLE `demand` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -169,19 +184,19 @@ CREATE TABLE `demand` (
 PRIMARY KEY (`id`),
 INDEX `idx_class_id` (`class_id`) USING BTREE ,
 INDEX `idx_member_id` (`member_id`) USING BTREE 
-)ENGINE=InnoDB COMMENT='需求';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='需求';
 
 CREATE TABLE `demand_equ_ref` (
 `demand_id`  bigint(20) NOT NULL ,
 `equ_id`  bigint(20) NOT NULL ,
 PRIMARY KEY (`demand_id`, `equ_id`)
-)ENGINE=InnoDB COMMENT='需求设备分类关系';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='需求设备分类关系';
 
 CREATE TABLE `member_equ_ref` (
 `member_id`  bigint(20) NOT NULL ,
 `equ_id`  bigint(20) NOT NULL ,
 PRIMARY KEY (`member_id`, `equ_id`)
-)ENGINE=InnoDB COMMENT='会员设备分类关系';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员设备分类关系';
 
 CREATE TABLE `shop_class` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -193,7 +208,7 @@ CREATE TABLE `shop_class` (
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='商品分类';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品分类';
 
 CREATE TABLE `shop_product` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -212,7 +227,7 @@ CREATE TABLE `shop_product` (
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='商品';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品';
 
 CREATE TABLE `shop_product_param` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -225,7 +240,7 @@ CREATE TABLE `shop_product_param` (
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='商品参数';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品参数';
 
 CREATE TABLE `shop_product_spec` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -235,7 +250,7 @@ CREATE TABLE `shop_product_spec` (
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='商品规格';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品规格';
 
 CREATE TABLE `shop_product_spec_value` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -246,7 +261,7 @@ CREATE TABLE `shop_product_spec_value` (
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='商品规格值';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品规格值';
 
 CREATE TABLE `shop_product_sku` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -260,7 +275,7 @@ CREATE TABLE `shop_product_sku` (
 `create_by`  bigint(20) NULL DEFAULT NULL ,
 `update_by`  bigint(20) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
-)ENGINE=InnoDB COMMENT='商品SKU';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品SKU';
 
 
 CREATE TABLE `shop_order` (
@@ -304,7 +319,7 @@ CREATE TABLE `shop_order_product` (
   `adjust_price` DECIMAL(13, 2) NOT NULL DEFAULT 0.00 COMMENT '调整金额',
   `total_price` DECIMAL(13, 2) NOT NULL DEFAULT 0.00 COMMENT '商品总价',
   PRIMARY KEY (id)
-)ENGINE=INNODB COMMENT='订单商品表';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单商品表';
 
 CREATE TABLE `letter_record` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -314,7 +329,7 @@ CREATE TABLE `letter_record` (
   PRIMARY KEY (id),
   INDEX `idx_letter_id` (`letter_id`) USING BTREE ,
   INDEX `idx_user_id` (`user_id`) USING BTREE 
-)ENGINE=INNODB COMMENT='站内信记录';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='站内信记录';
 ##status 0 未读 1已读
 ##type 1内容 2链接 3需求
 
@@ -334,7 +349,7 @@ CREATE TABLE `letter` (
   `create_by`  bigint(20) NULL DEFAULT NULL ,
   `update_by`  bigint(20) NULL DEFAULT NULL ,
   PRIMARY KEY (id)
-)ENGINE=INNODB COMMENT='站内信';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='站内信';
 ##type 1内容 2链接 3需求
 ##send_type 1群发 2指定用户发送
 
@@ -343,13 +358,14 @@ CREATE TABLE `member_level` (
   `name` varchar(255) NOT NULL COMMENT '名称',
   `price` decimal(13,2) NOT NULL COMMENT '价格',
   `status` TINYINT(2) NOT NULL COMMENT '状态',
+  `reset_count` int(11) NOT NULL DEFAULT 0 COMMENT '需求重置次数',
   `description`  varchar(255) NULL DEFAULT NULL COMMENT '描述',
   `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
   `update_time`  datetime NULL DEFAULT NULL ,
   `create_by`  bigint(20) NULL DEFAULT NULL ,
   `update_by`  bigint(20) NULL DEFAULT NULL ,
   PRIMARY KEY (id)
-)ENGINE=INNODB COMMENT='会员等级管理';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员等级管理';
 
 CREATE TABLE `member_levelup` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -363,4 +379,4 @@ CREATE TABLE `member_levelup` (
   `create_by`  bigint(20) NULL DEFAULT NULL ,
   `update_by`  bigint(20) NULL DEFAULT NULL ,
   PRIMARY KEY (id)
-)ENGINE=INNODB COMMENT='会员开通记录';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员开通记录';

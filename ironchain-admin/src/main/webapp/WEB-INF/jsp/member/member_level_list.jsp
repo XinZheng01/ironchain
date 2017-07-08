@@ -40,9 +40,10 @@
 						<tr>
 	                	<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
 							<th>名称</th>
-							<th data-sort-column="price">价格</th>
-							<th data-sort-column="status">状态</th>
-							<th data-sort-column="createTime">创建时间</th>
+							<th>价格</th>
+							<th>需求重置次数</th>
+							<th>状态</th>
+							<th>创建时间</th>
 							<th width="120">操作</th>
 						</tr>
 					</thead>
@@ -52,6 +53,7 @@
 								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
 								<td>${item.name}</td>
 								<td>${item.price}</td>
+								<td>${item.resetCount}</td>
 								<td>${item.statusStr}</td>
 								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>

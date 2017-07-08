@@ -33,6 +33,7 @@
 			    <label for="newPassword" class="col-sm-1">登录密码</label>
 			    <div class="col-md-4 col-sm-6">
 			      <input type="password" name="newPassword" class="form-control" id="newPassword" placeholder="请输入登录密码">
+			      <div class="help-block password">若不修改密码，请留空。</div>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -86,6 +87,11 @@ $(function(){
 	$('.back').on('click', function(){
 		location.href = "${ctx}/system/user/list";
 	});
+	if(!$('[name=id]').val()){
+		$('label[for=newPassword]').addClass('required');
+		$('#newPassword').prop('required', true);
+		$('.password.help-block').remove();
+	}
 	$('#saveForm').validate({
 	    rules: {
 	    	loginName: {

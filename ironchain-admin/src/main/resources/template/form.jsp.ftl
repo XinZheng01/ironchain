@@ -20,7 +20,7 @@
 			  <#list columns as column>
 			  <#if !ignore?seq_contains(column.attrName)>
 			  <div class="form-group">
-			    <label for="${column.attrName}" class="col-sm-1${(column.isNullable == "NO")?string(" required", "")}">${column.columnComment}</label>
+			    <label for="${column.attrName}" class="col-sm-2${(column.isNullable == "NO")?string(" required", "")}">${column.columnComment}</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="${column.attrName}" cssClass="form-control" id="${column.attrName}" placeholder="请输入${column.columnComment}"/>
 			    </div>
@@ -28,7 +28,7 @@
 			  </#if>
 			  </#list>
 			  <div class="form-group">
-			    <div class="col-sm-offset-1 col-sm-1">
+			    <div class="col-sm-offset-2 col-sm-1">
 			      <button type="button" class="btn btn-default back">返回</button>
 			    </div>
 			    <div class="col-sm-1">

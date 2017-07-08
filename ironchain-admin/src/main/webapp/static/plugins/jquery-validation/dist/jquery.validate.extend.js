@@ -67,7 +67,7 @@ $.extend( $.validator.messages, {
 	url: "请输入有效的网址",
 	date: "请输入有效的日期",
 	number: "请输入有效的数字",
-	digits: "只能输入数字",
+	digits: "请输入整数",
 	creditcard: "请输入有效的信用卡号码",
 	equalTo: "你的输入不相同",
 	extension: "请输入有效的后缀",

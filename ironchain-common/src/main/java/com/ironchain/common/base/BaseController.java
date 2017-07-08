@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -21,10 +22,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.HtmlUtils;
 
+import com.ironchain.common.domain.R;
 import com.ironchain.common.kits.DateKit;
 import com.ironchain.common.kits.SpecificationKit;
 
@@ -224,4 +230,28 @@ public abstract class BaseController {
 		return new PageRequest(page - 1, size, sort);
 	}
 	
+	protected void setBindingErrorMsg(Model model, BindingResult bindingResult) {
+		List<ObjectError> allErrors = bindingResult.getAllErrors();
+		StringBuilder sb = new StringBuilder();
+		for(ObjectError objErr : allErrors)
+			sb.append("<p>").append(objErr.getDefaultMessage()).append("</p>");
+		
+		model.addAttribute(R.error(sb.toString()));
+	}
+	
+	protected void setSuccessMsg(Model model, String msg) {
+		model.addAttribute(R.ok().setMsg(msg));
+	}
+	
+	protected void setErrorMsg(Model model, String msg) {
+		model.addAttribute(R.error(msg));
+	}
+
+	protected void setSuccessMsg(RedirectAttributes redirectAttributes, String msg) {
+		redirectAttributes.addFlashAttribute(R.ok().setMsg(msg));
+	}
+	
+	protected void setErrorMsg(RedirectAttributes redirectAttributes, String msg) {
+		redirectAttributes.addFlashAttribute(R.error(msg));
+	}
 }

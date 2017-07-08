@@ -6,7 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +24,7 @@ import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.MemberDao;
 import com.ironchain.common.domain.Member;
 import com.ironchain.common.domain.R;
+import com.ironchain.common.kits.SpecificationKit;
 
 
 /**
@@ -42,7 +45,12 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	 */
 	@GetMapping("/list")
 	public String list(Pageable pageable, HttpServletRequest request, Model model){
-		model.addAttribute("page", modelDao.findAll(bySearchFilter(request), pageable));
+		//用户类型不为子账户
+		Specification<Member> spec = SpecificationKit.createBuilder()
+			.addConditions(getParamsStartWith(request))
+			.neq("type", Member.TYPE_CHILD)
+			.bySearchFilter();
+		model.addAttribute("page", modelDao.findAll(spec, pageable));
 		return "member/member_list";
 	}
 	
@@ -70,13 +78,21 @@ public class MemberController extends ModelController<MemberDao, Member> {
 	 * @return
 	 */
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute Member member, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+	public String save(@Valid @ModelAttribute Member member, @RequestParam(required=false) String newPassword, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
+			setBindingErrorMsg(model, bindingResult);
 			return "member/member_form";
 		}
+		if(member.getId() == null && StringUtils.isBlank(newPassword)){
+			setErrorMsg(model, "密码不能为空");
+			return "member/member_form";
+		}
+		if(StringUtils.isNotBlank(newPassword))
+			member.setPassword(Member.disgestPassword(newPassword));
+		
 		modelDao.save(member);
-		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
+		setSuccessMsg(redirectAttributes, "操作成功");
 		return "redirect:list";
 	}
 	
@@ -125,4 +141,25 @@ public class MemberController extends ModelController<MemberDao, Member> {
 		modelDao.save(member);
 		return R.ok().setMsg("操作成功");
 	}
+	
+	/**
+	 * 子账户列表
+	 * @return
+	 */
+	@GetMapping("/child/list")
+	public String childList(@RequestParam Long id, Model model){
+		List<Member> childs = modelDao.findByParentIdAndType(id, Member.TYPE_CHILD);
+		model.addAttribute("childs", childs);
+		return "member/member_child";
+	}
+	
+	/**
+	 * 新增子账户
+	 * @return
+	 */
+	public R addChild(){
+		return R.ok();
+	}
+	
+	
 }

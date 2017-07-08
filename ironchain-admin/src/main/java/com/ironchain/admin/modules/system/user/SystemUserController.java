@@ -89,17 +89,18 @@ public class SystemUserController extends ModelController<SystemUserDao, SystemU
 			BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 		//校验
 		if(bindingResult.hasErrors()){
+			setBindingErrorMsg(model, bindingResult);
 			return "system/user/user_form";
 		}
 		if(systemUser.getId() == null && StringUtils.isBlank(newPassword)){
-			redirectAttributes.addFlashAttribute(R.error("操作成功"));
+			setErrorMsg(model, "密码不能为空");
 			return "system/user/user_form";
 		}
-		if(StringUtils.isNoneBlank(newPassword))
+		if(StringUtils.isNotBlank(newPassword))
 			systemUser.setPassword(passwordEncoder.encode(newPassword));
 		
 		modelDao.save(systemUser);
-		redirectAttributes.addFlashAttribute(R.ok().setMsg("操作成功"));
+		setSuccessMsg(redirectAttributes, "操作成功");
 		return "redirect:list";
 	}
 	
