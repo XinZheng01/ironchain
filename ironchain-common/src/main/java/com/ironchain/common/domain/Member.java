@@ -51,6 +51,13 @@ public class Member extends DataModel{
 	public final static int STATUS_AUDIT = 2;
 	public final static int STATUS_LOCK = 3;
 	
+	public Member(){
+	}
+	
+	public Member(Long id){
+		this.id = id;
+	}
+	
 	/** 用户名*/
 	@Column(name="name")
 	private String name;
@@ -185,4 +192,5 @@ public class Member extends DataModel{
 		return EncodeKit.encodeHex2String(DigestKit.sha256(
 				passwordB, salt, 1024));
 	}
+
 }

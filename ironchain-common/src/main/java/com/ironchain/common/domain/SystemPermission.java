@@ -38,9 +38,6 @@ public class SystemPermission extends DataModel {
 	public static final int TYPE_MENU = 2;
 	public static final int TYPE_BTN = 3;
 	
-	public static final int STATUS_UNSHOW = 0;
-	public static final int STATUS_SHOW = 1;
-	
 	/** 名称*/
 	@Column(name="name", nullable=false, length=30)
 	@NotNull(message="名称不能为空")
@@ -73,7 +70,7 @@ public class SystemPermission extends DataModel {
 	
 	/** 状态 1 启用 0 停用*/
 	@Column(name="status")
-	private int status = STATUS_SHOW;
+	private int status = Constants.DISPLAY_SHOW;
 	
 	/** 父权限*/
 	@JsonIgnore
@@ -96,11 +93,11 @@ public class SystemPermission extends DataModel {
 
 	public String getTypeStr(){
 		switch (type) {
-		case 1:
+		case TYPE_CATALOG:
 			return "目录";
-		case 2:
+		case TYPE_MENU:
 			return "菜单";
-		case 3:
+		case TYPE_BTN:
 			return "权限";
 		}
 		return null;
@@ -108,9 +105,9 @@ public class SystemPermission extends DataModel {
 	
 	public String getStatusStr(){
 		switch (status) {
-		case 1:
+		case Constants.DISPLAY_SHOW:
 			return "启用";
-		case 0:
+		case Constants.DISPLAY_UNSHOW:
 			return "停用";
 		}
 		return null;

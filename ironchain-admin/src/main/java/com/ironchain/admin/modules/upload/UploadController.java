@@ -1,10 +1,8 @@
 package com.ironchain.admin.modules.upload;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -49,8 +47,6 @@ public class UploadController extends BaseController {
 		
 	}
 	
-	private static List<String> imgExt = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp");
-	
 	@PostMapping(value="/editor/upload")
 	public void ueditorUpload(@RequestParam(value="dir", defaultValue="image", required=false) String dir, StandardMultipartHttpServletRequest request , HttpServletResponse response) throws IOException{
 		Collection<MultipartFile> files = request.getFileMap().values();
@@ -69,8 +65,8 @@ public class UploadController extends BaseController {
 				}
 				fileName = multipartFile.getOriginalFilename();
 				idx = fileName.lastIndexOf(".");
-				if(idx == -1 || !imgExt.contains(fileName.substring(idx + 1).toLowerCase())){
-					write(response, getError("上传文件扩展名是不允许的扩展名。\n只允许" + StringUtils.join(imgExt, ",")+ "格式。"));
+				if(idx == -1 || !UploadService.imgExt.contains(fileName.substring(idx + 1).toLowerCase())){
+					write(response, getError("上传文件扩展名是不允许的扩展名。\n只允许" + StringUtils.join(UploadService.imgExt, ",")+ "格式。"));
 					return;
 				}
 			}else{

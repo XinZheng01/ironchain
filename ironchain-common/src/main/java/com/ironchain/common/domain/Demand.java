@@ -1,6 +1,7 @@
 package com.ironchain.common.domain;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -96,7 +98,7 @@ public class Demand extends BaseModel {
 	@JoinTable(name="demand_equ_ref",
 		joinColumns={@JoinColumn(name="demand_id")},
 		inverseJoinColumns={@JoinColumn(name="equ_id")})
-	private Set<EquipmentClass> mainEquipment;
+	private Set<EquipmentClass> mainEquipment = new HashSet<>(0);
 	
 	/** 开始时间*/
 	@NotNull(message="开始时间不能为空")
@@ -167,6 +169,9 @@ public class Demand extends BaseModel {
 	@Column(name="life")
 	private Integer life;
 	/**************************/
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="demand")
+	private Set<DemandFile> demandFiles = new HashSet<>(0);
 
 	public static String parseProgress(int progress){
 		switch (progress) {

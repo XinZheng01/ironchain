@@ -58,7 +58,7 @@ public class ShopClassController extends ModelController<ShopClassDao, ShopClass
 			ShopClass parent = modelDao.findOne(parentId);
 			shopClass.setParent(parent);
 		}
-		model.addAttribute("shopClassList", modelDao.findByParentIsNull());
+		model.addAttribute("shopClassList", modelDao.findByParentIsNullOrderBySortId());
 		return "shop/shop_class_form";
 	}
 	
@@ -68,7 +68,7 @@ public class ShopClassController extends ModelController<ShopClassDao, ShopClass
 	 */
 	@GetMapping("/edit")
 	public String edit(@ModelAttribute ShopClass shopClass, Model model){
-		model.addAttribute("shopClassList", modelDao.findByParentIsNull());
+		model.addAttribute("shopClassList", modelDao.findByParentIsNullOrderBySortId());
 		return "shop/shop_class_form";
 	}
 	

@@ -2,9 +2,6 @@ package com.ironchain.common.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.ironchain.common.base.BaseModel;
@@ -33,9 +30,8 @@ public class LetterRecord extends BaseModel {
 	private Long userId;
 	
 	/** 发送记录*/
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="letter_id")
-	private Letter letter;
+	@Column(name="letter_id")
+	private Long letterId;
 	
 	/** 状态*/
 	@Column(name="status")

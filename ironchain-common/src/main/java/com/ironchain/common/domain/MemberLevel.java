@@ -24,9 +24,6 @@ public class MemberLevel extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final int STATUS_SHOW = 1;
-	public static final int STATUS_UNSHOW = 0;
-	
 	/** 名称*/
 	@Column(name="name")
 	private String name;
@@ -37,7 +34,7 @@ public class MemberLevel extends DataModel {
 	
 	/** 状态*/
 	@Column(name="status")
-	private int status = STATUS_SHOW;
+	private int status = Constants.DISPLAY_SHOW;
 	
 	/** 需求重置次数*/
 	@Column(name="reset_count")
@@ -49,9 +46,9 @@ public class MemberLevel extends DataModel {
 	
 	public String getStatusStr(){
 		switch (this.status) {
-		case STATUS_SHOW:
+		case Constants.DISPLAY_SHOW:
 			return "启用";
-		case STATUS_UNSHOW:
+		case Constants.DISPLAY_UNSHOW:
 			return "停用";
 		default:
 			return null;

@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +30,7 @@ public class HomeController extends ApiBaseController{
 	 */
 	@IgnoreAuth
 	@IgnoreApiSecurity
-	@GetMapping("/banner")
+	@RequestMapping("/banner")
 	public R bannerList(){
 		//查询前6个banner
 		return R.ok(homeService.findBannerList(getPageable(1, 6, null)));
@@ -42,7 +41,7 @@ public class HomeController extends ApiBaseController{
 	 * @return
 	 */
 	@IgnoreAuth
-	@GetMapping("/list")
+	@RequestMapping("/list")
 	public R demand(Pageable pageable){
 		Page<Map<String, Object>> page = demandService.findDemandByParam(-1, null, -1,
 				null, null, null, pageable);

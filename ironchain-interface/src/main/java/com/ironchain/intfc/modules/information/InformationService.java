@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ironchain.common.base.BaseService;
-import com.ironchain.common.domain.Information;
+import com.ironchain.common.domain.Constants;
 import com.ironchain.common.kits.SqlKit;
 
 @Service
@@ -27,7 +27,7 @@ public class InformationService extends BaseService{
 	public Map<String, Object> findAll(Pageable pageable) {
 		Map<String, Object> map = new HashMap<>();
 		Page<Map<String, Object>> page = SqlKit.create().append("select id,type,title,img,DATE_FORMAT(update_time, '%m-%d') updateTime, 0 comment")
-				.append(" from information where status = ? order by sort_id, update_time desc", Information.STATUS_SHOW)
+				.append(" from information where status = ? order by sort_id, update_time desc", Constants.DISPLAY_SHOW)
 				.query2Page(jdbcTemplate, pageable);
 		map.put("content", page.getContent());
 		map.put("hasNext", page.hasNext()?1:0);

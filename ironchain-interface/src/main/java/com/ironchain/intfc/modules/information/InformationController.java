@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
 import com.ironchain.common.dao.InformationDao;
+import com.ironchain.common.domain.Constants;
 import com.ironchain.common.domain.Information;
 import com.ironchain.common.domain.R;
 import com.ironchain.intfc.annotation.IgnoreApiSecurity;
@@ -34,7 +34,7 @@ public class InformationController extends ApiBaseController{
 	
 	@IgnoreAuth
 	@IgnoreApiSecurity
-	@GetMapping("/list")
+	@RequestMapping("/list")
 	@ResponseBody
 	public R list(Pageable pageable){
 		return R.ok(informationService.findAll(pageable));
@@ -42,9 +42,9 @@ public class InformationController extends ApiBaseController{
 	
 	@IgnoreAuth
 	@IgnoreApiSecurity
-	@GetMapping("/details")
+	@RequestMapping("/details")
 	public String details(@RequestParam Long id, Model model){
-		Information information = informationDao.findByIdAndStatus(id, Information.STATUS_SHOW);
+		Information information = informationDao.findByIdAndStatus(id, Constants.DISPLAY_SHOW);
 		information.setContent(HtmlUtils.htmlUnescape(information.getContent()));
 		model.addAttribute("information", information);
 		return "template";

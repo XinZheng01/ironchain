@@ -1,5 +1,6 @@
 package com.ironchain.common.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -45,13 +46,9 @@ public class DemandOffer extends BaseModel {
 	@JoinColumn(name="demand_id")
 	private Demand demand;
 	
-	/** 工时费用*/
-	@Column(name="hour_fee")
-	private Integer hourFee;
-	
-	/** 材料费用*/
-	@Column(name="material_fee")
-	private Integer materialFee;
+	/** 价格*/
+	@Column(name="price")
+	private BigDecimal price;
 	
 	/** 描述*/
 	@Column(name="description")
@@ -59,7 +56,7 @@ public class DemandOffer extends BaseModel {
 	
 	/** 状态*/
 	@Column(name="status")
-	private int status;
+	private int status = STATUS_CREATE;
 	
 	/** 创建时间*/
 	@Column(name="create_time")

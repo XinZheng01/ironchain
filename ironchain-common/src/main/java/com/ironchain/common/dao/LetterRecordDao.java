@@ -10,5 +10,7 @@ import com.ironchain.common.domain.LetterRecord;
  * @email 
  */
 public interface LetterRecordDao extends BaseDao<LetterRecord, Long> {
+
+	LetterRecord findByLetterIdAndUserId(Long id, Long userId);
 	
 }

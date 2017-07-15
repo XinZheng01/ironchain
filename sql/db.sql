@@ -52,7 +52,7 @@ PRIMARY KEY (`id`)
 
 CREATE TABLE `member` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
-`name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
+`name`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
 `head_img`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户头像',
 `type`  tinyint(2) NULL DEFAULT NULL COMMENT '类型',
 `service_type`  tinyint(2) NULL DEFAULT NULL COMMENT '业务类型',
@@ -67,6 +67,7 @@ CREATE TABLE `member` (
 `company_tel`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业固定电话',
 `company_license_img`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业营业执照',
 `company_address`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业地址',
+`company_precision`  decimal(13,2) NULL DEFAULT NULL COMMENT '企业精度',
 `status`  tinyint(2) COMMENT '状态',
 `level_id`  bigint(20) NULL COMMENT '会员等级',
 `parent_id`  bigint(20) NULL COMMENT '父账号',
@@ -81,7 +82,7 @@ PRIMARY KEY (`id`)
 CREATE TABLE `factory_location` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
 `member_id` bigint(20) NOT NULL COMMENT '企业',
-`area_id` bigint(20) NOT NULL COMMENT '区域',
+`adcode` varchar(10) NOT NULL COMMENT '区域',
 `address` varchar(500) NOT NULL COMMENT '详细地址',
 `location` varchar(50) NOT NULL COMMENT '坐标',
 PRIMARY KEY (`id`)
@@ -140,7 +141,7 @@ PRIMARY KEY (`id`)
 CREATE TABLE `demand_file` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
 `demand_id`  bigint(20) NOT NULL COMMENT '需求id',
-`type`  tinyint(2) NULL DEFAULT NULL COMMENT '类型',
+##`type`  tinyint(2) NULL DEFAULT NULL COMMENT '类型',
 `path`  varchar(255) NOT NULL COMMENT '文件路径',
 PRIMARY KEY (`id`),
 INDEX `idx_demand_id` (`demand_id`) USING BTREE
@@ -148,8 +149,9 @@ INDEX `idx_demand_id` (`demand_id`) USING BTREE
 
 CREATE TABLE `demand_offer` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
-`hour_fee`  int(11) NULL DEFAULT NULL COMMENT '工时费用',
-`material_fee`  int(11) NULL DEFAULT NULL COMMENT '材料费用',
+##`hour_fee`  int(11) NULL DEFAULT NULL COMMENT '工时费用',
+##`material_fee`  int(11) NULL DEFAULT NULL COMMENT '材料费用',
+`price`  decimal(13,2) NULL DEFAULT NULL COMMENT '价格',
 `demand_id`  bigint(20) NULL DEFAULT NULL COMMENT '需求',
 `member_id`  bigint(20) NULL DEFAULT NULL COMMENT '报价人',
 `status` tinyint(2) NULL DEFAULT NULL COMMENT '状态',
@@ -341,7 +343,7 @@ CREATE TABLE `letter` (
   `members` text COMMENT '指定发送的用户',
   `type` TINYINT(2) NOT NULL COMMENT '类型',
   `send_type` TINYINT(2) NOT NULL COMMENT '发送类型',
-  `is_system` TINYINT(2) NOT NULL COMMENT '系统自动发送',
+  `service_type` TINYINT(2) NOT NULL COMMENT '业务类型',
   `url`  varchar(255) NULL COMMENT '链接',
   `attr`  varchar(255) NULL COMMENT '属性',
   `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
@@ -374,9 +376,27 @@ CREATE TABLE `member_levelup` (
   `start_date`  datetime NOT NULL COMMENT '会员开始时间' ,
   `end_date`  datetime NOT NULL COMMENT '会员结束时间' ,
   `income`   decimal(13,2) NOT NULL COMMENT '支付金额',
+  `company_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业名称',
+  `company_legal`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业法人',
+  `company_legal_phone`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业法人电话',
+  `company_idcard`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业法人身份证',
+  `company_tel`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业固定电话',
+  `company_license_img`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业营业执照',
+  `company_address`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '企业地址',
+  `company_precision`  decimal(13,2) NULL DEFAULT NULL COMMENT '企业精度',
+  `status`  tinyint(2) COMMENT '状态',
+  `level_id`  bigint(20) NULL COMMENT '会员等级',
   `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
   `update_time`  datetime NULL DEFAULT NULL ,
   `create_by`  bigint(20) NULL DEFAULT NULL ,
   `update_by`  bigint(20) NULL DEFAULT NULL ,
   PRIMARY KEY (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员开通记录';
+
+CREATE TABLE `levelup_equ_ref` (
+`levelup_id`  bigint(20) NOT NULL ,
+`equ_id`  bigint(20) NOT NULL ,
+PRIMARY KEY (`levelup_id`, `equ_id`),
+INDEX `IDX_equ_id` (`equ_id`) USING BTREE 
+)
+ENGINE=InnoDB DEFAULT CHARACTER SET=utf8 COMMENT='升级记录设备关系';

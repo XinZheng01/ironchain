@@ -2,9 +2,10 @@ package com.ironchain.common.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.ironchain.common.base.BaseModel;
@@ -25,22 +26,26 @@ public class DemandFile extends BaseModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	/** 图档*/
-	public static final int TYPE_FILE = 1;
-	/** 故障*/
-	public static final int TYPE_FAULT = 2;
-	/** 外观*/
-	public static final int TYPE_LOOKS = 3;
-	
-	/** 类型*/
-	@Min(value=TYPE_FILE, message="非法需求文件类型")
-	@Max(value=TYPE_LOOKS, message="非法需求文件类型")
-	@Column(name="type")
-	private int type = TYPE_FILE;
+//	/** 图档*/
+//	public static final int TYPE_FILE = 1;
+//	/** 故障*/
+//	public static final int TYPE_FAULT = 2;
+//	/** 外观*/
+//	public static final int TYPE_LOOKS = 3;
+//	
+//	/** 类型*/
+//	@Min(value=TYPE_FILE, message="非法需求文件类型")
+//	@Max(value=TYPE_LOOKS, message="非法需求文件类型")
+//	@Column(name="type")
+//	private int type = TYPE_FILE;
 	
 	/** 需求id*/
-	@Column(name="demand_id")
-	private Long demandId;
+//	@Column(name="demand_id")
+//	private Long demandId;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="demand_id")
+	private Demand demand;
 	
 	/** 文件名称*/
 	@Column(name="name")

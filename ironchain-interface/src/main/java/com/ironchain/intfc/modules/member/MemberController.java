@@ -1,32 +1,35 @@
 package com.ironchain.intfc.modules.member;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
-import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ironchain.common.cache.CacheService;
+import com.ironchain.common.dao.DemandOfferDao;
 import com.ironchain.common.dao.MemberDao;
+import com.ironchain.common.dao.MemberLevelDao;
+import com.ironchain.common.domain.Constants;
 import com.ironchain.common.domain.Constants.CacheConstants;
 import com.ironchain.common.domain.Constants.RegexConstants;
 import com.ironchain.common.domain.EquipmentClass;
 import com.ironchain.common.domain.Member;
 import com.ironchain.common.domain.R;
-import com.ironchain.common.exception.ServiceException;
 import com.ironchain.common.kits.IdcardKit;
 import com.ironchain.common.sms.SmsService;
+import com.ironchain.common.upload.UploadService;
+import com.ironchain.intfc.annotation.IgnoreApiSecurity;
 import com.ironchain.intfc.annotation.IgnoreAuth;
 import com.ironchain.intfc.web.ApiBaseController;
 
@@ -43,44 +46,54 @@ public class MemberController extends ApiBaseController {
 	private MemberService memberService;
 	
 	@Autowired
+	private MemberLevelDao memberLevelDao;
+	
+	@Autowired
 	private CacheService cacheService;
 	
 	@Autowired
 	private SmsService smsService;
+	
+	@Autowired
+	private UploadService uploadService;
+	
+	@Autowired
+	private DemandOfferDao demandOfferDao;
 	
 	/**
 	 * 会员注册
 	 * @return
 	 */
 	@IgnoreAuth
-	@PostMapping("/register")
-	public R register(@Valid Member member, @RequestParam String verifyCode){
-		LOGGER.debug("请求会员注册接口 member：{} verifyCode：{}", member, verifyCode);
-		if (verifyCode == null || verifyCode.length() != 6)
-			throw new IllegalArgumentException("非法验证码");
-//		if (!cacheService.check(CacheConstants.VERIFYCODE, member.getMobilephone(), verifyCode))
-//			throw new IllegalArgumentException("验证码不正确或已过期");
-		if (memberService.mobilephoneExists(member.getMobilephone()))
-			throw new IllegalArgumentException("该手机号码已存在");
-		if (member.getPassword().length() < 6 || member.getPassword().length() > 20)
-			throw new IllegalArgumentException("密码不能小于6位，大于20位");
+	@RequestMapping("/register")
+	public R register(@RequestParam int type,
+			@RequestParam String email,
+			@RequestParam String mobilephone,
+			@RequestParam String password,
+			@RequestParam String idcard,
+			@RequestParam(required=false) Integer serviceType,
+			@RequestParam(required=false) Long levelId,
+			@RequestParam(required=false) String companyName,
+			@RequestParam(required=false) String companyLegal,
+			@RequestParam(required=false) String companyLegalPhone,
+			@RequestParam(required=false) String companyIdcard,
+			@RequestParam(required=false) String companyTel,
+			@RequestParam(required=false) BigDecimal companyPrecision,
+			@RequestParam(required=false) String companyLicenseImg,
+			@RequestParam(required=false) String companyAddress,
+			@RequestParam(required=false) Long[] companyEquipment,
+			@RequestParam String verifyCode){
 		
-		member.setName(member.getMobilephone());
-		if(member.getType() == Member.TYPE_PERSON){//个人用户注册完自动登录
-			if (member.getIdcard() == null || !IdcardKit.validateCard(member.getIdcard()))
-				throw new IllegalArgumentException("请输入正确的身份证号码");
-		}else if(member.getType() == Member.TYPE_COMPANY){//企业用户等待后台审核
-			Validate.notBlank(member.getCompanyName(), "企业名称不能为空");
-			Validate.notBlank(member.getCompanyLegal(), "法人姓名不能为空");
-			Validate.matchesPattern(member.getCompanyTel(), RegexConstants.TEL_REGEX, "企业电话格式不正确");
-			if (member.getCompanyIdcard() == null || !IdcardKit.validateCard(member.getCompanyIdcard()))
-				throw new IllegalArgumentException("请输入正确的法人身份证号码");
-			Validate.notBlank(member.getCompanyAddress(), "企业地址不能为空");
-			Validate.notBlank(member.getCompanyLicenseImg(), "企业营业执照不能为空");
-		}else
-			throw new IllegalArgumentException("非法用户类型");
+		Assert.isTrue(verifyCode != null && verifyCode.length() == 6, "非法验证码");
+//		Assert.isTrue(cacheService.check(CacheConstants.VERIFYCODE, mobilephone, verifyCode), "验证码不正确或已过期");
+		Assert.isTrue(mobilephone.matches(RegexConstants.MOBILE_REGEX), "手机号码格式不正确");
+		Assert.isTrue(!memberService.mobilephoneExists(mobilephone), "该手机号码已存在");
+		Assert.isTrue(password.length() >= 6 && password.length() <= 20, "密码不能小于6位，大于20位");
 		
-		member = memberService.create(member);
+		Member member = memberService.create(type, email, mobilephone, password, idcard, serviceType, levelId,
+				companyName, companyLegal, companyLegalPhone, companyIdcard, companyTel, companyPrecision, companyLicenseImg,
+				companyAddress, companyEquipment);
+				
 		Long uid = member.getId();
 		String mobile = member.getMobilephone();
 		String token = memberService.getToken(uid, mobile);
@@ -103,11 +116,11 @@ public class MemberController extends ApiBaseController {
 	 * @return
 	 */
 	@IgnoreAuth
-	@PostMapping("/login")
+	@RequestMapping("/login")
 	public R login(@RequestParam String mobilephone, @RequestParam String password){
 		LOGGER.debug("请求会员登录接口 mobilephone：{} password：{}", mobilephone, password);
-		Validate.notBlank(mobilephone, "用户名不能为空");
-		Validate.notBlank(password, "密码不能为空");
+		Assert.hasText(mobilephone, "用户名不能为空");
+		Assert.hasText(password, "密码不能为空");
 		
 		Member member = memberService.findByMobilephoneAndPassword(mobilephone, password);
 		Long uid = member.getId();
@@ -130,11 +143,11 @@ public class MemberController extends ApiBaseController {
 	 * @return
 	 */
 	@IgnoreAuth
-	@PostMapping("/send_verify_code")
+	@RequestMapping("/send_verify_code")
 	public R sendVerifyCode(@RequestParam String mobilephone, @RequestParam int type){
 		LOGGER.debug("请求发送验证码接口 mobilephone：{} type：{}", mobilephone, type);
 		//检验手机号码
-		Validate.matchesPattern(mobilephone, RegexConstants.MOBILE_REGEX, "手机号码格式不正确");
+		Assert.isTrue(mobilephone.matches(RegexConstants.MOBILE_REGEX), "手机号码格式不正确");
 		
 		String code = memberService.createRandomCode();
 		Map<String, Object> param = new HashMap<>();
@@ -165,7 +178,7 @@ public class MemberController extends ApiBaseController {
 	 * @return
 	 */
 	@IgnoreAuth
-	@PostMapping("/reset_password_one")
+	@RequestMapping("/reset_password_one")
 	public R resetPasswordStepOne(){
 		return R.ok();
 	}
@@ -175,7 +188,7 @@ public class MemberController extends ApiBaseController {
 	 * @return
 	 */
 	@IgnoreAuth
-	@PostMapping("/reset_password_two")
+	@RequestMapping("/reset_password_two")
 	public R resetPasswordStepTwo(@RequestParam String newPassword){
 		LOGGER.debug("请求重置密码 步骤2接口 newPassword：{}", newPassword);
 		return R.ok();
@@ -185,7 +198,7 @@ public class MemberController extends ApiBaseController {
 	 * 修改密码
 	 * @return
 	 */
-	@PostMapping("/modify_password")
+	@RequestMapping("/modify_password")
 	public R modifyPassword(@RequestParam Long userId, @RequestParam String oldPassword, @RequestParam String newPassword){
 		LOGGER.debug("请求修改密码接口 userId：{} oldPassword：{} newPassword：{}", userId, oldPassword, newPassword);
 		memberService.modifyPassword(userId, oldPassword, newPassword);
@@ -195,28 +208,29 @@ public class MemberController extends ApiBaseController {
 	/**
 	 * 查看企业信息
 	 */
-	@GetMapping("/company_info")
+	@RequestMapping("/company_info")
 	public R companyInfo(@RequestParam Long id, Long userId){
 		Member member = memberDao.findOne(id);
-		if(member == null || member.getType() != Member.TYPE_COMPANY)
-			throw new ServiceException(R.SC_PARAMERROR, "用户不存在或用户类型非法， id:" + id + ", userId:" + userId);
+		Assert.isTrue(member != null && member.getType() == Member.TYPE_COMPANY, "用户不存在或用户类型非法， id:" + id + ", userId:" + userId);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("id", member.getId());
-		result.put("name", member.getCompanyName());
-		result.put("legal", member.getCompanyLegal());
-		result.put("legalPhone", member.getCompanyLegalPhone());
-		result.put("idcard", member.getCompanyIdcard());
-		//TODO 企业评级 交易数量 
+		result.put("companyName", member.getCompanyName());//公司名称
+		result.put("companyLegal", member.getCompanyLegal());//法人
+		result.put("companyLegalPhone", member.getCompanyLegalPhone());
+		result.put("companyIdcard", member.getCompanyIdcard());
+		result.put("levelName", member.getLevel().getName());//会员等级名称
+		result.put("bidCount", demandOfferDao.countByOfferId(id));//竞标数量
+		
 		List<Map<String, Object>> companyEqus = new ArrayList<>();
 		for (EquipmentClass equClass : member.getCompanyEquipment()) {
 			companyEqus.add(equClass.toMap());
 		}
-		result.put("equipment", companyEqus);
-		result.put("precision", member.getCompanyPrecision());
-		result.put("address", member.getCompanyAddress());
-		result.put("tel", member.getCompanyTel());
-		result.put("licenseImg", member.getCompanyLicenseImg());
+		result.put("companyEquipment", companyEqus);
+		result.put("companyPrecision", member.getCompanyPrecision());
+		result.put("companyAdress", member.getCompanyAddress());
+		result.put("companyTel", member.getCompanyTel());
+		result.put("companyLicenseImg", member.getCompanyLicenseImg());
 		return R.ok(result);
 	}
 	
@@ -224,15 +238,87 @@ public class MemberController extends ApiBaseController {
 	 * 个人账户信息
 	 * @return
 	 */
-	@GetMapping("/info")
+	@RequestMapping("/info")
 	public R info(@RequestParam Long userId){
 		Member member = memberDao.findOne(userId);
 
 		Map<String, Object> result = new HashMap<>();
 		result.put("name", member.getName());
 		result.put("headImg", member.getHeadImg());
-		result.put("status", member.getType() == 2?"已开通":"未开通");
+		result.put("status", member.getLevel() != null?"已开通":"未开通");
 		result.put("type", member.getTypeStr());
+		return R.ok(result);
+	}
+	
+	/**
+	 * 修改头像
+	 * @return
+	 */
+	@IgnoreApiSecurity
+	@RequestMapping("/modify_head_img")
+	public R modifyHeadImg(@RequestParam Long userId, @RequestParam MultipartFile headImg){
+		String fileName = headImg.getOriginalFilename();
+		int idx = fileName.lastIndexOf(".");
+		if(idx == -1 || !UploadService.imgExt.contains(fileName.substring(idx + 1).toLowerCase())){
+			return R.error("上传文件扩展名是不允许的扩展名。\n只允许" + StringUtils.join(UploadService.imgExt, ",")+ "格式。");
+		}
+		String uploadPath = uploadService.store(headImg)[0];
+		Member member = memberDao.findOne(userId);
+		member.setHeadImg(uploadPath);
+		memberDao.save(member);
+		return R.ok();
+	}
+	
+	/**
+	 * 修改用户名
+	 * @param userId
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping("/modify_name")
+	public R modifyName(@RequestParam Long userId, @RequestParam String name){
+		Member member = memberDao.findOne(userId);
+		member.setName(name);
+		memberDao.save(member);
+		return R.ok();
+	}
+	
+	/**
+	 * 会员等级列表
+	 * @return
+	 */
+	@IgnoreAuth
+	@RequestMapping("/level/list")
+	public R levelList(){
+		return R.ok(memberLevelDao.findByStatusOrderByPriceAsc(Constants.DISPLAY_SHOW));
+	}
+	
+	/**
+	 * 升级会员
+	 * @return
+	 */
+	@RequestMapping("/levelup")
+	public R levelup(@RequestParam Long userId, @RequestParam Long id,
+			@RequestParam Integer serviceType,
+			@RequestParam String companyName,
+			@RequestParam String companyLegal,
+			@RequestParam String companyLegalPhone,
+			@RequestParam String companyIdcard,
+			@RequestParam String companyTel,
+			@RequestParam BigDecimal companyPrecision,
+			@RequestParam String companyLicenseImg,
+			@RequestParam String companyAddress,
+			@RequestParam Long[] companyEquipment
+			){
+		Assert.hasText(companyName, "企业名称不能为空");
+		Assert.hasText(companyLegal, "法人姓名不能为空");
+		Assert.isTrue(companyTel != null && companyTel.matches(RegexConstants.TEL_REGEX), "企业电话格式不正确");
+		Assert.isTrue(companyIdcard != null && IdcardKit.validateCard(companyIdcard), "请输入正确的法人身份证号码");
+		Assert.hasText(companyAddress, "企业地址不能为空");
+		Assert.hasText(companyLicenseImg, "企业营业执照不能为空");
+		
+		memberService.addLevelup(id, memberDao.findOne(userId), serviceType, companyName, companyLegal, companyLegalPhone,
+				companyIdcard, companyTel, companyPrecision, companyLicenseImg, companyAddress, companyEquipment);
 		
 		return R.ok();
 	}

@@ -4,6 +4,11 @@ public final class Constants {
 	
 	private Constants(){}
 	
+	/** 显示状态 停用*/
+	public static final int DISPLAY_UNSHOW = 0;
+	/** 显示状态 启用*/
+	public static final int DISPLAY_SHOW = 1;
+	
 	/**
 	 * 日期常量
 	 * @author Administrator

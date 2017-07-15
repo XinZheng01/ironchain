@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +31,7 @@ public class CommonController extends ApiBaseController {
 	 */
 	@IgnoreAuth
 	@IgnoreApiSecurity
-	@GetMapping("/area/version")
+	@RequestMapping("/area/version")
 	public R areaVersion(){
 		return R.ok("20170602");
 	}
@@ -43,7 +42,7 @@ public class CommonController extends ApiBaseController {
 	 */
 	@IgnoreAuth
 	@IgnoreApiSecurity
-	@GetMapping("/area/json")
+	@RequestMapping("/area/json")
 	public R area(){
 		List<GdArea> list = gdAreaDao.findAll();
 		Map<String, Object> result = new LinkedHashMap<>();

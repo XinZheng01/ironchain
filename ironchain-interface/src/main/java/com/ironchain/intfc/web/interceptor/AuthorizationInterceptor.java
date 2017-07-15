@@ -15,6 +15,7 @@ import com.ironchain.common.domain.Constants.CacheConstants;
 import com.ironchain.common.domain.R;
 import com.ironchain.common.exception.ServiceException;
 import com.ironchain.intfc.annotation.IgnoreAuth;
+import com.ironchain.intfc.config.ApiProperties;
 
 /**
  * Token过滤
@@ -29,9 +30,18 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter{
 	@Autowired
 	private StringRedisTemplate redisTemplate;
 	
+	private boolean isApiAuth;
+	
+	public AuthorizationInterceptor(ApiProperties apiProperties){
+		this.isApiAuth = apiProperties.isApiAuth();
+	}
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		if(!isApiAuth)
+			return true;
+		
 		IgnoreAuth annotation = ((HandlerMethod) handler).getMethodAnnotation(IgnoreAuth.class);
         //如果有@IgnoreAuth注解，则不验证token
         if(annotation != null)

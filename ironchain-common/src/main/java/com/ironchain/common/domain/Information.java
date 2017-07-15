@@ -32,9 +32,6 @@ public class Information extends DataModel {
 	public static final int TYPE_ARTICLE = 1;
 	public static final int TYPE_AD = 2;
 	
-	public static final int STATUS_SHOW = 1;
-	public static final int STATUS_UNSHOW = 0;
-	
 	/** 类型 1 文章 2广告*/
 	@Column(name="type")
 	private int type = TYPE_ARTICLE;
@@ -57,7 +54,7 @@ public class Information extends DataModel {
 	
 	/** 状态 1已发布 0未发布*/
 	@Column(name="status")
-	private int status = 1;
+	private int status = Constants.DISPLAY_SHOW;
 	
 	/** SEO关键字*/
 	@Column(name="keywords")
@@ -84,9 +81,9 @@ public class Information extends DataModel {
 	
 	public String getTypeStr(){
 		switch (this.type) {
-		case 1:
+		case TYPE_ARTICLE:
 			return "文章";
-		case 2:
+		case TYPE_AD:
 			return "广告";
 		}
 		return null;
@@ -94,9 +91,9 @@ public class Information extends DataModel {
 	
 	public String getStatusStr(){
 		switch (this.status) {
-		case 0:
+		case Constants.DISPLAY_UNSHOW:
 			return "未发布";
-		case 1:
+		case Constants.DISPLAY_SHOW:
 			return "已发布";
 		}
 		return null;

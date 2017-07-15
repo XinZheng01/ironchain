@@ -21,8 +21,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name="shop_class")
-public class ShopClass extends DataModel {
+@Table(name="wake_class")
+public class WakeClass extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -34,13 +34,10 @@ public class ShopClass extends DataModel {
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="parent_id")
-	private ShopClass parent;
+	private WakeClass parent;
 	
 	/** 排序值*/
 	@Column(name="sort_id")
 	private Integer sortId = 0;
 	
-	/** 状态*/
-	@Column(name="status")
-	private int status = Constants.DISPLAY_SHOW;
 }

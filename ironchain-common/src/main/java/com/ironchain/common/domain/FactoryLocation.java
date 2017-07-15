@@ -35,7 +35,7 @@ public class FactoryLocation extends BaseModel {
 	
 	/** 区域*/
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="area_id")
+	@JoinColumn(name="adcode")
 	private GdArea area;
 	
 	/** 详细地址*/

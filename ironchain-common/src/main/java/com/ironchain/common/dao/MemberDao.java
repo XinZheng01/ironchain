@@ -2,6 +2,9 @@ package com.ironchain.common.dao;
 
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
 import com.ironchain.common.base.BaseDao;
@@ -48,5 +51,16 @@ public interface MemberDao extends BaseDao<Member, Long>{
 	 * @return
 	 */
 	List<Member> findByParentIdAndType(Long id, int typeChild);
+
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select m from Member m where m.id=?1")
+	Member lockById(Long userId);
+	
+	/**
+	 * 查找子账户的父账户id
+	 * @param userId
+	 * @return
+	 */
+	Long findParentIdById(Long userId);
 
 }

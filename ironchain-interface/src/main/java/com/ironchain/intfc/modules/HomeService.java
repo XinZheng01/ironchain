@@ -22,7 +22,7 @@ public class HomeService extends BaseService {
 		Date now = new Date();
 		return SqlKit.create()
 				.append("select id, title, img, url, DATE_FORMAT(show_time, '%Y-%m-%d') showTime from banner")
-				.append(" where type = 2 and show_time < ? and un_show_time > ? order by sort_id, show_time desc", now, now)
+				.append(" where type = 2 and (show_time < ? or show_time is null) and (un_show_time > ? or un_show_time is null) order by sort_id, show_time desc", now, now)
 				.query2Page(jdbcTemplate, pageable).getContent();
 	}
 

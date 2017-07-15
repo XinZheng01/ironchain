@@ -2,7 +2,6 @@ package com.ironchain.intfc.modules.shop;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +24,7 @@ public class ShopController extends ApiBaseController {
 	 */
 	@IgnoreAuth
 	@IgnoreApiSecurity
-	@GetMapping("/home/banner")
+	@RequestMapping("/home/banner")
 	public R banner(){
 		return R.ok(shopService.findApiBannerList(getPageable(1, 6, null)));
 	}
@@ -36,20 +35,22 @@ public class ShopController extends ApiBaseController {
 	 */
 	@IgnoreAuth
 	@IgnoreApiSecurity
-	@GetMapping("/home/list")
+	@RequestMapping("/home/list")
 	public R homeList(){
-		return R.ok();
+		return R.ok(shopService.findHomeList());
 	}
 	
 	/**
 	 * 商品列表
 	 * @param shopClass 商品分类
 	 * @param pageable 分页
-	 * @param sortType 排序类型 1综合 2销量 3评分 4价格
+	 * @param sortName 排序方式 1综合 2销量 3评分 4价格
+	 * @param sortType 排序类型 0 ASC 1 DESC
 	 * @return
 	 */
-	@GetMapping("/goods/list")
-	public R list(@RequestParam int shopClass, Pageable pageable, @RequestParam(defaultValue="1") int sortType){
+	@RequestMapping("/product/list")
+	public R list(@RequestParam Long classId, Pageable pageable, @RequestParam(defaultValue="1") int sortName, @RequestParam(defaultValue="0") int sortType){
+		
 		return R.ok();
 	}
 	
@@ -57,8 +58,22 @@ public class ShopController extends ApiBaseController {
 	 * 商品分类
 	 * @return
 	 */
-	@GetMapping("/goods/class")
-	public R goodsClass(){
+	@IgnoreAuth
+	@IgnoreApiSecurity
+	@RequestMapping("/class")
+	public R shopClass(){
+		return R.ok(shopService.findShopClassList());
+	}
+	
+	/**
+	 * 商品详情
+	 * @param id
+	 * @return
+	 */
+	@IgnoreAuth
+	@IgnoreApiSecurity
+	@RequestMapping("/product/details")
+	public R details(@RequestParam Long id){
 		return R.ok();
 	}
 }

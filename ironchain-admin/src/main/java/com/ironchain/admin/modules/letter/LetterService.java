@@ -65,7 +65,7 @@ public class LetterService extends BaseService {
 			for (Long userId : ids) {
 				letterRecord = new LetterRecord();
 				letterRecord.setUserId(userId);
-				letterRecord.setLetter(letter);
+				letterRecord.setLetterId(letter.getId());
 				letterRecordDao.save(letterRecord);
 			}
 		}

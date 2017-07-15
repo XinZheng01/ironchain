@@ -1,8 +1,6 @@
 package com.ironchain.intfc.modules.upload;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,8 +27,6 @@ public class UploadController extends BaseController {
 	@Autowired
 	private UploadService uploadService;
 	
-	private static List<String> imgExt = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "doc", "docx", "xls", "xlsx", "ppt", "txt", "zip", "rar", "gz", "bz2", "pdf");
-	
 	@IgnoreApiSecurity
 	@IgnoreAuth
 	@PostMapping(value="/api/upload")
@@ -44,10 +40,14 @@ public class UploadController extends BaseController {
 		String fileName = null;
 		int idx = -1;
 		for (MultipartFile multipartFile : files) {
+//			if(multipartFile.getSize() > 10000000){//10M
+//				write(response, R.error().setMsg("上传文件大小超过限制。"));
+//				return;
+//			}
 			fileName = multipartFile.getOriginalFilename();
 			idx = fileName.lastIndexOf(".");
-			if(idx == -1 || !imgExt.contains(fileName.substring(idx + 1).toLowerCase())){
-				write(response, R.error().setMsg("上传文件扩展名是不允许的扩展名。\n只允许" + StringUtils.join(imgExt, ",")+ "格式。"));
+			if(idx == -1 || !UploadService.fileExt.contains(fileName.substring(idx + 1).toLowerCase())){
+				write(response, R.error().setMsg("上传文件扩展名是不允许的扩展名。\n只允许" + StringUtils.join(UploadService.fileExt, ",")+ "格式。"));
 				return;
 			}
 		}

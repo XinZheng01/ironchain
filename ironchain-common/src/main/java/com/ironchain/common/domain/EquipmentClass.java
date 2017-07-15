@@ -25,6 +25,13 @@ public class EquipmentClass extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 	
+	public EquipmentClass(){
+	}
+	
+	public EquipmentClass(Long id){
+		this.id = id;
+	}
+	
 	/** 设备类型*/
 	@Column(name="type")
 	private int type;

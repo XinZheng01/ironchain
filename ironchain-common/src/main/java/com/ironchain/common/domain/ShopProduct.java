@@ -77,6 +77,12 @@ public class ShopProduct extends DataModel {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date saleDate;
 	
+	/** 商品主图*/
+	@Column(name="img")
+	private String img;
+	
+	
+	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="product")
 	private List<ShopProductParam> params = new ArrayList<>(0);
 	

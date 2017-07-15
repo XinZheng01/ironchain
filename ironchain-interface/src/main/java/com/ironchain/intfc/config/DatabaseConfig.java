@@ -4,7 +4,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -12,7 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.support.http.StatViewServlet;
 import com.ironchain.common.base.BaseDaoImpl;
 import com.ironchain.common.kits.SpringKit;
 import com.ironchain.common.persistence.dialect.Dialect;
@@ -32,10 +30,10 @@ import com.ironchain.common.persistence.dialect.MySQLDialect;
 public class DatabaseConfig {
 	
 	/**====== Druid Config Start =====*/
-    @Bean
-    public ServletRegistrationBean druidServlet() {
-        return new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
-    }
+//    @Bean
+//    public ServletRegistrationBean druidServlet() {
+//        return new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
+//    }
  
     @Bean
     public DataSource druidDataSource(@Value("${spring.datasource.driver-class-name}") String driverClassName,

@@ -30,8 +30,11 @@ public class Letter extends DataModel {
 	public static final int SEND_TYPE_ALL = 1;//所有用户
 	public static final int SEND_TYPE_APPOINT = 2;//指定用户
 	
-	public static final int IS_SYSTEM_YES = 1;//系统发送
-	public static final int IS_SYSTEM_NO = 0;//非系统发送
+	public static final int SERVICE_TYPE_SYSTEM = 1;//系统信息
+	public static final int SERVICE_TYPE_PUSH = 2;//推送
+	public static final int SERVICE_TYPE_MEMBER = 3;//会员
+	public static final int SERVICE_TYPE_ORDER = 4;//订单
+	public static final int SERVICE_TYPE_DEMAND = 5;//需求
 	
 	/** 标题*/
 	@Column(name="title")
@@ -57,9 +60,9 @@ public class Letter extends DataModel {
 	@Column(name="send_type")
 	private int sendType = SEND_TYPE_ALL;
 	
-	/** 发送类型*/
-	@Column(name="is_system")
-	private int is_system = IS_SYSTEM_NO;
+	/** 业务类型*/
+	@Column(name="service_type")
+	private int serviceType = SERVICE_TYPE_PUSH;
 	
 	/** 链接*/
 	@Column(name="url")
@@ -76,7 +79,7 @@ public class Letter extends DataModel {
 		case TYPE_URL:
 			return "链接";
 		case TYPE_DEMAND:
-			return "加工需求、设备服务 ";
+			return "需求";
 		default:
 			return null;
 		}

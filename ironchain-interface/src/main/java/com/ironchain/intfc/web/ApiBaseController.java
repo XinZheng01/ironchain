@@ -1,8 +1,11 @@
 package com.ironchain.intfc.web;
 
 import java.beans.PropertyEditorSupport;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.util.HtmlUtils;
 
@@ -28,5 +31,12 @@ public class ApiBaseController extends BaseController {
 //			HtmlUtils.htmlEscape(a);//4700
 //		}
 		System.out.println(System.currentTimeMillis() - start);
+	}
+	
+	public static <T> Map<String, Object> page2Map(Page<T> page){
+		Map<String, Object> map = new HashMap<>();
+		map.put("content", page.getContent());
+		map.put("hasNext", page.hasNext());
+		return map;
 	}
 }
