@@ -49,8 +49,17 @@ public class ShopController extends ApiBaseController {
 	 * @return
 	 */
 	@RequestMapping("/product/list")
-	public R list(@RequestParam Long classId, Pageable pageable, @RequestParam(defaultValue="1") int sortName, @RequestParam(defaultValue="0") int sortType){
-		
+	public R list(@RequestParam Long classId, @RequestParam(defaultValue="1") int sortName, @RequestParam(defaultValue="0") int sortType, Pageable pageable){
+		return R.ok(shopService.findProductList(classId, sortName, sortType, pageable));
+	}
+	
+	/**
+	 * 搜索商品
+	 * @param key 查询key
+	 * @return
+	 */
+	@RequestMapping("/search")
+	public R search(String key){
 		return R.ok();
 	}
 	
@@ -75,5 +84,17 @@ public class ShopController extends ApiBaseController {
 	@RequestMapping("/product/details")
 	public R details(@RequestParam Long id){
 		return R.ok();
+	}
+	
+	/**
+	 * 商品参数
+	 * @param id
+	 * @return
+	 */
+	@IgnoreAuth
+	@IgnoreApiSecurity
+	@RequestMapping("/product/params")
+	public R params(@RequestParam Long id){
+		return R.ok(shopService.findProductParamsById(id));
 	}
 }

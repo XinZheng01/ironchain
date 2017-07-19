@@ -54,24 +54,21 @@ $(function(){
     /*! 注册 data-upload-img 事件行为 */
     this.$body.on('change', '[data-upload-img]', function () {
     	var $upload = $(this);
+    	$.site.loading();
 		$.ajaxFileUpload({
 			url: ctx + '/upload',
 			allowType: $upload.attr('data-allow-type') || "bmp|gif|jpg|jpeg|png",
-			data: _csrf,
+			data: $.extend(_csrf, {compress:$upload.attr('data-upload-compress')}),
 			secureuri: false,
 			fileElementId: $upload.attr('id'),
 			dataType: 'json',
 			success: function (data, status) {
+				$.site.close();
 				if (data.sc == 200) {
 					if($upload.prop('multiple')){
 						var imgs = data.data;
-						var imgDiv = '', width = $upload.attr('data-img-width'), height = $upload.attr('data-img-height');
-						for(var i=0, len=imgs.length; i < len; i++){
-							imgDiv += '<div class="col-sm-2"><img src="'+imgs[i]+'" width="'+width+'" height="'+height+'"></div>';
-						}
-						var fn = window['callback'];
-						fn(imgDiv);
-						//$('#' + $upload.attr('data-upload-img')).append(imgDiv);
+						var fn = window['uploadImgCallback'];
+						fn(imgs);
 					}else{
 						$('#' + $upload.attr('data-upload-img')).attr('src', data.data[0]);
 						$('#' + $upload.attr('data-upload-input')).val(data.data[0]);

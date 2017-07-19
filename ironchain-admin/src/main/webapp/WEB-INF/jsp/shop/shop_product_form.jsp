@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@include file="/WEB-INF/include/base-style.jsp" %>
 <%@include file="/WEB-INF/include/base-script.jsp" %>
-<script src="${staticUrl}/plugins/zui-1.6.0/lib/sortable/zui.sortable.min.js"></script>
+<script src="${staticUrl}/js/sortable.js"></script>
 <style type="text/css">
 .page .nav{
 	margin-bottom: 20px;
@@ -19,6 +19,22 @@
 }
 .sku-input{
 	width: 70px;
+}
+.removeBtn {
+    position: absolute;
+    right: 17px;
+    top: 0;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    display: none;
+}
+#productImgs div:hover .removeBtn{
+	display: block;
 }
 </style>
 </head>
@@ -39,13 +55,13 @@
 			  <div class="tab-content">
 			  	<div class="tab-pane active" id="tabBase">
 				  <div class="form-group">
-				    <label for="title" class="col-sm-1 required">商品标题</label>
+				    <label for="title" class="col-sm-2 required">商品标题</label>
 				    <div class="col-md-4 col-sm-6">
 					  <form:input path="title" cssClass="form-control" id="title" placeholder="请输入商品标题"/>
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <label class="col-sm-1">所属分类</label>
+				    <label class="col-sm-2">所属分类</label>
 				    <div class="col-md-4 col-sm-6">
 					  <form:select path="shopClass" cssClass="form-control" id="shopClass">
 					  	<form:options items="${shopClassList}" itemLabel="name" itemValue="id"/>
@@ -53,25 +69,25 @@
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <label for="code" class="col-sm-1 required">商品编号</label>
+				    <label for="code" class="col-sm-2 required">商品编号</label>
 				    <div class="col-md-4 col-sm-6">
 					  <form:input path="code" cssClass="form-control" id="code" placeholder="请输入商品编号"/>
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <label for="freight" class="col-sm-1 required">商品运费</label>
+				    <label for="freight" class="col-sm-2 required">商品运费</label>
 				    <div class="col-md-4 col-sm-6">
 					  <form:input path="freight" cssClass="form-control" id="freight" placeholder="请输入商品运费"/>
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <label for="sortId" class="col-sm-1">排序值</label>
+				    <label for="sortId" class="col-sm-2">排序值</label>
 				    <div class="col-md-4 col-sm-6">
 					  <form:input path="sortId" cssClass="form-control" id="sortId" placeholder="请输入排序值"/>
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <label for="content" class="col-sm-1 required">商品详情</label>
+				    <label for="content" class="col-sm-2 required">商品详情</label>
 				    <div class="col-md-4 col-sm-6">
 					  <my:kindeditor path="content"></my:kindeditor>
 				    </div>
@@ -79,15 +95,15 @@
 			  	</div>
 			  	<div class="tab-pane" id="tabParam">
 				  	<div class="form-group">
-				  	<label class="col-sm-1">商品参数</label>
+				  	<label class="col-sm-2">商品参数</label>
 				  	<div class="col-md-4 col-sm-6 param-content">
-				  		<c:forEach items="${shopProduct.params}" var="item">
+				  		<c:forEach items="${shopProduct.params}" var="item" varStatus="stat">
 				  		<div class="row">
 						  	<div class="col-sm-5">
-						  		<input class="form-control paramName" value="${item.name}" placeholder="请输入参数名" required>
+						  		<input name="paramName_${stat.count}" class="parent-error form-control paramName required" value="${item.name}" placeholder="请输入参数名">
 						  	</div>
 						  	<div class="col-sm-5">
-						  		<input class="form-control paramValue" value="${item.value}" placeholder="请输入参数值" required>
+						  		<input name="paramValue_${stat.count}" class="parent-error form-control paramValue required" value="${item.value}" placeholder="请输入参数值">
 						  	</div>
 						  	<div class="col-sm-2">
 						  		<a class="btn btn-link" onclick="delRow(this)">删除</a>
@@ -100,19 +116,19 @@
 			  	</div>
 			  	<div class="tab-pane" id="tabSpec">
 					<div class="form-group">
-						<label for="price" class="col-sm-1 required">商品价格</label>
+						<label for="price" class="col-sm-2 required">商品价格</label>
 						<div class="col-md-4 col-sm-6">
 						<form:input path="price" cssClass="form-control" id="price" placeholder="请输入商品价格"/>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="stock" class="col-sm-1 required">商品库存</label>
+						<label for="stock" class="col-sm-2 required">商品库存</label>
 						<div class="col-md-4 col-sm-6">
 					 	<form:input path="stock" cssClass="form-control" id="stock" placeholder="请输入商品库存"/>
 					  	</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-1 required">商品规格</label>
+						<label class="col-sm-2 required">商品规格</label>
 						<div class="col-sm-10">
 							<div class="spec-content">
 							</div>
@@ -124,27 +140,18 @@
 			  	</div>
 			  	<div class="tab-pane" id="tabImage">
 			  		<div class="form-group">
-			  			<label class="col-sm-1 required">商品图片</label>
+			  			<label class="col-sm-2 required">商品图片</label>
 						<div class="col-sm-8">
-							<!-- 
-							<div id="" class="row" data-sortable>
-					  			<div class="col-sm-2"><img src="/static/images/image_blank.png" width="100" height="100"></div>
-					  			<div class="col-sm-2"><img src="/static/images/image_blank.png" width="100" height="100"></div>
-					  			<div class="col-sm-2"><img src="/static/images/image_blank.png" width="100" height="100"></div>
-					  			<div class="col-sm-2"><img src="/static/images/image_blank.png" width="100" height="100"></div>
-					  			<div class="col-sm-2"><img src="/static/images/image_blank.png" width="100" height="100"></div>
-					  			<div class="col-sm-2"><img src="/static/images/image_blank.png" width="100" height="100"></div>
-							</div>
-							<div class="help-block">上传的图片可以任意拖拽</div>
-							<a class="btn btn-link" data-click-other="File"><i class="icon icon-cloud-upload"></i>上传图片</a>
-							 -->
-							<my:uploadImg id="productImgs" multiple="true"/>
+							<form:hidden path="img" cssClass="required"/>
+							<form:hidden path="imgArray"/>
+							<my:uploadImg id="productImgs" multiple="true" compress="true" 
+							help="上传商品图片，<font color='red'>第一张图片将作为商品主图</font>,支持同时上传多张图片,多张图片之间可随意调整位置；支持jpg、gif、png格式上传，建议使用尺寸800x800像素以上、大小不超过1M的正方形图片。"/>
 						</div>
 					</div>
 			  	</div>
 			  </div>
 			  <div class="form-group">
-			    <div class="col-sm-offset-1 col-sm-1">
+			    <div class="col-sm-offset-2 col-sm-1">
 			      <button type="button" class="btn btn-default back">返回</button>
 			    </div>
 			    <div class="col-sm-1">
@@ -216,20 +223,22 @@ $(function(){
 			price: "required",
 			stock: "required",
 			freight: "required",
-			content: "required"
+			content: "required",
+			img: "required"
 	    },
 	    message: {
-	    	
+	    	img: "至少上传一张图片"
 	    }
 	});
 	//新增参数
 	$('.new-param').on('click', function(){
+		var nameCount = $('.paramName').size();
 		$(['<div class="row">',
 			'  	<div class="col-sm-5">',
-			'  		<input class="form-control paramName" value="${param.name}" placeholder="请输入参数名" required>',
+			'  		<input name="paramName_"'+nameCount+' class="parent-error form-control paramName required" value="${param.name}" placeholder="请输入参数名">',
 			'  	</div>',
 			'  	<div class="col-sm-5">',
-			'  		<input class="form-control paramValue" value="${param.value}" placeholder="请输入参数值" required>',
+			'  		<input name="paramValue_"'+nameCount+' class="parent-error form-control paramValue required" value="${param.value}" placeholder="请输入参数值">',
 			'  	</div>',
 			'  	<div class="col-sm-2">',
 			'  		<a class="btn btn-link" onclick="delRow(this)">删除</a>',
@@ -270,6 +279,7 @@ $(function(){
 	})
 	
 	$('#saveForm').on('submit', function(){
+		//商品参数
 		var paramArr = new Array();
 		$('.param-content .row').each(function(i){
 			var p = {
@@ -279,7 +289,7 @@ $(function(){
 			paramArr.push(p);
 		});
 		$('[name=paramsJson]').val(JSON.stringify(paramArr));
-		
+		//商品规格
 		var skuArr = new Array();
 		$('.skuTable tbody tr').each(function(i){
 			//console.log($(this));
@@ -294,6 +304,25 @@ $(function(){
 			skuArr.push(s);
 		});
 		$('[name=skusJson]').val(JSON.stringify(skuArr));
+		var imgArr = [];
+		//商品图片
+		$('#productImgs img').each(function(i){
+			if(i == 0)
+				$('[name=img]').val($(this).attr('data-path'));
+			imgArr.push($(this).attr('data-path'));
+		});
+		$('[name=imgArray]').val(imgArr.join(','));
+	});
+	uploadImgCallback($('[name=imgArray]').val().split(','));
+	
+	//上传图片删除
+	$('#productImgs').on('click', '.removeBtn', function(){
+		var _self = $(this).parent();
+		$.site.confirm('确定要移除这张图片吗？', function(){
+			if($('#productImgs img').size() == 1)
+				$('[name=img]').val('');
+			_self.remove();
+		});
 	});
 	
 })
@@ -456,8 +485,8 @@ function createSkuTable(selectSku){
 					price = Math.min(price, parseFloat(skuTr['price']));
 			}
 			
-			tr += '	<td><input class="form-control sku-input skuStock" value="'+ (skuTr['stock'] != undefined?skuTr['stock']:'') +'" required></td>'+
-			'	<td><input class="form-control sku-input skuPrice" value="'+ (skuTr['price'] != undefined?skuTr['price']:'') +'" required></td>'+
+			tr += '	<td><input name="skuStock_'+(i+1)+'" class="parent-error form-control sku-input skuStock required digits" value="'+ (skuTr['stock'] != undefined?skuTr['stock']:'') +'"></td>'+
+			'	<td><input name="skuPrice_'+(i+1)+'" class="parent-error form-control sku-input skuPrice required number" value="'+ (skuTr['price'] != undefined?skuTr['price']:'') +'"></td>'+
 			'	<td><input class="form-control skuCode" value="'+ (skuTr['code'] != undefined?skuTr['code']:'') +'"></td>'+
 			'</tr>';
 		}
@@ -492,9 +521,18 @@ function doExchange(arr1, arr2){
 	}
 	return newArray;
 }
-var pimg = $('#productImgs').sortable();
-function callback(imgDiv){
-	pimg.append(imgDiv);
+function uploadImgCallback(imgs){
+	var imgDiv = '', width = $('#productImgsFile').attr('data-img-width'), height = $('#productImgsFile').attr('data-img-height');
+	for(var i=0, len=imgs.length; i < len; i++){
+		if(imgs[i].length > 0){
+			if(i == 0 && $('[name=img]').val().length == 0)
+				$('[name=img]').val(imgs[i]);
+			var idx = imgs[i].lastIndexOf('.');
+			imgDiv += '<div class="col-sm-2"><img data-path="'+imgs[i]+'" src="'+(imgs[i].substring(0, idx)+'_'+2+imgs[i].substring(idx))+'" width="'+width+'" height="'+height+'">'+
+			'<i class="icon icon-times removeBtn"></i></div>';
+		}
+	}
+	new Sortable($('#productImgs').append(imgDiv)[0]);
 }
 </script>
 </html>

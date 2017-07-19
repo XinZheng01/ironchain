@@ -3,13 +3,22 @@ $.validator.setDefaults({
     errorElement: "span",
     errorClass: "help-block help-block-error",
     highlight: function (element, errorClass, validClass) {
-        $(element).closest('.form-group').addClass('has-error');
+    	if($(element).hasClass('parent-error'))
+    		$(element).parent().addClass('has-error');
+    	else
+    		$(element).closest('.form-group').addClass('has-error');
     },
     unhighlight: function (element, errorClass, validClass) {
-        $(element).closest('.form-group').removeClass('has-error');
+    	if($(element).hasClass('parent-error'))
+    		$(element).parent().removeClass('has-error');
+    	else
+    		$(element).closest('.form-group').removeClass('has-error');
     },
     success: function (label) {
-        label.closest('.form-group').removeClass('has-error');
+    	if($(label).hasClass('parent-error'))
+    		$(label).parent().removeClass('has-error');
+    	else
+    		label.closest('.form-group').removeClass('has-error');
     },
     errorPlacement: function (error, element) {
         if (element.parent('.input-group').length || element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {

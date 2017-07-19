@@ -81,7 +81,17 @@ public class ShopProduct extends DataModel {
 	@Column(name="img")
 	private String img;
 	
+	/** 商品图片列表*/
+	@Column(name="img_array")
+	private String imgArray;
 	
+	/** 销售数量*/
+	@Column(name="sales")
+	private int sales = 0;
+	
+	/** 评价数*/
+	@Column(name="evaluates")
+	private int evaluates = 0;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="product")
 	private List<ShopProductParam> params = new ArrayList<>(0);

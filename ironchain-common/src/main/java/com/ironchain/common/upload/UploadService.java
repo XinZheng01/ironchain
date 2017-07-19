@@ -17,4 +17,12 @@ public interface UploadService {
 	 * @return
 	 */
 	String[] store(MultipartFile... files);
+	
+	/**
+	 * 上传文件
+	 * @param compress 是否压缩
+	 * @param files
+	 * @return
+	 */
+	String[] store(boolean compress, MultipartFile... files);
 }

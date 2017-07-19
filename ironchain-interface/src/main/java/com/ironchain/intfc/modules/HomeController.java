@@ -1,10 +1,6 @@
 package com.ironchain.intfc.modules;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,12 +39,8 @@ public class HomeController extends ApiBaseController{
 	@IgnoreAuth
 	@RequestMapping("/list")
 	public R demand(Pageable pageable){
-		Page<Map<String, Object>> page = demandService.findDemandByParam(-1, null, -1,
-				null, null, null, pageable);
-		Map<String, Object> map = new HashMap<>();
-		map.put("content", page.getContent());
-		map.put("hasNext", page.hasNext()?1:0);
-		return R.ok();
+		return R.ok(page2Map(demandService.findDemandByParam(-1, null, -1,
+				null, null, null, pageable)));
 	}
 	
 }

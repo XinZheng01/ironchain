@@ -50,13 +50,15 @@ public class DecryptFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		String digesBody = request.getParameter("digesBody");
 		Map<String, Object> map = Collections.emptyMap();
-		LOGGER.info(digesBody);
+		String uri = ((HttpServletRequest)request).getRequestURI();
+		LOGGER.debug(uri);
+		LOGGER.debug(digesBody);
 		if(digesBody != null){
 			//判断此url是否需要加密
-			IgnoreApiSecurity ignoreSecurity = apiAnnotationHandler.getMethodAnnotation(((HttpServletRequest)request).getRequestURI());
+			IgnoreApiSecurity ignoreSecurity = apiAnnotationHandler.getMethodAnnotation(uri);
 			if(apiDigest && (ignoreSecurity == null || !ignoreSecurity.ignoreRequest())){
 				digesBody = DigestKit.aesDecrypt(digesBody, aesKey);
-				LOGGER.info(digesBody);
+				LOGGER.debug(digesBody);
 			}
 			map = JsonKit.normal().fromJson(digesBody, HashMap.class);
 		}

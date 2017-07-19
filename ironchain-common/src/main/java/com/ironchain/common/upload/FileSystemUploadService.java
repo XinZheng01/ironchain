@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ironchain.common.exception.ServiceException;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 @Service
 public class FileSystemUploadService implements UploadService{
 	
@@ -39,11 +41,13 @@ public class FileSystemUploadService implements UploadService{
 	
 	/**
 	 * 上传文件
+	 * @param compress
 	 * @param files
 	 * @return
 	 * @throws IOException 
 	 */
-	public String[] store(MultipartFile... files){
+	@Override
+	public String[] store(boolean compress, MultipartFile... files){
 		String[] uploadPaths = new String[files.length];
 		try {
 			LocalDate now = LocalDate.now();
@@ -55,6 +59,7 @@ public class FileSystemUploadService implements UploadService{
 			String fileName = null, suffix = null;
 			int end = 0;
 			String uploadFileName = null;
+			Path uploadPath = null;
 			
 			for (int i = 0, len = files.length; i < len; i++) {
 				fileName = files[i].getOriginalFilename();
@@ -65,7 +70,12 @@ public class FileSystemUploadService implements UploadService{
 					suffix = null;
 				
 				uploadFileName = pattern.matcher(UUID.randomUUID().toString()).replaceAll("") + suffix;
-				Files.copy(files[i].getInputStream(), dirs.resolve(uploadFileName));
+				uploadPath = dirs.resolve(uploadFileName);
+				Files.copy(files[i].getInputStream(), uploadPath);
+				//压缩
+				if(compress){
+					compress(uploadPath);
+				}
 				uploadPaths[i] = baseUrl + "/" + now.getYear() + "/" + now.getMonthValue() + "/" + now.getDayOfMonth()
 					+ "/" + uploadFileName;
 			}
@@ -74,6 +84,28 @@ public class FileSystemUploadService implements UploadService{
 			throw new ServiceException(e.getMessage());
 		}
 		return uploadPaths;
+	}
+	
+	@Override
+	public String[] store(MultipartFile... files) {
+		return store(false, files);
+	}
+	
+	private static int[][] SIZE_ARR = {{700,700},{360,360},{240,240}};
+	
+	public static void compress(Path filePath) throws IOException{
+		String filePathStr = filePath.toString();
+		int lastIdx = filePathStr.lastIndexOf(".");
+		String ext = filePathStr.substring(lastIdx);
+		String d = filePathStr.substring(0, lastIdx);
+		int i = 1;
+		for (int[] size : SIZE_ARR) {
+			Thumbnails.of(filePath.toFile())
+				.size(size[0], size[1])
+				.outputQuality(0.8)
+				.toFile(d + "_" + i + ext);
+			i++;
+		}
 	}
 	
 }

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import com.ironchain.common.base.BaseService;
 import com.ironchain.common.dao.DemandDao;
@@ -166,7 +167,8 @@ public class DemandService extends BaseService {
 		demand.setCreateTime(new Date());
 		
 		demand = demandDao.save(demand);
-		List<DemandFile> dfs = JsonKit.normal().fromJson(demandFile, JsonKit.normal()
+		List<DemandFile> dfs = JsonKit.normal()
+				.fromJson(HtmlUtils.htmlUnescape(demandFile), JsonKit.normal()
 				.contructCollectionType(ArrayList.class, DemandFile.class));
 		for (DemandFile file : dfs) {
 			file.setDemand(demand);

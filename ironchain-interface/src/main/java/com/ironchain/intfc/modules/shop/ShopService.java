@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -70,6 +71,30 @@ public class ShopService extends BaseService {
 			);
 		}
 		return list;
+	}
+
+	/**
+	 * 获取商品参数
+	 * @param id
+	 */
+	public List<Map<String, Object>> findProductParamsById(Long id) {
+		return SqlKit.create()
+			.append("select name,value from shop_product_param where product_id = ? order by sort_id", id)
+			.query2Map(jdbcTemplate);
+	}
+
+	public Page<Map<String, Object>> findProductList(Long classId, int sortName, int sortType, Pageable pageable) {
+		return SqlKit.create()
+			.append("select p.id,p.title,p.img,p.price,p.sales,p.evaluates from shop_product p, shop_class c where p.class_id = c.id")
+			.append(classId != null, " and (p.class_id = ? or c.parent_id = ?)", classId, classId)
+			//1综合 2销量 3评分 4价格
+			.append(sortName == 1, " order by sort_id")
+			.append(sortName == 2, " order by sales")
+			.append(sortName == 3, " order by evaluates")
+			.append(sortName == 4, " order by price")
+			//0 ASC 1 DESC
+			.append(sortType == 1?" desc":" asc")
+			.query2Page(jdbcTemplate, pageable);
 	}
 
 }

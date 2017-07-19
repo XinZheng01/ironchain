@@ -72,8 +72,8 @@ public class Demand extends BaseModel {
 	private long number;
 	
 	/** 预算*/
-	@Column(name="budget")
-	private long budget;
+//	@Column(name="budget")
+//	private long budget;
 	
 	/** 类型*/
 	@Min(value=TYPE_MACHINED, message="错误的需求类型")
@@ -84,7 +84,8 @@ public class Demand extends BaseModel {
 	/******** 竞价条件 **********/
 	/** 区域*/
 	@NotNull(message="区域不能为空")
-	@Column(name="adcode")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="adcode")
 	private GdArea gdArea;
 	
 	/** 竞方数量*/

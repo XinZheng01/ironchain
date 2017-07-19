@@ -36,7 +36,13 @@
 	<logger name="org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration" level="warn"/>
 	<logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>
 	<logger name="org.thymeleaf" level="warn"/>
- 
+	<logger name="com.ironchain.intfc.web.filter.DecryptFilter" level="debug"/>
+ 	<!--log4jdbc -->
+	<logger name="jdbc.sqltiming" level="INFO" />
+	<logger name="jdbc.sqlonly" level="WARN" />
+	<logger name="jdbc.connection" level="WARN" />
+	<logger name="jdbc.audit" level="WARN" />
+	<logger name="jdbc.resultset" level="WARN" />
 	<Root level="info">
 		<AppenderRef ref="STDOUT"/>
 		<AppenderRef ref="PROJECT"/>

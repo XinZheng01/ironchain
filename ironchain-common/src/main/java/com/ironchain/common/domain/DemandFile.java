@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.BaseModel;
 
 import lombok.Getter;
@@ -43,6 +44,7 @@ public class DemandFile extends BaseModel {
 //	@Column(name="demand_id")
 //	private Long demandId;
 	
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="demand_id")
 	private Demand demand;

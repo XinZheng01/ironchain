@@ -30,7 +30,7 @@ public class UploadController extends BaseController {
 	private UploadService uploadService;
 	
 	@PostMapping(value="/upload")
-	public void upload(@RequestParam(value="file", required=false) MultipartFile[] files, HttpServletResponse response) throws IOException{
+	public void upload(@RequestParam(value="file", required=false) MultipartFile[] files, @RequestParam(defaultValue="false") boolean compress, HttpServletResponse response) throws IOException{
 		response.setContentType("text/html;charset=UTF-8");
 		if(files == null || files.length == 0){
 			write(response, R.error().setMsg("没有要上传的文件"));
@@ -39,7 +39,7 @@ public class UploadController extends BaseController {
 		//文件类型校验
 		
 		try {
-			String[] names = uploadService.store(files);
+			String[] names = uploadService.store(compress, files);
 			write(response, R.ok(names));
 		} catch (Exception e) {
 			write(response, R.error().setMsg("上传文件失败"));
@@ -48,7 +48,7 @@ public class UploadController extends BaseController {
 	}
 	
 	@PostMapping(value="/editor/upload")
-	public void ueditorUpload(@RequestParam(value="dir", defaultValue="image", required=false) String dir, StandardMultipartHttpServletRequest request , HttpServletResponse response) throws IOException{
+	public void editorUpload(@RequestParam(value="dir", defaultValue="image", required=false) String dir, StandardMultipartHttpServletRequest request , HttpServletResponse response) throws IOException{
 		Collection<MultipartFile> files = request.getFileMap().values();
 		response.setContentType("text/html;charset=UTF-8");
 		if(files == null || files.size() == 0){
