@@ -23,6 +23,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironchain.common.base.BaseModel;
+import com.ironchain.common.domain.enums.DemandType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -197,18 +198,27 @@ public class Demand extends BaseModel {
 		}
 	}
 	
-	public static String parseType(int type){
-		switch (type) {
-		case TYPE_MACHINED:
-			return "五金";
-		case TYPE_EQUIPMENT:
-			return "设备服务";
-		case TYPE_PLASTIC:
-			return "塑胶";
-		case TYPE_ELECTRONIC:
-			return "电子";
-		default:
-			return null;
-		}
+//	public static String parseType(int type){
+//		switch (type) {
+//		case TYPE_MACHINED:
+//			return "五金";
+//		case TYPE_EQUIPMENT:
+//			return "设备服务";
+//		case TYPE_PLASTIC:
+//			return "塑胶";
+//		case TYPE_ELECTRONIC:
+//			return "电子";
+//		default:
+//			return null;
+//		}
+//	}
+	
+	public String getProgressStr(){
+		return parseProgress(this.progress);
+	}
+	
+	public String getTypeStr(){
+//		return parseType(this.type);
+		return DemandType.parse(type).getChineseName();
 	}
 }

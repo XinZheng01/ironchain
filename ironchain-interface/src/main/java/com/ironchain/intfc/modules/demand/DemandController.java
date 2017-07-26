@@ -19,7 +19,6 @@ import com.ironchain.common.domain.Demand;
 import com.ironchain.common.domain.Member;
 import com.ironchain.common.domain.R;
 import com.ironchain.common.exception.ServiceException;
-import com.ironchain.intfc.annotation.IgnoreApiSecurity;
 import com.ironchain.intfc.annotation.IgnoreAuth;
 import com.ironchain.intfc.modules.member.MemberService;
 import com.ironchain.intfc.web.ApiBaseController;
@@ -45,7 +44,6 @@ public class DemandController extends ApiBaseController{
 	 * @return
 	 */
 	@IgnoreAuth
-	@IgnoreApiSecurity
 	@RequestMapping("/class")
 	public R demandClass(@RequestParam(required=false, defaultValue="-1") int type){
 		return R.ok(demandService.findClassIdAndNameByType(type));

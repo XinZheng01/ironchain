@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -29,6 +32,7 @@ import com.ironchain.common.exception.ServiceException;
 import com.ironchain.common.kits.DigestKit;
 import com.ironchain.common.kits.EncodeKit;
 import com.ironchain.common.kits.IdcardKit;
+import com.ironchain.common.kits.SqlKit;
 
 @Service
 public class MemberService extends BaseService{
@@ -39,8 +43,8 @@ public class MemberService extends BaseService{
 	@Autowired
 	private StringRedisTemplate redisTemplate;
 	
-//	@Autowired
-//	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	private MemberLevelDao memberLevelDao;
@@ -235,6 +239,46 @@ public class MemberService extends BaseService{
 		memberDao.save(member);
 		
 		return memberLevelupDao.save(levelup);
+	}
+
+	/**
+	 * 获取用户收货地址
+	 * @param userId
+	 * @return
+	 */
+	public List<Map<String, Object>> findExpressAddressById(Long userId) {
+		List<Map<String, Object>> addressList = SqlKit.create()
+			.append("select id,consigner,mobile,is_default isDefault,a.provname,a.cityname,a.`name` adname,address")
+			.append(" from shop_express_address e, gd_area a where e.adcode = a.adcode and member_id = ? order by is_default desc, id desc", userId)
+			.query2Map(jdbcTemplate);
+		String mobile = null;
+		StringBuilder buff = new StringBuilder();
+		for (Map<String, Object> address : addressList) {
+			
+			buff.setLength(0);
+			buff.append(address.remove("provname"));
+			if(address.get("cityname") != null)
+				buff.append(address.remove("cityname"));
+			buff.append(address.remove("adname")).append(address.get("address"));
+			address.put("address", buff.toString());
+			
+			buff.setLength(0);
+			mobile = (String) address.get("mobile");
+			address.put("mobile", buff.append(mobile.substring(0, 3)).append("****").append(mobile.substring(8)).toString());
+		}
+		return addressList;
+	}
+
+	/**
+	 * 查看用户收货地址
+	 * @param userId
+	 * @param id
+	 */
+	public Map<String, Object> findExpressAddressInfo(Long userId, Long id) {
+		return SqlKit.create()
+				.append("select id,consigner,mobile,is_default isDefault,a.provcode,a.provname,a.citycode,a.cityname,e.adcode,a.`name` adname,address")
+				.append(" from shop_express_address e, gd_area a where e.adcode = a.adcode and member_id = ? and e.id = ?", userId, id)
+				.query2Single(jdbcTemplate);
 	}
 	
 	/**

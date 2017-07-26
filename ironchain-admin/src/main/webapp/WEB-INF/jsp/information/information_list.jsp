@@ -40,7 +40,7 @@
 			 		<button class="btn btn-danger" data-del-select type="button"><i class="icon icon-times"></i>删除</button>
 			 		</sec:authorize>
 			 	</div>
-				<table class="row-border table-hover dataTable">
+				<table class="row-border table-hover dataTable table-responsive">
 	                <thead>
 						<tr>
 							<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
@@ -75,7 +75,7 @@
 								<img src="${item.img}" width="100" height="50">
 								</c:if>
 								</td>
-								<td>${item.orderNum}</td>
+								<td>${item.sortId}</td>
 								<td>${item.keywords}</td>
 								<td>${item.description}</td>
 								<td>

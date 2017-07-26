@@ -37,6 +37,7 @@
 	<logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>
 	<logger name="org.thymeleaf" level="warn"/>
 	<logger name="com.ironchain.intfc.web.filter.DecryptFilter" level="debug"/>
+	<logger name="com.ironchain.intfc.web.advice.ResponseEncryptAdvice" level="debug"/>
  	<!--log4jdbc -->
 	<logger name="jdbc.sqltiming" level="INFO" />
 	<logger name="jdbc.sqlonly" level="WARN" />

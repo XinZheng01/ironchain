@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ironchain.intfc.web.ApiBaseController;
 
-@RestController
+@RestController("memberOrderController")
 @RequestMapping("/api/member/order")
 public class OrderController extends ApiBaseController {
 

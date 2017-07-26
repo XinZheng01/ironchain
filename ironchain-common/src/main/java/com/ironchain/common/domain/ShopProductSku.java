@@ -33,6 +33,10 @@ public class ShopProductSku extends DataModel {
 	@JoinColumn(name="product_id")
 	private ShopProduct product;
 	
+	/** sku标题*/
+	@Column(name="title")
+	private String title;
+	
 	/** 商品规格值*/
 	@Column(name="spec_items")
 	private String specItems;

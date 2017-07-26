@@ -41,6 +41,16 @@ public class FileSystemUploadService implements UploadService{
 	
 	/**
 	 * 上传文件
+	 * @param files
+	 * @return
+	 */
+	@Override
+	public String[] store(MultipartFile... files) {
+		return store(false, files);
+	}
+	
+	/**
+	 * 上传文件
 	 * @param compress
 	 * @param files
 	 * @return
@@ -48,6 +58,18 @@ public class FileSystemUploadService implements UploadService{
 	 */
 	@Override
 	public String[] store(boolean compress, MultipartFile... files){
+		return store(compress, null, files);
+	}
+	
+	/**
+	 * 上传文件
+	 * @param compress 是否压缩
+	 * @param sizeArr 压缩的大小
+	 * @param files
+	 * @return
+	 */
+	@Override
+	public String[] store(boolean compress, int[][] sizeArr, MultipartFile... files) {
 		String[] uploadPaths = new String[files.length];
 		try {
 			LocalDate now = LocalDate.now();
@@ -74,7 +96,7 @@ public class FileSystemUploadService implements UploadService{
 				Files.copy(files[i].getInputStream(), uploadPath);
 				//压缩
 				if(compress){
-					compress(uploadPath);
+					compress(uploadPath, sizeArr == null?SIZE_ARR : sizeArr);
 				}
 				uploadPaths[i] = baseUrl + "/" + now.getYear() + "/" + now.getMonthValue() + "/" + now.getDayOfMonth()
 					+ "/" + uploadFileName;
@@ -86,20 +108,19 @@ public class FileSystemUploadService implements UploadService{
 		return uploadPaths;
 	}
 	
-	@Override
-	public String[] store(MultipartFile... files) {
-		return store(false, files);
-	}
-	
 	private static int[][] SIZE_ARR = {{700,700},{360,360},{240,240}};
 	
 	public static void compress(Path filePath) throws IOException{
+		compress(filePath, SIZE_ARR);
+	}
+	
+	public static void compress(Path filePath, int[][] sizeArr) throws IOException{
 		String filePathStr = filePath.toString();
 		int lastIdx = filePathStr.lastIndexOf(".");
 		String ext = filePathStr.substring(lastIdx);
 		String d = filePathStr.substring(0, lastIdx);
 		int i = 1;
-		for (int[] size : SIZE_ARR) {
+		for (int[] size : sizeArr) {
 			Thumbnails.of(filePath.toFile())
 				.size(size[0], size[1])
 				.outputQuality(0.8)

@@ -7,7 +7,9 @@ package com.ironchain.common.kits;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -146,6 +148,24 @@ public class JsonKit {
 		}
 	}
 
+	/**
+	 * 反序列化复杂Collection如List<MyBean>
+	 * 如果JSON字符串为Null或"null"字符串, 返回Null.
+	 * 如果JSON字符串为"[]", 返回空集合.
+	 * 
+	 */
+	public <T> List<T> jsonToList(String jsonString, Class<T> clazz) {
+		if (StringUtils.isEmpty(jsonString)) {
+			return null;
+		}
+		try {
+			return mapper.readValue(jsonString, contructCollectionType(ArrayList.class, clazz));
+		} catch (IOException e) {
+			logger.warn("parse json string error:" + jsonString, e);
+			return null;
+		}
+	}
+	
 	/**
 	 * 构造Collection类型.
 	 */

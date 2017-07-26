@@ -34,6 +34,13 @@ public class ShopProduct extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 	
+	/** 显示状态 下架*/
+	public static final int DISPLAY_UNSHOW = 0;
+	/** 显示状态 上架*/
+	public static final int DISPLAY_SHOW = 1;
+	/** 显示状态 违规*/
+	public static final int DISPLAY_ILLEGAL = 10;
+	
 	/** 商品标题*/
 	@Column(name="title")
 	private String title;
@@ -61,7 +68,7 @@ public class ShopProduct extends DataModel {
 	
 	/** 状态*/
 	@Column(name="status")
-	private Integer status;
+	private Integer status = DISPLAY_SHOW;
 	
 	/** 排序值*/
 	@Column(name="sort_id")

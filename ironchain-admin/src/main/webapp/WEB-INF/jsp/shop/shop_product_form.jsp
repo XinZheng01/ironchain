@@ -74,12 +74,14 @@
 					  <form:input path="code" cssClass="form-control" id="code" placeholder="请输入商品编号"/>
 				    </div>
 				  </div>
+				  <!-- 
 				  <div class="form-group">
 				    <label for="freight" class="col-sm-2 required">商品运费</label>
 				    <div class="col-md-4 col-sm-6">
 					  <form:input path="freight" cssClass="form-control" id="freight" placeholder="请输入商品运费"/>
 				    </div>
 				  </div>
+				   -->
 				  <div class="form-group">
 				    <label for="sortId" class="col-sm-2">排序值</label>
 				    <div class="col-md-4 col-sm-6">
@@ -295,6 +297,7 @@ $(function(){
 			//console.log($(this));
 			var s = {
 				id: $(this).find('.skuId').val(),
+				title: $(this).find('.skuTitle').val(),
 				specItems: $(this).find('.skuSpecItems').val(),
 				stock: $(this).find('.skuStock').val(),
 				price: $(this).find('.skuPrice').val(),
@@ -444,7 +447,7 @@ function createSkuTable(selectSku){
 		//生成头部
 		var th = '<thead>';
 		for(var i=0, len=specNameArr.length; i < len; i++){
-			th += '<th>'+specNameArr[i]+'</th>'; 	
+			th += '<th>'+specNameArr[i]+'</th>';
 		}
 		th += '<th>库存</th><th>价格</th><th>商品编号</th></thead>';
 		$('.skuTable').append(th);
@@ -471,10 +474,14 @@ function createSkuTable(selectSku){
 			tr += '<tr>'+
 			'	<input type="hidden" class="skuId" value="'+ (skuTr['id'] != undefined?skuTr['id']:'') +'">'+
 			'	<input type="hidden" class="skuSpecItems" value="'+newArray[i].item+'">';
-			
+			var skuTitle = '';
 			for(var j=0, l2=v.length; j < l2; j++){
 				tr += '<td><p class="form-control-static">'+v[j]+'</p></td>';	
+				skuTitle += v[j];
+				if(j < (l2-1))
+					skuTitle += ' ';
 			}
+			tr += '	<input type="hidden" class="skuTitle" value="'+skuTitle+'">';
 			if(skuTr['stock'] != undefined && skuTr['stock'] != '')
 				stock += parseInt(skuTr['stock']);
 			

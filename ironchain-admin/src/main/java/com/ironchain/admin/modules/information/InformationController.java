@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.HtmlUtils;
 
 import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.InformationDao;
@@ -53,6 +54,7 @@ public class InformationController extends ModelController<InformationDao, Infor
 	 */
 	@GetMapping("/add")
 	public String add(@ModelAttribute Information information, Model model){
+		information.setContent(HtmlUtils.htmlUnescape(information.getContent()));
 		return "information/information_form";
 	}
 	
@@ -62,6 +64,7 @@ public class InformationController extends ModelController<InformationDao, Infor
 	 */
 	@GetMapping("/edit")
 	public String edit(@ModelAttribute Information information, Model model){
+		information.setContent(HtmlUtils.htmlUnescape(information.getContent()));
 		return "information/information_form";
 	}
 	

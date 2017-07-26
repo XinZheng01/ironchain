@@ -29,7 +29,6 @@ public class CacheConfig {
 	public RedisTemplate<String, Serializable> getRedisTemplate(){
 		RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
 		StringRedisSerializer serializer = new StringRedisSerializer();
-		
 		redisTemplate.setConnectionFactory(connectionFactory);
 		redisTemplate.setKeySerializer(serializer);
 		redisTemplate.setHashKeySerializer(serializer);

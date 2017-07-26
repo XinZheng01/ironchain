@@ -13,7 +13,6 @@ import com.ironchain.common.dao.InformationDao;
 import com.ironchain.common.domain.Constants;
 import com.ironchain.common.domain.Information;
 import com.ironchain.common.domain.R;
-import com.ironchain.intfc.annotation.IgnoreApiSecurity;
 import com.ironchain.intfc.annotation.IgnoreAuth;
 import com.ironchain.intfc.web.ApiBaseController;
 
@@ -33,7 +32,6 @@ public class InformationController extends ApiBaseController{
 	private InformationDao informationDao;
 	
 	@IgnoreAuth
-	@IgnoreApiSecurity
 	@RequestMapping("/list")
 	@ResponseBody
 	public R list(Pageable pageable){
@@ -41,7 +39,6 @@ public class InformationController extends ApiBaseController{
 	}
 	
 	@IgnoreAuth
-	@IgnoreApiSecurity
 	@RequestMapping("/details")
 	public String details(@RequestParam Long id, Model model){
 		Information information = informationDao.findByIdAndStatus(id, Constants.DISPLAY_SHOW);

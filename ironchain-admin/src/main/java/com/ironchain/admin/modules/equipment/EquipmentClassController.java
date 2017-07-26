@@ -22,6 +22,7 @@ import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.EquipmentClassDao;
 import com.ironchain.common.domain.EquipmentClass;
 import com.ironchain.common.domain.R;
+import com.ironchain.common.domain.enums.DemandType;
 
 
 /**
@@ -53,6 +54,7 @@ public class EquipmentClassController extends ModelController<EquipmentClassDao,
 	 */
 	@GetMapping("/add")
 	public String add(@ModelAttribute EquipmentClass equipmentClass, Model model){
+		model.addAttribute("demandTypes", DemandType.values());
 		return "equipment/class/equipment_class_form";
 	}
 	
@@ -62,6 +64,7 @@ public class EquipmentClassController extends ModelController<EquipmentClassDao,
 	 */
 	@GetMapping("/edit")
 	public String edit(@ModelAttribute EquipmentClass equipmentClass, Model model){
+		model.addAttribute("demandTypes", DemandType.values());
 		return "equipment/class/equipment_class_form";
 	}
 	

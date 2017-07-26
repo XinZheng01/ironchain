@@ -95,6 +95,7 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 	public String edit(@ModelAttribute ShopProduct shopProduct, Model model){
 		model.addAttribute("shopClassList", shopClassDao.findAll());
 		model.addAttribute("specList", shopProductSpecDao.findAll());
+		shopProduct.setContent(HtmlUtils.htmlUnescape(shopProduct.getContent()));
 		return "shop/shop_product_form";
 	}
 	
@@ -110,36 +111,36 @@ public class ShopProductController extends ModelController<ShopProductDao, ShopP
 		List<ShopProductSku> productSkus = shopProductSkuDao.findByProductId(id);
 		result.put("skus", productSkus);
 		
-		String specItemsStr = null;
-		if(productSkus.size() > 0 && (specItemsStr = productSkus.get(0).getSpecItems()) != null){
-			String[] specItems = StringUtils.delimitedListToStringArray(specItemsStr, ",");
-			int itemsLen = specItems.length;
-			//获取所有规格属性id
-			if(specItems != null && itemsLen > 0){
-				List<Long> specKeys = new ArrayList<>();
-				for (int i = 0; i < itemsLen; i++) {
-					specKeys.add(Long.valueOf(StringUtils.delimitedListToStringArray(specItems[i], ":")[0]));
-				}
-				List<ShopProductSpec> productSpecs = shopProductSpecDao.findByIdIn(specKeys);
-				//商品规格和对应的规格值
-				result.put("specs", productSpecs);
-			}
-			//商品已选择的属性值列表
-			Set<Long> specValues = new HashSet<>();
-			for (ShopProductSku sku : productSkus) {
-				specItems = StringUtils.delimitedListToStringArray(sku.getSpecItems(), ",");
-				itemsLen = specItems.length;
+		if(productSkus.size() > 0){
+			String specItemsStr = productSkus.get(0).getSpecItems();
+			if(StringUtils.hasText(specItemsStr)){
+				String[] specItems = StringUtils.delimitedListToStringArray(specItemsStr, ",");
+				int itemsLen = specItems.length;
+				//获取所有规格属性id
 				if(specItems != null && itemsLen > 0){
+					List<Long> specKeys = new ArrayList<>();
 					for (int i = 0; i < itemsLen; i++) {
-						specValues.add(Long.valueOf(StringUtils.delimitedListToStringArray(specItems[i], ":")[1]));
+						specKeys.add(Long.valueOf(StringUtils.delimitedListToStringArray(specItems[i], ":")[0]));
+					}
+					List<ShopProductSpec> productSpecs = shopProductSpecDao.findByIdIn(specKeys);
+					//商品规格和对应的规格值
+					result.put("specs", productSpecs);
+				}
+				//商品已选择的属性值列表
+				Set<Long> specValues = new HashSet<>();
+				for (ShopProductSku sku : productSkus) {
+					specItems = StringUtils.delimitedListToStringArray(sku.getSpecItems(), ",");
+					itemsLen = specItems.length;
+					if(specItems != null && itemsLen > 0){
+						for (int i = 0; i < itemsLen; i++) {
+							specValues.add(Long.valueOf(StringUtils.delimitedListToStringArray(specItems[i], ":")[1]));
+						}
 					}
 				}
+				result.put("specVals", specValues);
+				
 			}
-			result.put("specVals", specValues);
-			
 		}
-		//商品图片
-		
 		return result;
 	}
 	

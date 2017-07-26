@@ -26,8 +26,11 @@
 		<poi.version>3.15</poi.version>
 		<UserAgentUtils.version>1.19</UserAgentUtils.version>
 		<joda-time.version>2.9.4</joda-time.version>
-		<jsoup.version>1.9.2</jsoup.version>
+		<jsoup.version>1.10.2</jsoup.version>
+		<jpush.version>3.2.20</jpush.version>
+		<aliyun-sdk.version>3.2.4</aliyun-sdk.version>
 		<springfox.version>2.6.1</springfox.version>
+		<thumbnailator.version>0.4.8</thumbnailator.version>
 		
 		<lombok.version>1.16.14</lombok.version>
 		<maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>

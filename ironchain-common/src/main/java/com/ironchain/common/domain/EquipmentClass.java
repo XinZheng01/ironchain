@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.ironchain.common.base.DataModel;
+import com.ironchain.common.domain.enums.DemandType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +40,10 @@ public class EquipmentClass extends DataModel {
 	/** 设备名称*/
 	@Column(name="name")
 	private String name;
+	
+	public String getTypeStr(){
+		return DemandType.parse(type).getChineseName();
+	}
 	
 	public Map<String, Object> toMap(){
 		Map<String, Object> map = new HashMap<>(2);

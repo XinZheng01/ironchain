@@ -51,7 +51,7 @@ public class ApiBaseController extends BaseController {
 	public static <T> Map<String, Object> page2Map(Page<T> page){
 		Map<String, Object> map = new HashMap<>();
 		map.put("content", page.getContent());
-		map.put("hasNext", page.hasNext());
+		map.put("hasNext", page.hasNext()?1:0);
 		return map;
 	}
 }

@@ -16,5 +16,9 @@ public interface ShopProductSkuDao extends BaseDao<ShopProductSku, Long> {
 	List<ShopProductSku> findByProductId(Long id);
 
 	Long deleteByProductId(Long id);
+
+	ShopProductSku findBySpecItemsIsNullAndProductId(Long id);
+
+	void deleteByProductIdAndIdNotIn(Long id, List<Long> skuIds);
 	
 }

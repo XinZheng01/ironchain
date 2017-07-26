@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.NonUniqueResultException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.PageableExecutionUtils;
@@ -59,6 +61,20 @@ public class SqlKit {
 	public SqlKit append(boolean append, String condition, Object... params){
 		if(append)
 			return append(condition, params);
+		return this;
+	}
+	
+	/**
+	 * sql in 操作
+	 * @param params
+	 * @return
+	 */
+	public SqlKit in(Object... params){
+		for (int i = 0, len = params.length; i < len; i++) {
+			sql.append("?,");
+			paramsList.add(params[i]);
+		}
+		sql.deleteCharAt(sql.length() - 1);
 		return this;
 	}
 	
@@ -122,6 +138,13 @@ public class SqlKit {
 		return paramsList;
 	}
 
+	public Map<String,Object> query2Single(JdbcTemplate jdbcTemplate) {
+		List<Map<String,Object>> list = jdbcTemplate.queryForList(sql.toString(), paramsList.toArray());
+		if(list.size() == 0) return null;
+		else if(list.size() == 1) return list.get(0);
+		throw new NonUniqueResultException("result returns more than one elements");
+	}
+	
 	public List<Map<String,Object>> query2Map(JdbcTemplate jdbcTemplate) {
 		return jdbcTemplate.queryForList(sql.toString(), paramsList.toArray());
 	}

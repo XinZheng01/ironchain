@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -25,12 +27,13 @@ public class ApiAnnotationHandler {
 	private Map<String, IgnoreApiSecurity> urlMap;
 	
 	@Autowired
-	public ApiAnnotationHandler(RequestMappingHandlerMapping requestMappingHandlerMapping){
+	public ApiAnnotationHandler(ServletContext servletContext, RequestMappingHandlerMapping requestMappingHandlerMapping){
+		String ctx = servletContext.getContextPath();
 		urlMap = new HashMap<>();
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : requestMappingHandlerMapping.getHandlerMethods().entrySet()) {
 			Set<String> patterns = entry.getKey().getPatternsCondition().getPatterns();
 			for (String pattern : patterns) {
-				urlMap.put(pattern, entry.getValue()
+				urlMap.put(ctx + pattern, entry.getValue()
 						.getMethodAnnotation(IgnoreApiSecurity.class));
 			}
 		}

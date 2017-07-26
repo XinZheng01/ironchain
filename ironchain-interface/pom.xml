@@ -89,6 +89,13 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 		</dependency>
+		<!-- 支付宝支付 -->
+		<dependency>
+			<groupId>com.alipay</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+  			<version>20170725114550</version>
+		</dependency>
+		
 		<!-- 开发调试工具 -->
 	    <dependency>
 	        <groupId>org.springframework.boot</groupId>

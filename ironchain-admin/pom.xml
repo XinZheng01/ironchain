@@ -119,13 +119,19 @@
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.10.2</version>
+			<version>${jsoup.version}</version>
 		</dependency>
-		
+		<!-- 极光推送 -->
 		<dependency>
 		    <groupId>cn.jpush.api</groupId>
 		    <artifactId>jpush-client</artifactId>
-		    <version>3.2.20</version>
+		    <version>${jpush.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.aliyun</groupId>
+		    <artifactId>aliyun-java-sdk-core</artifactId>
+		    <version>${aliyun-sdk.version}</version>
 		</dependency>
 		
 	    <dependency>

@@ -62,8 +62,10 @@ public class ResponseEncryptAdvice implements ResponseBodyAdvice<Object>{
 		//判断此url是否需要加密
 		IgnoreApiSecurity ignoreSecurity = apiAnnotationHandler.getMethodAnnotation(
 				((ServletServerHttpRequest)request).getServletRequest().getRequestURI());
-		if(ignoreSecurity != null && ignoreSecurity.ignoreResponse())
+		if(ignoreSecurity != null && ignoreSecurity.ignoreResponse()){
+			logger.debug(body != null? body.toString() : null);
 			return body;
+		}
 		
 		try {
 			String result = JsonKit.nonNull().toJson(body);//非空输出

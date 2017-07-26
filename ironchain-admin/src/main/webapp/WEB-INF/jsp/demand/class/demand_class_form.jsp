@@ -23,6 +23,13 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
+			    <label for="type" class="col-sm-1 required">所属类型</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:select path="type" cssClass="form-control" id="type" items="${demandTypes}" itemLabel="chineseName" itemValue="type">
+			      </form:select>
+			    </div>
+			  </div>
+			  <div class="form-group">
 			    <div class="col-sm-offset-1 col-sm-1">
 			      <button type="button" class="btn btn-default back">返回</button>
 			    </div>

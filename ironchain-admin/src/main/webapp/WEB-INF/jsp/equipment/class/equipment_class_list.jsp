@@ -39,7 +39,8 @@
 	                <thead>
 						<tr>
 	                	<th class="dt-head-center" style="width: 20px;"><input class="check-all" type="checkbox"></th>
-							<th data-sort-column="name">分类名称</th>
+							<th data-sort-column="name">设备名称</th>
+							<th data-sort-column="type">所属类型</th>
 							<th data-sort-column="createTime">创建时间</th>
 							<th width="120">操作</th>
 						</tr>
@@ -49,6 +50,7 @@
 							<tr>
 								<td class="dt-body-center"><input type="checkbox" value="${item.id}"></td>
 								<td>${item.name}</td>
+								<td>${item.typeStr}</td>
 								<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td>
 								<sec:authorize url="/equipment/class/edit">

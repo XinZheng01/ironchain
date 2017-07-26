@@ -20,7 +20,7 @@ CREATE TABLE `shop_banner` (
 `img`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图片' ,
 `url`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '链接' ,
 `type`  int(11) NULL DEFAULT NULL COMMENT '类型' ,
-`sort_id`  int(11) NULL DEFAULT NULL COMMENT '排序值' ,
+`sort_id`  int(11) NULL DEFAULT 0 COMMENT '排序值' ,
 `show_time`  datetime NULL DEFAULT NULL COMMENT '上架时间' ,
 `un_show_time`  datetime NULL DEFAULT NULL COMMENT '下架时间' ,
 `create_by`  bigint(20) NULL DEFAULT NULL COMMENT '创建人',
@@ -35,7 +35,7 @@ CREATE TABLE `information` (
 `title`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标题' ,
 `source`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章来源' ,
 `img`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '缩略图' ,
-`order_num`  int(11) NULL DEFAULT NULL COMMENT '排序值' ,
+`sort_id`  int(11) NULL DEFAULT 0 COMMENT '排序值' ,
 `keywords`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '网页关键字' ,
 `description`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '网页描述' ,
 `type`  int(11) NULL DEFAULT NULL COMMENT '类型' ,
@@ -274,7 +274,8 @@ PRIMARY KEY (`id`)
 CREATE TABLE `shop_product_sku` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
 `product_id`  bigint(20) NOT NULL COMMENT '商品' ,
-`spec_items` varchar(2000) NOT NULL COMMENT '商品规格值' ,
+`title` varchar(500) NULL COMMENT 'sku标题' ,
+`spec_items` varchar(2000) NULL COMMENT '商品规格值' ,
 `code` varchar(255) NOT NULL COMMENT '商品编号',
 `price` decimal(13,2) NOT NULL COMMENT '商品价格',
 `stock` INT(11) NOT NULL DEFAULT 0 COMMENT '商品库存',
@@ -406,3 +407,28 @@ PRIMARY KEY (`levelup_id`, `equ_id`),
 INDEX `IDX_equ_id` (`equ_id`) USING BTREE 
 )
 ENGINE=InnoDB DEFAULT CHARACTER SET=utf8 COMMENT='升级记录设备关系';
+
+CREATE TABLE shop_product_evaluate (
+  `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+  `order_id` bigint(20) NOT NULL COMMENT '订单ID',
+  `order_no` varchar(255) NOT NULL COMMENT '订单编号',
+  `order_product_id` bigint(20) NOT NULL COMMENT '订单项ID',
+  `product_id` bigint(20) NOT NULL COMMENT '商品ID',
+  `product_title` VARCHAR(100) NOT NULL COMMENT '商品名称',
+  `product_price` DECIMAL(13, 2) NOT NULL DEFAULT 0.00 COMMENT '商品价格',
+  `product_img` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '商品图片',
+  `content` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '评价内容',
+  `create_time` DATETIME DEFAULT NULL COMMENT '评价时间',
+  `img` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '评价图片',
+  `explain` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '解释内容',
+  `member_name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '评价人名称',
+  `member_id` bigint(20) NOT NULL COMMENT '评价人编号',
+  `is_anonymous` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0表示不是 1表示是匿名评价',
+  `scores` TINYINT(1) NOT NULL COMMENT '1-5分',
+  `again_content` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '追加评价内容',
+  `again_create_time` DATETIME DEFAULT NULL COMMENT '追加评价时间',
+  `again_img` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '追加评价图片',
+  `again_explain` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '追加解释内容',
+  `type` INT(11) DEFAULT 0 COMMENT '1好评2中评3差评',
+  PRIMARY KEY (id)
+)ENGINE = INNODB CHARACTER SET utf8 COMMENT = '商品评价表';

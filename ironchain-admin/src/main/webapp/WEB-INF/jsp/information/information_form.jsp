@@ -35,9 +35,9 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="orderNum" class="col-sm-1">排序值</label>
+			    <label for="sortId" class="col-sm-1">排序值</label>
 			    <div class="col-md-4 col-sm-6">
-				  <form:input path="orderNum" cssClass="form-control" id="orderNum" placeholder="请输入排序值"/>
+				  <form:input path="sortId" cssClass="form-control" id="sortId" placeholder="请输入排序值"/>
 			    </div>
 			  </div>
 			  <div class="form-group">

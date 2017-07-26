@@ -17,9 +17,16 @@
 			<form:form id="saveForm" modelAttribute="equipmentClass" action="save" cssClass="form-horizontal">
 			  <form:hidden path="id"/>
 			  <div class="form-group">
-			    <label for="name" class="col-sm-1 required">分类名称</label>
+			    <label for="name" class="col-sm-1 required">设备名称</label>
 			    <div class="col-md-4 col-sm-6">
 				  <form:input path="name" cssClass="form-control" id="name" placeholder="请输入分类名称"/>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="type" class="col-sm-1 required">所属类型</label>
+			    <div class="col-md-4 col-sm-6">
+				  <form:select path="type" cssClass="form-control" id="type" items="${demandTypes}" itemLabel="chineseName" itemValue="type">
+			      </form:select>
 			    </div>
 			  </div>
 			  <div class="form-group">

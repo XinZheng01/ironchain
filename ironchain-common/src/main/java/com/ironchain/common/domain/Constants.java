@@ -9,6 +9,11 @@ public final class Constants {
 	/** 显示状态 启用*/
 	public static final int DISPLAY_SHOW = 1;
 	
+	/** 判断 否*/
+	public static final int JUDGE_NO = 0;
+	/** 判断 是*/
+	public static final int JUDGE_YES = 1;
+	
 	/**
 	 * 日期常量
 	 * @author Administrator
@@ -40,6 +45,7 @@ public final class Constants {
 	 * @author Administrator
 	 */
 	public enum CacheConstants{
+		
 		/** 验证码 失效时间10分钟*/
 		VERIFYCODE("ironchain.verifycode:", 60 * 10),
 		
@@ -50,7 +56,10 @@ public final class Constants {
 		LOGIN_NAME("ironchain.login.name:", 30 * 24 * 60 * 60),
 		
 		/** 修改密码 30分钟有效*/
-		RESET_PASSWORD("ironchain.reset.password:", 30 * 60);
+		RESET_PASSWORD("ironchain.reset.password:", 30 * 60),
+		
+		/** 购物车 失效时间1个月*/
+		SHOP_CART("ironchain.shop.cart:", 30 * 24 * 60 * 60);
 		
 		private String prefix;
 		private int expiredTime;

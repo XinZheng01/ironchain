@@ -49,8 +49,8 @@ public class Information extends DataModel {
 	private String img;
 	
 	/** 排序值*/
-	@Column(name="order_num")
-	private int orderNum = 0;
+	@Column(name="sort_id")
+	private int sortId = 0;
 	
 	/** 状态 1已发布 0未发布*/
 	@Column(name="status")

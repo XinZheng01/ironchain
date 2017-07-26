@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ironchain.common.dao.GdAreaDao;
 import com.ironchain.common.domain.GdArea;
 import com.ironchain.common.domain.R;
-import com.ironchain.intfc.annotation.IgnoreApiSecurity;
 import com.ironchain.intfc.annotation.IgnoreAuth;
 import com.ironchain.intfc.web.ApiBaseController;
 
@@ -30,7 +29,6 @@ public class CommonController extends ApiBaseController {
 	 * @return
 	 */
 	@IgnoreAuth
-	@IgnoreApiSecurity
 	@RequestMapping("/area/version")
 	public R areaVersion(){
 		return R.ok("20170602");
@@ -41,7 +39,6 @@ public class CommonController extends ApiBaseController {
 	 * @return
 	 */
 	@IgnoreAuth
-	@IgnoreApiSecurity
 	@RequestMapping("/area/json")
 	public R area(){
 		List<GdArea> list = gdAreaDao.findAll();
@@ -79,5 +76,20 @@ public class CommonController extends ApiBaseController {
 //		}
 		
 		return R.ok(result);
+	}
+	
+	/**
+	 * 支付方式
+	 * 
+	 * @return
+	 */
+	@IgnoreAuth
+	@RequestMapping("/payment_method")
+	public R paymentMethod(){
+		Map<String, Object> map = new LinkedHashMap<>();
+		map.put("ali", 1);
+		map.put("weixin", 1);
+		map.put("union", 1);
+		return R.ok(map);
 	}
 }

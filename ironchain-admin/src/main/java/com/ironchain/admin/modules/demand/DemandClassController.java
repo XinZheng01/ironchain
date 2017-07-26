@@ -22,6 +22,7 @@ import com.ironchain.common.base.ModelController;
 import com.ironchain.common.dao.DemandClassDao;
 import com.ironchain.common.domain.DemandClass;
 import com.ironchain.common.domain.R;
+import com.ironchain.common.domain.enums.DemandType;
 
 
 /**
@@ -53,6 +54,7 @@ public class DemandClassController extends ModelController<DemandClassDao, Deman
 	 */
 	@GetMapping("/add")
 	public String add(@ModelAttribute DemandClass demandClass, Model model){
+		model.addAttribute("demandTypes", DemandType.values());
 		return "demand/class/demand_class_form";
 	}
 	
@@ -62,6 +64,7 @@ public class DemandClassController extends ModelController<DemandClassDao, Deman
 	 */
 	@GetMapping("/edit")
 	public String edit(@ModelAttribute DemandClass demandClass, Model model){
+		model.addAttribute("demandTypes", DemandType.values());
 		return "demand/class/demand_class_form";
 	}
 	

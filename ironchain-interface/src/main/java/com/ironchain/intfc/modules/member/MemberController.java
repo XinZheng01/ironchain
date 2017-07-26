@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +22,14 @@ import com.ironchain.common.cache.CacheService;
 import com.ironchain.common.dao.DemandOfferDao;
 import com.ironchain.common.dao.MemberDao;
 import com.ironchain.common.dao.MemberLevelDao;
+import com.ironchain.common.dao.ShopExpressAddressDao;
 import com.ironchain.common.domain.Constants;
 import com.ironchain.common.domain.Constants.CacheConstants;
 import com.ironchain.common.domain.Constants.RegexConstants;
 import com.ironchain.common.domain.EquipmentClass;
 import com.ironchain.common.domain.Member;
 import com.ironchain.common.domain.R;
+import com.ironchain.common.domain.ShopExpressAddress;
 import com.ironchain.common.kits.IdcardKit;
 import com.ironchain.common.sms.SmsService;
 import com.ironchain.common.upload.UploadService;
@@ -59,6 +63,9 @@ public class MemberController extends ApiBaseController {
 	
 	@Autowired
 	private DemandOfferDao demandOfferDao;
+	
+	@Autowired
+	private ShopExpressAddressDao expressAddressDao;
 	
 	/**
 	 * 会员注册
@@ -250,11 +257,12 @@ public class MemberController extends ApiBaseController {
 		return R.ok(result);
 	}
 	
+	private static int[][] SIZE_ARR = {{360,360},{240,240},{120,120}};
 	/**
 	 * 修改头像
 	 * @return
 	 */
-	@IgnoreApiSecurity
+	@IgnoreApiSecurity(ignoreRequest=true, ignoreResponse=false)
 	@RequestMapping("/modify_head_img")
 	public R modifyHeadImg(@RequestParam Long userId, @RequestParam MultipartFile headImg){
 		String fileName = headImg.getOriginalFilename();
@@ -262,7 +270,7 @@ public class MemberController extends ApiBaseController {
 		if(idx == -1 || !UploadService.imgExt.contains(fileName.substring(idx + 1).toLowerCase())){
 			return R.error("上传文件扩展名是不允许的扩展名。\n只允许" + StringUtils.join(UploadService.imgExt, ",")+ "格式。");
 		}
-		String uploadPath = uploadService.store(headImg)[0];
+		String uploadPath = uploadService.store(true, SIZE_ARR, headImg)[0];
 		Member member = memberDao.findOne(userId);
 		member.setHeadImg(uploadPath);
 		memberDao.save(member);
@@ -321,5 +329,36 @@ public class MemberController extends ApiBaseController {
 				companyIdcard, companyTel, companyPrecision, companyLicenseImg, companyAddress, companyEquipment);
 		
 		return R.ok();
+	}
+	
+	/**
+	 * 用户收货地址
+	 * @return
+	 */
+	@RequestMapping("/express/address/list")
+	public R expressAddress(@RequestParam Long userId){
+		return R.ok(memberService.findExpressAddressById(userId));
+	}
+	
+	/**
+	 * 用户收货地址
+	 * @return
+	 */
+	@RequestMapping("/express/address/save")
+	public R saveExpressAddress(@Valid ShopExpressAddress expressAddress, @RequestParam Long userId){
+		expressAddress.setMemberId(userId);
+		expressAddressDao.save(expressAddress);
+		return R.ok();
+	}
+	
+	/**
+	 * 用户收货地址记录
+	 * @param userId
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/express/address/info")
+	public R expressAddressInfo(@RequestParam Long userId, @RequestParam Long id){
+		return R.ok(memberService.findExpressAddressInfo(userId, id));
 	}
 }
